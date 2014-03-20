@@ -1,11 +1,11 @@
-﻿-- phpMyAdmin SQL Dump
--- version 4.0.4
+-- phpMyAdmin SQL Dump
+-- version 4.1.8
 -- http://www.phpmyadmin.net
 --
--- Client: localhost
--- Généré le: Jeu 13 Mars 2014 à 15:08
--- Version du serveur: 5.6.12-log
--- Version de PHP: 5.4.16
+-- Host: localhost
+-- Generation Time: Mar 20, 2014 at 10:23 PM
+-- Server version: 5.6.12-log
+-- PHP Version: 5.4.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,40 +17,42 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Base de données: `test`
+-- Database: `test`
 --
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `meetings`
+-- Table structure for table `meetings`
 --
 
 CREATE TABLE IF NOT EXISTS `meetings` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) NOT NULL,
-  `datemeeting` datetime NOT NULL,
-  `place` varchar(255) NOT NULL,
-  `organizer` text NOT NULL,
+  `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `startDate` date NOT NULL,
+  `finishDate` date NOT NULL,
+  `startTime` time NOT NULL,
+  `stopTime` time NOT NULL,
+  `place` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `organizer_id` int(11) NOT NULL,
   `duration` time NOT NULL,
-  `description` text NOT NULL,
-  `attendees` text NOT NULL,
+  `description` text COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=10 ;
 
 --
--- Contenu de la table `meetings`
+-- Dumping data for table `meetings`
 --
 
-INSERT INTO `meetings` (`id`, `title`, `datemeeting`, `place`, `organizer`, `duration`, `description`, `attendees`) VALUES
-(1, 'isdjfsdjif', '2014-03-12 00:00:00', 'PAris', 'Tamere', '00:00:20', 'Te faire chier', 'gfuhdfijosdijf@gmail.com'),
-(2, 'Dentiste', '0000-00-00 00:00:00', 'Wheatley', 'JF ROCOCO', '00:00:30', 'Une carrie a retirer', 'a:4:{i:0;s:22:"13103897@brookes.ac.uk";i:1;s:14:"minu@gmaul.com";i:2;s:28:"testpurpose@purposegmail.com";i:3;s:28:"jeanfrancoisROCOCO@gmail.com";}'),
-(3, 'Dentiste', '0000-00-00 00:00:00', 'Wheatley', 'JF ROCOCO', '00:00:30', 'Une carrie a retirer', 'Bonjour'),
-(4, 'Dentiste', '0000-00-00 00:00:00', 'Wheatley', 'JF ROCOCO', '00:00:30', 'Une carrie a retirer', 'Jean francois himself'),
-(6, 'Dentiste', '0000-00-00 00:00:00', 'Wheatley', 'JF ROCOCO', '00:00:30', 'Une carrie a retirer', 'a:4:{i:0;s:7:"Bonjour";i:1;s:5:"salut";i:2;s:5:"cava?";i:3;s:28:"jeanfrancoisROCOCO@gmail.com";}'),
-(7, 'Dentiste', '0000-00-00 00:00:00', 'Wheatley', 'JF ROCOCO', '00:00:30', 'Une carrie a retirer', 'Jean francois himself'),
-(8, 'Dentiste', '0000-00-00 00:00:00', 'Wheatley', 'JF ROCOCO', '00:00:30', 'Une carrie a retirer', 'Jean francois himself'),
-(9, 'Dentiste', '0000-00-00 00:00:00', 'Wheatley', 'JF ROCOCO', '00:00:30', 'Une carrie a retirer', 'Jean francois himself');
+INSERT INTO `meetings` (`id`, `title`, `startDate`, `finishDate`, `startTime`, `stopTime`, `place`, `organizer_id`, `duration`, `description`) VALUES
+(1, 'isdjfsdjif', '0000-00-00', '0000-00-00', '00:00:00', '00:00:00', 'PAris', 0, '00:00:20', 'Te faire chier'),
+(2, 'Dentiste', '0000-00-00', '0000-00-00', '00:00:00', '00:00:00', 'Wheatley', 0, '00:00:30', 'Une carrie a retirer'),
+(3, 'Dentiste', '0000-00-00', '0000-00-00', '00:00:00', '00:00:00', 'Wheatley', 0, '00:00:30', 'Une carrie a retirer'),
+(4, 'Dentiste', '0000-00-00', '0000-00-00', '00:00:00', '00:00:00', 'Wheatley', 0, '00:00:30', 'Une carrie a retirer'),
+(6, 'Dentiste', '0000-00-00', '0000-00-00', '00:00:00', '00:00:00', 'Wheatley', 0, '00:00:30', 'Une carrie a retirer'),
+(7, 'Dentiste', '0000-00-00', '0000-00-00', '00:00:00', '00:00:00', 'Wheatley', 0, '00:00:30', 'Une carrie a retirer'),
+(8, 'Dentiste', '0000-00-00', '0000-00-00', '00:00:00', '00:00:00', 'Wheatley', 0, '00:00:30', 'Une carrie a retirer'),
+(9, 'Dentiste', '0000-00-00', '0000-00-00', '00:00:00', '00:00:00', 'Wheatley', 0, '00:00:30', 'Une carrie a retirer');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
