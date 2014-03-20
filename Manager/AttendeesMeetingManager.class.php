@@ -31,7 +31,7 @@ class AttendeesMeetingManager{
 		add($meetingId, $attendees);	
 	}
 
-	private function delete($meetingId){
+	public function delete($meetingId){
 		$this->_db->exec('DELETE FROM jnct_users_meetings WHERE id = '.$meetingId);
 	}
 
