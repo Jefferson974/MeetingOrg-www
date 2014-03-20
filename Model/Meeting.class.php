@@ -3,33 +3,38 @@ class Meeting{
 //Creation of the different variables
 private $_id;
 private $_title;
-private $_datemeeting;
+private $_startDate;
 private $_place;
-private $_organizer;
+private $_organizerId;
 private $_duration;
 private $_description;
 public  $_attendees ;
 
 
 //GETTERS ( 7 VARIABLES )
-public function id(){ return $this->_id ;}
-public function title(){ return $this->_title ;}
-public function datemeeting(){ return $this->_datemeeting ;}
-public function place(){ return $this->_place ;}
-public function organizer(){ return $this->_organizer ;}
-public function duration(){ return $this->_duration ;}
-public function description(){ return $this->_description ;}
-//public function attendees(){ return $this->_attendees;}
+public function getId(){ return $this->_id ;}
+public function getTitle(){ return $this->_title ;}
+public function getStartDate(){ return $this->_startDate ;}
+public function getFinishDate(){ return $this->_finishDate ;}
+public function getStartTime(){ return $this->_startTime ;}
+public function getFinishTime(){ return $this->_finishTime ;}
+public function getPlace(){ return $this->_place ;}
+public function getOrganizerId(){ return $this->_organizerId ;}
+public function getDuration(){ return $this->_duration ;}
+public function getDescription(){ return $this->_description ;}
 
 //SETTERS WITH CONTENT VERIFYER (8 VARIABLES)
 public function setId($id){ $this->_id = (int)$id;}
 public function setTitle($title){ if (is_string($title)) $this->_title = $title;}
-public function setDatemeeting($datemeeting){ if (is_string($datemeeting)) $this->_datemeeting = $datemeeting;  }
+public function setStartDate($startDate){ if (is_string($startDate)) $this->_startDate = $startDate; }
+public function setFinishDate($finishDate){ if (is_string($finishDate)) $this->_finishDate = $finishDate; }
+public function setStartTime($startTime){ if (is_string($startTime)) $this->_startTime = $startTime; }
+public function setFinishTime($finishTime){ if (is_string($finishTime)) $this->_finishTime = $finishTime; }
 public function setPlace($place){  if (is_string($place)) $this->_place = $place;  }
-public function setOrganizer($organizer){ if (is_string($organizer)) $this->_organizer = $organizer;  }
+public function setOrganizerId($organizer){ if (is_string($organizer)) $this->_organizerId = $organizer;  }
 public function setDuration($duration){   if ($duration <0){trigger_error('Duration needs to be a positive number.', E_USER_WARNING); return;} $this->_duration = (int)$duration;  }
 public function setDescription($description){ if (is_string($description))  $this->_description = $description;  }
-//public function setAttendees($attendees){  if (is_string($attendees)) $this->_attendees = $attendees;  }
+
 
 
 //CONSTRUCTOR METHOD
@@ -37,8 +42,10 @@ public function __construct($data)
 {
 $this->hydrate($data);
 //For the case of the attendee list we do not hydrate the attendee data but create an instance of the class Attendee which will contain the attendee list
-$this->_attendees = new Attendees($data['attendees']);
+//$this->_attendees = new Attendees($data['attendees']);
 }
+
+
 
 // FUNCTION TO HYDRATE THE OBJECT MEETING
 public function hydrate(array $data)
@@ -54,13 +61,14 @@ public function hydrate(array $data)
 }
 
 
-
+/*
 //function to display the DATA about the meeting
 public function displayMeetingInfo(){
 echo "<br><br>";
 echo "ID: ".$this->id() ;
 echo "<br>Title: ".$this->title() ;
-echo "<br>Date of Meeting: ".$this->datemeeting() ;
+echo "<br>Start Date of Meeting: ".$this->getStartDate() ;
+
 echo "<br>Place: ".$this->place() ;
 echo "<br>Organizer: ".$this->organizer() ;
 echo "<br>Duration: ".$this->duration() ;
@@ -78,7 +86,7 @@ function sendEmail()
 echo "mail envoyé!";
 }
 
-
+*/
 }
 
 ?>

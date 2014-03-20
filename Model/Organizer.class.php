@@ -87,7 +87,7 @@ $db = new PDO('mysql:host=localhost;dbname=test', 'root', '', array(PDO::ATTR_ER
    'title' => "Dentiste",
    'datemeeting' => "13 janvier",
    'place' => "Wheatley",
-   'organizer' => "JF ROCOCO",
+   'organizer' => "bouh ",
    'duration' => "30 minutes",
    'description' => "Une carrie a retirer",
    'attendees' => "Jean francois himself"
