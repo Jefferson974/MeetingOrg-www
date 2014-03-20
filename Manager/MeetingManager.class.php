@@ -31,20 +31,7 @@ class MeetingManager{
 		}
 	}
 
-	public function addAttendees($meetingId, $attendees){
-		try {
-		    foreach ($attendees as $key => $value) {
-		    	$q = $this->_db->prepare('INSERT INTO  SET title = :title, startDate = :startDate, finishDate = :finishDate, -startTime = :startTime, finishTime = :finishTime, place = :place, organizer_id= :organizerId, duration = :duration, description= :description');
-
-			    $q->bindValue(':meetingsId', $meetingId, PDO::PARAM_INT);
-			    $q->bindValue(':usersEmail', $value, PDO::PARAM_STR);
-
-			    $q->execute();
-		    }	    
-		}catch (Exception $e){
-		        echo 'Erreur : ',  $e->getMessage();
-		}
-	}
+	
 
 	public function delete($id){
 		$this->_db->exec('DELETE FROM meetings WHERE id = '.$id);
