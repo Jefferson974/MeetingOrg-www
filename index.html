@@ -4,6 +4,11 @@
 <!--[if IE 8]> <html class="lt-ie9" lang="en"> <![endif]-->
 <!--[if gt IE 8]><!--> <html lang="en"> <!--<![endif]-->
 <head>
+
+
+<!-- This script loads the calendar -->
+
+
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>Meeting Organizer</title>
@@ -11,8 +16,21 @@
   
 
   <!--CALENDAR HEAD TAG ELEMENTS -->
-  
+ <link rel='stylesheet' href='fullcalendar/fullcalendar.css' />
+<script src='lib/jquery.min.js'></script>
+<script src='lib/moment.min.js'></script>
+<script src='fullcalendar/fullcalendar.js'></script>
+<script>
+$(document).ready(function() {
 
+    // page is now ready, initialize the calendar...
+
+    $('#calendar').fullCalendar({
+        // put your options and callbacks here
+    })
+
+});
+</script>
 
 </head>
 <body>
@@ -30,7 +48,7 @@
 	<div id="createMeeting">
 			<h1><a href="">Create Meeting</a> </h1>
 		</div>
-		<div id="calendar">
+		<div id="calendarlink">
 			<h1><a href="">Calendar</a> </h1>
 		</div>
 		<div id="meetings">
@@ -44,11 +62,11 @@
 		</div>
 	</section>
   <section class="container">
+  
  <div id="calendarFields">
   <!--  DIV THAT IS SET UP INSIDE THE CALENDAR CODE /CSS/JS -->
-
-
-
+ 
+<div id='calendar'></div>
   
   </div>
   <div style="text-align:center;">
