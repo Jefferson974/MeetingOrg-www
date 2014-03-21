@@ -112,7 +112,7 @@ class Registration
         // check if email start with ID
         }elseif (!preg_match('/^p?\d+@brookes.ac.uk$/', $user_email)) {
             $this->errors[] = MESSAGE_EMAIL_NO_IDSTART;
-        }
+        
         // 
         // finally if all the above checks are ok
         } else if ($this->databaseConnection()) {

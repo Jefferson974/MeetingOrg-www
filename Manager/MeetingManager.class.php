@@ -61,7 +61,7 @@ class MeetingManager{
 		return new Meeting($result);
 	}
 
-	public function getList(){
+	/*public function getList(){
 		$list_meetings = array();
 	    $q = $this->_db->query('SELECT * FROM meetings ORDER BY id');
 	    while ($data = $q->fetch(PDO::FETCH_ASSOC))
@@ -70,11 +70,27 @@ class MeetingManager{
 	    }
 	    return $list_meetings;
 	}
+	*/
+
+	// Get a list of meetings created by an organizer and invited to.
+	public function getListByOrg($id){
+		$id = (int) $id;
+		$meetings = array();
+		$q = $this->_db->query('SELECT * FROM meetings WHERE organizer_id ='.$id);
+		while($result = $q->fetch(PDO::FETCH_ASSOC)){
+			$meetings[] = new Meeting($result); 
+		}
+		return $meetings;
+	}
 
 
-
-
-
+	public function getListByAttendees($arrayIdMeetings){
+		$meetings = $array();
+		foreach ($variable as $value) {
+			$meetings[] = get($value); 
+		}
+		return $meetings;
+	}
 
 
 
