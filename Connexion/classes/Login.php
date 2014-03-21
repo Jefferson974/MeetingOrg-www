@@ -286,6 +286,9 @@ class Login
             } else if ($result_row->user_active != 1) {
                 $this->errors[] = MESSAGE_ACCOUNT_NOT_ACTIVATED;
             } else {
+                //Session variable for admin,staff 
+                { $_SESSION['user_credential'] = $result_row->user_credential; }
+               // if($result_row->user_credential == 1)
                 // write user data into PHP SESSION [a file on your server]
                 $_SESSION['user_id'] = $result_row->user_id;
                 $_SESSION['user_name'] = $result_row->user_name;

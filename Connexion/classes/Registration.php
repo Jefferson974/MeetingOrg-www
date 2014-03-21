@@ -111,7 +111,7 @@ class Registration
             $this->errors[] = MESSAGE_EMAIL_NOT_BROOKES;
         // check if email start with ID
         }elseif (!preg_match('/^p?\d+@brookes.ac.uk$/', $user_email)) {
-            $this->errors[] = MESSAGE_EMAIL_NOT_BROOKES;
+            $this->errors[] = MESSAGE_EMAIL_NO_IDSTART;
         }
         // 
         // finally if all the above checks are ok
@@ -142,13 +142,19 @@ class Registration
                 // generate random hash for email verification (40 char string)
                 $user_activation_hash = sha1(uniqid(mt_rand(), true));
 
+                //check user credential. Admin, Staff if email start with a p.
+                if(substr($user_email, 0, 1)=="p"){ 
+                    $user_credential = true;
+                }else $user_credential = false;
+
                 // write new users data into database
-                $query_new_user_insert = $this->db_connection->prepare('INSERT INTO users (user_name, user_password_hash, user_email, user_activation_hash, user_registration_ip, user_registration_datetime) VALUES(:user_name, :user_password_hash, :user_email, :user_activation_hash, :user_registration_ip, now())');
+                $query_new_user_insert = $this->db_connection->prepare('INSERT INTO users (user_name, user_password_hash, user_email, user_activation_hash, user_registration_ip, user_registration_datetime, user_credential) VALUES(:user_name, :user_password_hash, :user_email, :user_activation_hash, :user_registration_ip, now(), :user_credential)');
                 $query_new_user_insert->bindValue(':user_name', $user_name, PDO::PARAM_STR);
                 $query_new_user_insert->bindValue(':user_password_hash', $user_password_hash, PDO::PARAM_STR);
                 $query_new_user_insert->bindValue(':user_email', $user_email, PDO::PARAM_STR);
                 $query_new_user_insert->bindValue(':user_activation_hash', $user_activation_hash, PDO::PARAM_STR);
                 $query_new_user_insert->bindValue(':user_registration_ip', $_SERVER['REMOTE_ADDR'], PDO::PARAM_STR);
+                $query_new_user_insert->bindValue(':user_credential', $user_credential, PDO::PARAM_BOOL);               
                 $query_new_user_insert->execute();
 
                 // id of new user
