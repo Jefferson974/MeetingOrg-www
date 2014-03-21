@@ -1,22 +1,20 @@
 <!DOCTYPE html>
-<form>
+<form action="" method="POST">
 <b>Create Event</b>
 
 
 
 Title: <input type="text" id=title name="Title"> Private:<input type="checkbox"> 
-<br>
+
 <div>
 Time:<input type="date" id=startDate>  <input type="time" id=startTime>
-<br>
-<br>
+    <input type="date" id=finishDate>  <input type="time" id=finsihTime>
 
-<input type="date" id=finishDate >  <input type="time" id=finsihTime>
-<br>
 All day:<input type="checkbox" id=allDay>
 </div>
+
+
 <div>
-<br>
 Repeats: <select id=repeats>
           <option value=“none”> none</option>
           <option value=“daily”> daily</option>
@@ -24,7 +22,8 @@ Repeats: <select id=repeats>
           <option value=“monthly”> monthly</option>
           </select>
 </div>
-<br>
+ 
+
 <div>
 Event Color: <input type="radio" value=FF0000>
              <input type="radio" value=00FF00>
@@ -35,16 +34,13 @@ Event Color: <input type="radio" value=FF0000>
              <input type="radio" value=C0C0C0>
 </div>
 
-<br>
+
 Location:  <input type="text" name=“Location” id=location>
 
 
-<br>
-Link (web url):<input type="text" id=link>
-
-
-Description:<br> 
+<div>
+Description: 
 <textarea name=“description” cols="25" rows="5">
 </textarea>
-<br>
+</div>
 </form>

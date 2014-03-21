@@ -13,7 +13,7 @@ class MeetingManager{
 
 	public function add(Meeting $m){
 		try {
-	    $q = $this->_db->prepare('INSERT INTO meetings SET title = :title, startDate = :startDate, finishDate = :finishDate, -startTime = :startTime, finishTime = :finishTime, place = :place, organizer_id= :organizerId, duration = :duration, description= :description');
+	    $q = $this->_db->prepare('INSERT INTO meetings SET title = :title, startDate = :startDate, finishDate = :finishDate, -startTime = :startTime, finishTime = :finishTime, place = :place, organizer_id= :organizerId, duration = :duration, description= :description, repeat = :repeat');
 
 	    $q->bindValue(':title', $rdv->title(), PDO::PARAM_STR);
 	    $q->bindValue(':startDate', $rdv->getStartDate(), PDO::PARAM_STR);
@@ -24,7 +24,7 @@ class MeetingManager{
 	    $q->bindValue(':organizerId', $rdv->getOrganizerId(), PDO::PARAM_INT);
 	    $q->bindValue(':duration', $rdv->getDuration(), PDO::PARAM_STR);
 	    $q->bindValue(':description', $rdv->getDescription(), PDO::PARAM_STR);
-
+	    $q->bindValue(':repeat', $rdv->getRepeat(), PDO::PARAM_STR);
 	    $q->execute();
 		}catch (Exception $e){
 		echo 'Erreur : ',  $e->getMessage();
@@ -38,7 +38,7 @@ class MeetingManager{
 	}
 
 	public function edit(Meeting $m){
-		$q = $this->_db->prepare('UPDATE meetings SET title = :title, startDate = :startDate, finishDate = :finishDate, startTime = :startTime, finishTime = :finishTime, place = :place, organizer_id= :organizerId, duration = :duration, description= :description, attendees= :attendees WHERE id = :id');
+		$q = $this->_db->prepare('UPDATE meetings SET title = :title, startDate = :startDate, finishDate = :finishDate, startTime = :startTime, finishTime = :finishTime, place = :place, organizer_id= :organizerId, duration = :duration, description= :description, repeat = :repeat WHERE id = :id');
   		$q->bindValue(':title', $rdv->title(), PDO::PARAM_STR);
 	    $q->bindValue(':startDate', $rdv->getStartDate(), PDO::PARAM_STR);
 	    $q->bindValue(':finishDate', $rdv->getFinishDate(), PDO::PARAM_STR);
@@ -48,6 +48,7 @@ class MeetingManager{
 	    $q->bindValue(':organizerId', $rdv->getOrganizerId(), PDO::PARAM_INT);
 	    $q->bindValue(':duration', $rdv->getDuration(), PDO::PARAM_STR);
 	    $q->bindValue(':description', $rdv->getDescription(), PDO::PARAM_STR);
+	    $q->bindValue(':repeat', $rdv->getRepeat(), PDO::PARAM_STR);
     	$q->bindValue(':id', $rv->getId(), PDO::PARAM_INT);
     	$q->execute();
 	}

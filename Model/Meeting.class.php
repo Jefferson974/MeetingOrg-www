@@ -4,11 +4,14 @@ class Meeting{
 private $_id;
 private $_title;
 private $_startDate;
+private $_finishDate;
+private $_startTime;
+private $_finishTime;
 private $_place;
 private $_organizerId;
 private $_duration;
 private $_description;
-public  $_attendees ;
+private $_repeat;
 
 
 //GETTERS ( 7 VARIABLES )
@@ -22,6 +25,7 @@ public function getPlace(){ return $this->_place ;}
 public function getOrganizerId(){ return $this->_organizerId ;}
 public function getDuration(){ return $this->_duration ;}
 public function getDescription(){ return $this->_description ;}
+public function getRepeat(){ return $this->_repeat ;}
 
 //SETTERS WITH CONTENT VERIFYER (8 VARIABLES)
 public function setId($id){ $this->_id = (int)$id;}
@@ -31,10 +35,10 @@ public function setFinishDate($finishDate){ if (is_string($finishDate)) $this->_
 public function setStartTime($startTime){ if (is_string($startTime)) $this->_startTime = $startTime; }
 public function setFinishTime($finishTime){ if (is_string($finishTime)) $this->_finishTime = $finishTime; }
 public function setPlace($place){  if (is_string($place)) $this->_place = $place;  }
-public function setOrganizerId($organizer){ if (is_string($organizer)) $this->_organizerId = $organizer;  }
+public function setOrganizerId($organizer){  $this->_organizerId = (int) $organizer;  }
 public function setDuration($duration){   if ($duration <0){trigger_error('Duration needs to be a positive number.', E_USER_WARNING); return;} $this->_duration = (int)$duration;  }
 public function setDescription($description){ if (is_string($description))  $this->_description = $description;  }
-
+public function getRepeat($repeat){ if (is_string($repeat)) $this->_repeat = $repeat; }
 
 
 //CONSTRUCTOR METHOD
