@@ -23,13 +23,56 @@
 <script>
 $(document).ready(function() {
 
-    // page is now ready, initialize the calendar...
 
-    $('#calendar').fullCalendar({
+
+    // page is now ready, initialize the calendar...
+    $('#calendarFields').fullCalendar({
         // put your options and callbacks here
+
+
+
+ 	
+   aspectRatio: 2.04,
+
+
+	header:
+	{
+	    left:   'title',
+	    center: 'agendaDay agendaWeek month',
+	    right:  'today prev,next'
+	},
+
+
+ eventSources: [{
+    events: [ 
+        {
+            title  : 'event1',
+            start  : '2010-01-01'
+        },
+        {
+            title  : 'event2',
+            start  : '2014-03-20',
+            end    : '2014-03-22'
+        },
+        {
+            title  : 'event3',
+            start  : '2014-03-01 12:30:00',
+            allDay : false // will make the time show
+        }
+    ],   color: 'black',     // an option!
+            textColor: 'yellow',
+            editable: true
+}]
+
+
+
     })
 
 });
+
+
+
+
 </script>
 
 </head>
@@ -48,7 +91,7 @@ $(document).ready(function() {
 	<div id="createMeeting">
 			<h1><a href="">Create Meeting</a> </h1>
 		</div>
-		<div id="calendarlink">
+		<div id="calendar">
 			<h1><a href="">Calendar</a> </h1>
 		</div>
 		<div id="meetings">
@@ -62,11 +105,9 @@ $(document).ready(function() {
 		</div>
 	</section>
   <section class="container">
-  
+
  <div id="calendarFields">
-  <!--  DIV THAT IS SET UP INSIDE THE CALENDAR CODE /CSS/JS -->
- 
-<div id='calendar'></div>
+
   
   </div>
   <div style="text-align:center;">
@@ -76,7 +117,7 @@ $(document).ready(function() {
   </div>
 
   </section>
-
+<div id='calendar'></div>
 </body>
 </html>
 
