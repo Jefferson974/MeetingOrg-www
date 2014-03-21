@@ -255,7 +255,7 @@ class Registration
    // Check if an email is part of the Brookes Mail Domain.
     public function checkBrookesMail($email){
         $domain = strstr($email, '@');
-        $id = strstr($email, '@', true)
+        $id = strstr($email, '@', true);
         if($domain == "@brookes.ac.uk"){
             return true;
         }else return false;
