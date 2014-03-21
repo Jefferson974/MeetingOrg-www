@@ -106,7 +106,14 @@ class Registration
             $this->errors[] = MESSAGE_EMAIL_TOO_LONG;
         } elseif (!filter_var($user_email, FILTER_VALIDATE_EMAIL)) {
             $this->errors[] = MESSAGE_EMAIL_INVALID;
-
+            //check if its a Brookes Domain email
+        } elseif (checkBrookesMail($user_email)){
+            $this->errors[] = MESSAGE_EMAIL_NOT_BROOKES;
+        // check if email start with ID
+        }elseif (!preg_match('/^p?\d+@brookes.ac.uk$/', $user_email)) {
+            $this->errors[] = MESSAGE_EMAIL_NOT_BROOKES;
+        }
+        // 
         // finally if all the above checks are ok
         } else if ($this->databaseConnection()) {
             // check if username or email already exists
@@ -237,4 +244,18 @@ class Registration
             }
         }
     }
+
+
+   // Check if an email is part of the Brookes Mail Domain.
+    public function checkBrookesMail($email){
+        $domain = strstr($email, '@');
+        $id = strstr($email, '@', true)
+        if($domain == "@brookes.ac.uk"){
+            if()
+            return true;
+        }else return false;
+    }
+
+
+
 }
