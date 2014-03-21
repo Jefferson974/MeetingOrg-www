@@ -81,7 +81,7 @@ class MeetingManager{
 		while($result = $q->fetch(PDO::FETCH_ASSOC)){
 			$meetings[] = new Meeting($result); 
 		}
-
+		$attendeesM = getListByAttendees()
 		return $meetings;
 	}
 

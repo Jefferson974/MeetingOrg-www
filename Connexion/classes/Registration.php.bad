@@ -65,6 +65,7 @@ class Registration
                 // "Adding the charset to the DSN is very important for security reasons,
                 // most examples you'll see around leave it out. MAKE SURE TO INCLUDE THE CHARSET!"
                 $this->db_connection = new PDO('mysql:host='. DB_HOST .';dbname='. DB_NAME . ';charset=utf8', DB_USER, DB_PASS);
+                $this->db_connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 return true;
             // If an error is catched, database connection failed
             } catch (PDOException $e) {
@@ -106,13 +107,14 @@ class Registration
             $this->errors[] = MESSAGE_EMAIL_TOO_LONG;
         } elseif (!filter_var($user_email, FILTER_VALIDATE_EMAIL)) {
             $this->errors[] = MESSAGE_EMAIL_INVALID;
-           //check if its a Brookes Domain email
-        } elseif (!$this->checkBrookesMail($user_email)){
+            //check if its a Brookes Domain email
+      /*  } elseif (!$this->checkBrookesMail($user_email)){
             $this->errors[] = MESSAGE_EMAIL_NOT_BROOKES;
         // check if email start with ID
         }elseif (!preg_match('/^p?\d+@brookes.ac.uk$/', $user_email)) {
             $this->errors[] = MESSAGE_EMAIL_NO_IDSTART;
-
+        */
+        // 
         // finally if all the above checks are ok
         } else if ($this->databaseConnection()) {
             // check if username or email already exists
@@ -140,25 +142,44 @@ class Registration
                 $user_password_hash = password_hash($user_password, PASSWORD_DEFAULT, array('cost' => $hash_cost_factor));
                 // generate random hash for email verification (40 char string)
                 $user_activation_hash = sha1(uniqid(mt_rand(), true));
-                //check user credential. Admin, Staff if email start with a p.
-                if(substr($user_email, 0, 1)=="p"){ 
-                    $user_credential = true;
-                }else $user_credential = false;
-                
 
+                //check user credential. Admin, Staff if email start with a p.
+              /*  if(substr($user_email, 0, 1)=="p"){ 
+                    $user_credential = true;
+                }else $user_credential = false;*/
+                $user_credential = 0;
+                echo  $user_credential;
+                echo $user_email;
                 // write new users data into database
+              try {
+                    
+               
+               // $query_new_user_insert = $this->db_connection->prepare('INSERT INTO users (user_name, user_password_hash, user_email, user_activation_hash, user_registration_ip, user_registration_datetime, user_credential) VALUES(:user_name, :user_password_hash, :user_email, :user_activation_hash, :user_registration_ip, now(), :user_credential)');
                 $query_new_user_insert = $this->db_connection->prepare('INSERT INTO users (user_name, user_password_hash, user_email, user_activation_hash, user_registration_ip, user_registration_datetime, user_credential) VALUES(:user_name, :user_password_hash, :user_email, :user_activation_hash, :user_registration_ip, now(), :user_credential)');
                 $query_new_user_insert->bindValue(':user_name', $user_name, PDO::PARAM_STR);
                 $query_new_user_insert->bindValue(':user_password_hash', $user_password_hash, PDO::PARAM_STR);
                 $query_new_user_insert->bindValue(':user_email', $user_email, PDO::PARAM_STR);
                 $query_new_user_insert->bindValue(':user_activation_hash', $user_activation_hash, PDO::PARAM_STR);
                 $query_new_user_insert->bindValue(':user_registration_ip', $_SERVER['REMOTE_ADDR'], PDO::PARAM_STR);
-                $query_new_user_insert->bindValue(':user_credential', $user_credential, PDO::PARAM_BOOL);  
-                $query_new_user_insert->execute();
+                $query_new_user_insert->bindValue(':user_credential', $user_credential, PDO::PARAM_BOOL);               
+               if ($query_new_user_insert->execute()) {
+    echo "goood";
+} else {
+    // Query failed.
+    $errorcode = $query_new_user_insert->errorCode();
+    echo "baddd \n";
+    echo $errorcode;
+    echo "start\n";
+    echo $query_new_user_insert->errorInfo();
+    echo "stop\n";
+} 
+                 } catch (PDOException $e) {
+                    echo "\n errorrrrrrr " . $e->getMessage(). "\nin ". $e->getFile() . "\nonline" .$e->getLine();
+                }  
 
                 // id of new user
                 $user_id = $this->db_connection->lastInsertId();
-
+                echo $user_id;
                 if ($query_new_user_insert) {
                     // send a verification email
                     if ($this->sendVerificationEmail($user_id, $user_email, $user_activation_hash)) {
@@ -250,7 +271,8 @@ class Registration
         }
     }
 
-     // Check if an email is part of the Brookes Mail Domain.
+
+   // Check if an email is part of the Brookes Mail Domain.
     public function checkBrookesMail($email){
         $domain = strstr($email, '@');
         $id = strstr($email, '@', true);
@@ -258,4 +280,7 @@ class Registration
             return true;
         }else return false;
     }
+
+
+
 }

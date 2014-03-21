@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<form action="invitation.php" method="POST">
+<form action="invitation.php" method="POST" name="">
 
 <b>Create Event</b>
 
