@@ -257,7 +257,6 @@ class Registration
         $domain = strstr($email, '@');
         $id = strstr($email, '@', true)
         if($domain == "@brookes.ac.uk"){
-            if()
             return true;
         }else return false;
     }
