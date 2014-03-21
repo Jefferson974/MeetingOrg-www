@@ -114,6 +114,7 @@ padding-right:4px;
   font-size:24px;
   text-decoration:none;
 }  
+
 #calendarFields{
 	width:650px;
 	float: left;
@@ -135,7 +136,7 @@ a:active {text-decoration:underline;}
 
 .container {
   margin: 40px auto;
-  width: 640px;
+  width: 650px;
 }
 
 .login {
