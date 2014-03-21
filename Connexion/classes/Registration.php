@@ -107,7 +107,7 @@ class Registration
         } elseif (!filter_var($user_email, FILTER_VALIDATE_EMAIL)) {
             $this->errors[] = MESSAGE_EMAIL_INVALID;
             //check if its a Brookes Domain email
-        } elseif (checkBrookesMail($user_email)){
+        } elseif (!$this->checkBrookesMail($user_email)){
             $this->errors[] = MESSAGE_EMAIL_NOT_BROOKES;
         // check if email start with ID
         }elseif (!preg_match('/^p?\d+@brookes.ac.uk$/', $user_email)) {
