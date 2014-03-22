@@ -47,8 +47,6 @@ public function setColor($color){ if(is_string($color)) $this->_color = $color ;
 public function __construct($data)
 {
 $this->hydrate($data);
-//For the case of the attendee list we do not hydrate the attendee data but create an instance of the class Attendee which will contain the attendee list
-//$this->_attendees = new Attendees($data['attendees']);
 }
 
 
