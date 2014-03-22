@@ -8,7 +8,7 @@ class AttendeesMeetingManager{
 	private $_db;
 
 	public function __construct($db){
-		$this->_db($_db);
+		$this->_db=$db;
 	}
 
 	public function add($meetingId, $attendees){

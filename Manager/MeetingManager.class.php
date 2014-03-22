@@ -29,7 +29,7 @@ class MeetingManager{
 	    $q->bindValue(':colorM', $rdv->getColorM(), PDO::PARAM_STR);
 	    
 	    $q->execute();
-		}catch (Exception $e){
+		}catch (PDOException $e){
 		echo 'Erreur : ',  $e->getMessage();
 		}
 	}
