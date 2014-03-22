@@ -2,9 +2,8 @@
 
 //function loadClass($classe){ require '../Model/'.$classe . '.class.php'; }
 
-require ('../Model/Meeting.class.php');
-spl_autoload_register('loadClass');
-
+require_once('./Model/Meeting.class.php');
+//
 class MeetingManager{
 
 	private $_db;

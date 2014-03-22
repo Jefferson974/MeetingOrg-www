@@ -4,7 +4,8 @@
 <!--[if IE 8]> <html class="lt-ie9" lang="en"> <![endif]-->
 <!--[if gt IE 8]><!--> <html lang="en"> <!--<![endif]-->
 <head>
-<?php require("Manager/MeetingManager.class.php"); ?>
+<?php require_once("Manager/MeetingManager.class.php");
+  require_once("config/config.php"); ?>
 
 <!-- This script loads the calendar -->
 
@@ -134,7 +135,7 @@ $(document).ready(function() {
 
  <div id="calendarFields">
 <?php 
-$db = new PDO('mysql:host=localhost;dbname=test', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+$db = new PDO('mysql:host='. DB_HOST .';dbname='. DB_NAME . ';charset=utf8', DB_USER, DB_PASS);
 $managerObject = new MeetingManager($db);
 
 $adfe = $managerObject->get(1);

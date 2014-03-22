@@ -38,7 +38,7 @@ public function setPlace($place){  if (is_string($place)) $this->_place = $place
 public function setOrganizerId($organizer){  $this->_organizerId = (int) $organizer;  }
 public function setDuration($duration){   if ($duration <0){trigger_error('Duration needs to be a positive number.', E_USER_WARNING); return;} $this->_duration = (int)$duration;  }
 public function setDescription($description){ if (is_string($description))  $this->_description = $description;  }
-public function getRepeat($repeat){ if (is_string($repeat)) $this->_repeat = $repeat; }
+public function setRepeat($repeat){ if (is_string($repeat)) $this->_repeat = $repeat; }
 
 
 //CONSTRUCTOR METHOD
