@@ -210,6 +210,8 @@ class Login
                     $result_row = $sth->fetchObject();
 
                     if (isset($result_row->user_id)) {
+                         //Session variable for admin,staff 
+                        $_SESSION['user_credential'] = $result_row->user_credential; 
                         // write user data into PHP SESSION [a file on your server]
                         $_SESSION['user_id'] = $result_row->user_id;
                         $_SESSION['user_name'] = $result_row->user_name;

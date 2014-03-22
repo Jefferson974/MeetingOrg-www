@@ -32,7 +32,8 @@ if($result != null) { //check if the form is sent
         }
     }
 
-    if($nbrErreurs == 0) {
+   	$userId = $_SESSION['user_id'];
+    if($nbrErreurs == 0 && $_SESSION['user_credential']==1) {
 	     $dataMeeting = new array(
 		'title' => $result['title'],
 		'startDate' => $result['startDate'],
@@ -44,6 +45,7 @@ if($result != null) { //check if the form is sent
 		'colorM' => $result['colorM'],
 		'location' => $result['location'],
 		'description' => $result['description'],
+		'organizerId' => $userId
 		);
     }
 }
@@ -52,8 +54,9 @@ else {
 }
 
 
-
-
+$meetingManager = new MeetingManager($db);
+$meeting = new Meeting($dataMeeting);
+$meetingManager->add(meeting);
 
 
 ?>
