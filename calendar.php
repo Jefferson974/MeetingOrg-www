@@ -5,8 +5,24 @@
 <!--[if gt IE 8]><!--> <html lang="en"> <!--<![endif]-->
 <head>
 <?php require_once("Manager/MeetingManager.class.php");
-  require_once("config/config.php"); ?>
+  require_once("config/config.php"); 
+  require_once("Manager/AttendeesMeetingManager.class.php"); ?>
+<?php 
 
+$db = new PDO('mysql:host='. DB_HOST .';dbname='. DB_NAME . ';charset=utf8', DB_USER, DB_PASS);
+$managerObject = new MeetingManager($db);
+if(isset($_SESSION['user_mail'])) {
+$userMail = $_SESSION['user_mail'];
+echo $userMail;
+$attendeeList = new AttendeesMeetingManager($db);
+$listMeetingsId= $attendeeList->getMeetingsIdByEmailA($usermail);
+$listMeetings = $managerObject->getListByAttendees($listMeetingsId);
+
+    }  
+  
+
+     
+?>
 <!-- This script loads the calendar -->
 
 
@@ -73,34 +89,7 @@ $(document).ready(function() {
 
 </script>
 
-<script>
-/* $('#calendarFields').fullCalendar({
-        // put your options and callbacks here
 
-
- eventSources: [{
-    events: [ 
-        {
-            title  : 'event1',
-            start  : '2010-01-01'
-        },
-        {
-            title  : 'event2',
-            start  : '2014-03-20',
-            end    : '2014-03-22'
-        },
-        {
-            title  : 'event3',
-            start  : '2014-03-01 12:30:00',
-            allDay : false // will make the time show
-        }
-    ],   color: 'black',     // an option!
-            textColor: 'yellow'
-}]
-
-
-});*/
-</script>
 
 </head>
 <body>
@@ -134,13 +123,9 @@ $(document).ready(function() {
   <section class="container">
 
  <div id="calendarFields">
-<?php 
-$db = new PDO('mysql:host='. DB_HOST .';dbname='. DB_NAME . ';charset=utf8', DB_USER, DB_PASS);
-$managerObject = new MeetingManager($db);
 
-$adfe = $managerObject->get(1);
-?>
-  
+<?php echo $_SESSION['user_name']; ?> 
+
   </div>
   <div style="text-align:center;">
   <p>
