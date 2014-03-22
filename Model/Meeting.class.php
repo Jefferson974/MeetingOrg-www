@@ -11,7 +11,8 @@ private $_place;
 private $_organizerId;
 private $_duration;
 private $_description;
-private $_repeat;
+private $_repeatM;
+private $_color;
 
 
 //GETTERS ( 7 VARIABLES )
@@ -25,7 +26,8 @@ public function getPlace(){ return $this->_place ;}
 public function getOrganizerId(){ return $this->_organizerId ;}
 public function getDuration(){ return $this->_duration ;}
 public function getDescription(){ return $this->_description ;}
-public function getRepeat(){ return $this->_repeat ;}
+public function getRepeatM(){ return $this->_repeatM ;}
+public function getColor(){ return $this->_color ;}
 
 //SETTERS WITH CONTENT VERIFYER (8 VARIABLES)
 public function setId($id){ $this->_id = (int)$id;}
@@ -39,14 +41,12 @@ public function setOrganizerId($organizer){  $this->_organizerId = (int) $organi
 public function setDuration($duration){   if ($duration <0){trigger_error('Duration needs to be a positive number.', E_USER_WARNING); return;} $this->_duration = (int)$duration;  }
 public function setDescription($description){ if (is_string($description))  $this->_description = $description;  }
 public function setRepeat($repeat){ if (is_string($repeat)) $this->_repeat = $repeat; }
-
+public function setColor($color){ if(is_string($color)) $this->_color = $color ;}
 
 //CONSTRUCTOR METHOD
 public function __construct($data)
 {
 $this->hydrate($data);
-//For the case of the attendee list we do not hydrate the attendee data but create an instance of the class Attendee which will contain the attendee list
-//$this->_attendees = new Attendees($data['attendees']);
 }
 
 

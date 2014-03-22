@@ -14,7 +14,7 @@ class MeetingManager{
 
 	public function add(Meeting $m){
 		try {
-	    $q = $this->_db->prepare('INSERT INTO meetings SET title = :title, startDate = :startDate, finishDate = :finishDate, -startTime = :startTime, finishTime = :finishTime, place = :place, organizer_id= :organizerId, duration = :duration, description= :description, repeat = :repeat');
+	    $q = $this->_db->prepare('INSERT INTO meetings SET title = :title, startDate = :startDate, finishDate = :finishDate, -startTime = :startTime, finishTime = :finishTime, place = :place, organizer_id= :organizerId, duration = :duration, description= :description, repeatM = :repeatM, color = :color');
 
 	    $q->bindValue(':title', $rdv->title(), PDO::PARAM_STR);
 	    $q->bindValue(':startDate', $rdv->getStartDate(), PDO::PARAM_STR);
@@ -25,7 +25,8 @@ class MeetingManager{
 	    $q->bindValue(':organizerId', $rdv->getOrganizerId(), PDO::PARAM_INT);
 	    $q->bindValue(':duration', $rdv->getDuration(), PDO::PARAM_STR);
 	    $q->bindValue(':description', $rdv->getDescription(), PDO::PARAM_STR);
-	    $q->bindValue(':repeat', $rdv->getRepeat(), PDO::PARAM_STR);
+	    $q->bindValue(':repeatM', $rdv->getRepeatM(), PDO::PARAM_STR);
+	    $q->bindValue(':color', $rdv->getColor(), PDO::PARAM_STR);
 	    $q->execute();
 		}catch (Exception $e){
 		echo 'Erreur : ',  $e->getMessage();
@@ -39,7 +40,7 @@ class MeetingManager{
 	}
 
 	public function edit(Meeting $m){
-		$q = $this->_db->prepare('UPDATE meetings SET title = :title, startDate = :startDate, finishDate = :finishDate, startTime = :startTime, finishTime = :finishTime, place = :place, organizer_id= :organizerId, duration = :duration, description= :description, repeat = :repeat WHERE id = :id');
+		$q = $this->_db->prepare('UPDATE meetings SET title = :title, startDate = :startDate, finishDate = :finishDate, startTime = :startTime, finishTime = :finishTime, place = :place, organizer_id= :organizerId, duration = :duration, description= :description, repeatM = :repeatM, color = :color WHERE id = :id');
   		$q->bindValue(':title', $rdv->title(), PDO::PARAM_STR);
 	    $q->bindValue(':startDate', $rdv->getStartDate(), PDO::PARAM_STR);
 	    $q->bindValue(':finishDate', $rdv->getFinishDate(), PDO::PARAM_STR);
@@ -50,6 +51,7 @@ class MeetingManager{
 	    $q->bindValue(':duration', $rdv->getDuration(), PDO::PARAM_STR);
 	    $q->bindValue(':description', $rdv->getDescription(), PDO::PARAM_STR);
 	    $q->bindValue(':repeat', $rdv->getRepeat(), PDO::PARAM_STR);
+	    $q->bindValue(':color', $rdv->getColor(), PDO::PARAM_STR);
     	$q->bindValue(':id', $rv->getId(), PDO::PARAM_INT);
     	$q->execute();
 	}
@@ -74,7 +76,7 @@ class MeetingManager{
 	*/
 
 	// Get a list of meetings created by an organizer and invited to.
-/*	public function getListByOrg($id){
+	public function getListByOrg($id){
 		$id = (int) $id;
 		$meetings = array();
 		$attendeesM = $array();
@@ -84,7 +86,7 @@ class MeetingManager{
 		}
 		$attendeesM = getListByAttendees()
 		return $meetings;
-	}*/
+	}
 
 	// Get a list of meetings by attendees
 	public function getListByAttendees($arrayIdMeetings){

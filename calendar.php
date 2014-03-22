@@ -124,8 +124,15 @@ $(document).ready(function() {
 
  <div id="calendarFields">
 
+<<<<<<< HEAD
 <?php echo $_SESSION['user_name']; ?> 
 
+=======
+$adfe = $managerObject->get(1);
+$adfe->INFO();
+?>
+  
+>>>>>>> f1c18234cb9caa7a3535f5899062663759a14ec2
   </div>
   <div style="text-align:center;">
   <p>
