@@ -10,12 +10,18 @@
 <?php 
 
 $db = new PDO('mysql:host='. DB_HOST .';dbname='. DB_NAME . ';charset=utf8', DB_USER, DB_PASS);
+
+
+
+//NEED TO IMPORT THE SESSION HERE<=== PROBLEM
+// SO I CREATE ARTIFICIALLY THE SESSION FROM HERE
+  $_SESSION['user_mail'] = "13103897@brookes.ac.uk";
 $managerObject = new MeetingManager($db);
 if(isset($_SESSION['user_mail'])) {
 $userMail = $_SESSION['user_mail'];
 echo $userMail;
 $attendeeList = new AttendeesMeetingManager($db);
-$listMeetingsId= $attendeeList->getMeetingsIdByEmailA($usermail);
+$listMeetingsId= $attendeeList->getMeetingsIdByEmailA($userMail);
 $listMeetings = $managerObject->getListByAttendees($listMeetingsId);
 
     }  
@@ -60,13 +66,32 @@ $(document).ready(function() {
 	    right:  'today prev,next'
 	},
 
+// PART OF THE CODE THAT DISPLAY THE EVENTS
 
  eventSources: [{
+
     events: [ 
         {
             title  : 'event1',
             start  : '2010-01-01'
         },
+         <?php 
+if(isset($listMeetings)) {
+foreach($listMeetings as $throughMeetings) {
+echo "{
+  title:". $throughMeetings->getTitle()."
+  start :". $throughMeetings->getStartDate().",
+  end:". $throughMeetings->getFinishDate().",
+  color:". $throughMeetings->getColor()
+."}";
+}
+}
+/*{
+  title : 'BUG THE VAR DOES NOT COME HRE',
+  start : '2014-03-22',
+  end : '2014-03-22'
+  },*/
+  ?>,
         {
             title  : 'event2',
             start  : '2014-03-20',
@@ -79,12 +104,13 @@ $(document).ready(function() {
         }
     ],   color: 'black',     // an option!
             textColor: 'yellow'
+}
 }]
 
 
-
+    //end  of Calendar initializer
     })
-
+//end  of page initialized event
 });
 
 </script>
@@ -123,16 +149,17 @@ $(document).ready(function() {
   <section class="container">
 
  <div id="calendarFields">
+<?php echo "salut"; 
 
-<<<<<<< HEAD
-<?php echo $_SESSION['user_name']; ?> 
+if(isset($_SESSION['user_mail'])) {
+  echo "fuck it bitch!!";
+}
 
-=======
-$adfe = $managerObject->get(1);
-$adfe->INFO();
-?>
+?>   
   
->>>>>>> f1c18234cb9caa7a3535f5899062663759a14ec2
+
+
+
   </div>
   <div style="text-align:center;">
   <p>

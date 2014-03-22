@@ -80,7 +80,7 @@ class MeetingManager{
 	public function getListByOrg($id){
 		$id = (int) $id;
 		$meetings = array();
-		$attendeesM = $array();
+		$attendeesM = array();
 		$q = $this->_db->query('SELECT * FROM meetings WHERE organizer_id ='.$id);
 		while($result = $q->fetch(PDO::FETCH_ASSOC)){
 			$meetings[] = new Meeting($result); 
@@ -91,7 +91,7 @@ class MeetingManager{
 
 	// Get a list of meetings by attendees
 	public function getListByAttendees($arrayIdMeetings){
-		$meetings = $array();
+		$meetings = array();
 		foreach ($arrayIdMeetings as $value) {
 			$meetings[] = get($value); 
 		}

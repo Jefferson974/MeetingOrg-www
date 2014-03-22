@@ -38,7 +38,8 @@ class AttendeesMeetingManager{
 
 	public function getMeetingsIdByEmailA($emailAttendee){
 		$meetingsId = array();
-		$q = $this->_db->query('SELECT meeting_id FROM jnct_users_meetings WHERE user_email ='.$emailAttendee);
+		$q = $this->_db->prepare('SELECT meeting_id FROM jnct_users_meetings WHERE user_email ='.$emailAttendee);
+		$q->execute();
 		$result = $q->fetchAll();
 		return $result;
 	}
