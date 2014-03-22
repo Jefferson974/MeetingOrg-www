@@ -139,6 +139,7 @@ $db = new PDO('mysql:host='. DB_HOST .';dbname='. DB_NAME . ';charset=utf8', DB_
 $managerObject = new MeetingManager($db);
 
 $adfe = $managerObject->get(1);
+$adfe->INFO();
 ?>
   
   </div>
