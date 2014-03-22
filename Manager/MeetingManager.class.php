@@ -1,6 +1,8 @@
 <?php
 
-function loadClass($classe){ require $classe . '.class.php'; }
+//function loadClass($classe){ require '../Model/'.$classe . '.class.php'; }
+
+require ('../Model/Meeting.class.php');
 spl_autoload_register('loadClass');
 
 class MeetingManager{
@@ -8,7 +10,7 @@ class MeetingManager{
 	private $_db;
 
 	public function __construct($db){
-		$this->_db($_db);
+		$this->_db=$db;
 	}
 
 	public function add(Meeting $m){
@@ -73,7 +75,7 @@ class MeetingManager{
 	*/
 
 	// Get a list of meetings created by an organizer and invited to.
-	public function getListByOrg($id){
+/*	public function getListByOrg($id){
 		$id = (int) $id;
 		$meetings = array();
 		$attendeesM = $array();
@@ -83,7 +85,7 @@ class MeetingManager{
 		}
 		$attendeesM = getListByAttendees()
 		return $meetings;
-	}
+	}*/
 
 	// Get a list of meetings by attendees
 	public function getListByAttendees($arrayIdMeetings){

@@ -64,6 +64,20 @@ public function hydrate(array $data)
   }
 }
 
+// FUNCTION TO TRANSFORM THE DATA INTO A JSON FORMAT
+/*public function toJson(array $data){
+
+ foreach ($data as $key => $value)
+  { 
+
+  }
+
+}
+*/
+
+public function INFO(){
+	echo "<br>Title: ".$this->getTitle() ;
+}
 
 /*
 //function to display the DATA about the meeting
