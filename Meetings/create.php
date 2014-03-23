@@ -24,13 +24,13 @@
  
 
 <div>
-Event Color: <input type="radio" value="none">
-             <input type="radio" value="00FF00">
-             <input type="radio" value="0000FF">
-             <input type="radio" value="FFFF00">
-             <input type="radio" value="00FFFF">
-             <input type="radio" value="FF00FF">
-             <input type="radio" value="C0C0C0">
+Event Color: <input type="radio" name="color" value="none">
+             <input type="radio" name="color" value="00FF00">
+             <input type="radio" name="color" value="0000FF">
+             <input type="radio" name="color" value="FFFF00">
+             <input type="radio" name="color" value="00FFFF">
+             <input type="radio" name="color" value="FF00FF">
+             <input type="radio" name="color" value="C0C0C0">
 </div>
 
 

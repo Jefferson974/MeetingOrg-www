@@ -2,7 +2,7 @@
 
 //function loadClass($classe){ require '../Model/'.$classe . '.class.php'; }
 
-require_once('./Model/Meeting.class.php');
+require_once('../Model/Meeting.class.php');
 //
 class MeetingManager{
 
