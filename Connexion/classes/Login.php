@@ -63,10 +63,7 @@ class Login
         // create/read session
         session_start();
 
-        // TODO: organize this stuff better and make the constructor very small
-        // TODO: unite Login and Registration classes ?
-
-        // check the possible login actions:
+              // check the possible login actions:
         // 1. logout (happen when user clicks logout button)
         // 2. login via session data (happens each time user opens a page on your php project AFTER he has successfully logged in via the login form)
         // 3. login via cookie

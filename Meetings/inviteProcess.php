@@ -16,7 +16,7 @@ if ($nb_errors == 0 && $_SESSION['user_credential']==1) {
 	$meetingId = (int) $_SESSION['lastInsertM'];
 	$attMeetManager->add($meetingId, $arrayEmails);	
 }
-$newURL="calendar.php";
+$newURL="calendar.php"; 
 header('Location: '.$newURL);
 
 

@@ -1,3 +1,9 @@
+<?php
+
+echo $_SESSION['user_email'];
+
+
+?>
 <!DOCTYPE html>
 <form action="invit.php" method="POST" name="MeetingCreation">
 
