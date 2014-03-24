@@ -9,6 +9,7 @@ class AttendeesMeetingManager{
 
 	public function __construct($db){
 		$this->_db=$db;
+		echo "Class instnaciated !";
 	}
 
 	public function add($meetingId, $attendees){
@@ -39,10 +40,12 @@ echo "dadadad";
 
 
 	public function getMeetingsIdByEmailA($emailAttendee){
+		echo "inside the getMeetingIdbyEmail step 1";
 		$meetingsId = array();
 		$q = $this->_db->prepare('SELECT meeting_id FROM jnct_users_meetings WHERE user_email ='.$emailAttendee);
 		$q->execute();
-		$result = $q->fetchAll();
+			//echo "\n inside the getMeetingIdbyEmail step 2;";
+		$result = $q->fetchAll(PDO::FETCH_COLUMN,1);
 		return $result;
 	}
 

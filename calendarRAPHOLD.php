@@ -4,29 +4,36 @@
 <!--[if IE 8]> <html class="lt-ie9" lang="en"> <![endif]-->
 <!--[if gt IE 8]><!--> <html lang="en"> <!--<![endif]-->
 <head>
+<?php require_once("Manager/MeetingManager.class.php");
+  require_once("config/config.php"); 
+   require_once("config/required.php"); 
+  require_once("Manager/AttendeesMeetingManager.class.php"); ?>
 <?php 
-echo "----------user_name :". $_SESSION['user_name']."<br/>";
-echo "----------user_email :". $_SESSION['user_email']."<br/>" ;
-echo "----------user_credential:". $_SESSION['user_credential']."<br/>" ;  
-include('config/required.php');
-include('Manager/MeetingManager.class.php');
-include('Manager/AttendeesMeetingManager.class.php');
 
+$db = new PDO('mysql:host='. DB_HOST .';dbname='. DB_NAME . ';charset=utf8', DB_USER, DB_PASS);
+
+
+
+//NEED TO IMPORT THE SESSION HERE<=== PROBLEM
+// SO I CREATE ARTIFICIALLY THE SESSION FROM HERE
+$_SESSION['user_mail'] = "j-f.luciano@hotmail.com";
 $managerObject = new MeetingManager($db);
 if(isset($_SESSION['user_mail'])) {
 $userMail = $_SESSION['user_mail'];
 echo "Calendar display of user name==>".$userMail."<==|";
 $attendeeList = new AttendeesMeetingManager($db);
 $listMeetingsId= $attendeeList->getMeetingsIdByEmailA($userMail);
-echo "\n <br>List meeting item :".$listMeetingsId[0]." ";
-/* $listMeetings = $managerObject->getListByAttendees($listMeetingsId);
+ $listMeetings = $managerObject->getListByAttendees($listMeetingsId);
  $mm = $listMeetings;
- echo $mm[0];*/
+ echo $mm[0];
     }  
+    $db = new PDO('mysql:host=localhost;dbname=test', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+    $q = $db->prepare('SELECT meeting_id FROM jnct_users_meetings WHERE user_email ="j-f.luciano@hotmail.com"');
+    $q->execute();
+    $result = $q->fetchAll(PDO::FETCH_COLUMN, 0);
+    echo " result ->" . $result[2]." <-fin de result .";
      
 ?>
-
-
 <!-- This script loads the calendar -->
 
 
@@ -37,10 +44,10 @@ echo "\n <br>List meeting item :".$listMeetingsId[0]." ";
   
 
   <!--CALENDAR HEAD TAG ELEMENTS -->
- <link rel='stylesheet' href='Calendar/fullcalendar.css' />
+ <link rel='stylesheet' href='fullcalendar/fullcalendar.css' />
 <script src='lib/jquery.min.js'></script>
 <script src='lib/moment.min.js'></script>
-<script src='Calendar/fullcalendar.js'></script>
+<script src='fullcalendar/fullcalendar.js'></script>
 <script>
 $(document).ready(function() {
 
@@ -72,9 +79,26 @@ $(document).ready(function() {
         {
             title  : 'event1',
             start  : '2010-01-01'
-        },
-       
-        {
+        }
+         <?php 
+if(isset($listMeetings)) {
+foreach($listMeetings as $throughMeetings) {
+echo ",{
+  title:". $throughMeetings->getTitle()."
+  start :". $throughMeetings->getStartDate().",
+  end:". $throughMeetings->getFinishDate().",
+  color:". $throughMeetings->getColorM()."}";
+}
+} else {
+  echo "{
+  title : 'BUG THE VAR DOES NOT COME HRE',
+  start : '2014-03-22',
+  end : '2014-03-22' 
+  } ";
+   }
+   
+  ?>
+       , {
             title  : 'event2',
             start  : '2014-03-20',
             end    : '2014-03-22'
@@ -86,6 +110,7 @@ $(document).ready(function() {
         }
     ],   color: 'black',     // an option!
             textColor: 'yellow'
+
 }]
 
 
@@ -102,17 +127,17 @@ $(document).ready(function() {
 <body>
 	<section class="top">
 		<div id="logo">		
-			<img class ="logoLogin" src="images/logoTransparent.png" height="120px">
+			<img class ="logoLogin" src="images/logo transparent.png" height="120px">
 		</div>
 		<div id="loggedIn">
 			<img src="images/personIcon.png" height="20px;" >
-			<p><?php echo $_SESSION['user_name'];?> | <a href="index.php?logout">Logout</a> </p>
+			<p>firstName | <a href="">Logout</a> </p>
 		</div>
 		
 	</section>
 	<section class="main">
 	<div id="createMeeting">
-			<h1><a href="Meetings/create.php">Create Meeting</a> </h1>
+			<h1><a href="">Create Meeting</a> </h1>
 		</div>
 		<div id="calendar">
 			<h1><a href="">Calendar</a> </h1>
@@ -131,6 +156,19 @@ $(document).ready(function() {
 
  <div id="calendarFields">
 
+<?php 
+if (isset($listMeetings)) 
+{
+echo "First meeting==> ".$listMeetings[0];
+}
+else {
+  echo "fuck";
+}
+
+
+ ?>
+
+
   </div>
   <div style="text-align:center;">
   <p>
@@ -142,5 +180,3 @@ $(document).ready(function() {
 <div id='calendar'></div>
 </body>
 </html>
-
-
