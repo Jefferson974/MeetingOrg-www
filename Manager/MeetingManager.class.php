@@ -98,7 +98,7 @@ class MeetingManager{
 	public function getListByAttendees($arrayIdMeetings){
 		$meetings = array();
 		foreach ($arrayIdMeetings as $value) {
-			$meetings[] = get($value); 
+			$meetings[] = $this->get($value); 
 		}
 		return $meetings;
 	}

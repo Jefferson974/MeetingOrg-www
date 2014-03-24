@@ -24,19 +24,7 @@ $listMeetingsId= $attendeeList->getMeetingsIdByEmailA($userMail);
  $mm = $listMeetings;
  echo $mm[0]->INFO();
     }  
-/*     
-$db = new PDO('mysql:host='. DB_HOST .';dbname='. DB_NAME . ';charset=utf8', DB_USER, DB_PASS);
-$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-     echo "<br> <br> TESTING PURPOSES";
-     echo "\n";
-     $q = $db->prepare('SELECT meeting_id FROM jnct_users_meetings WHERE user_email ="test@test.com"');
-     $q->execute();
-     $result = $q->fetchAll(PDO::FETCH_COLUMN, 0);
-    foreach($result as $table) 
-    {
-      echo $table." ";
-    }
-   */
+
 
 ?>
 
@@ -83,22 +71,25 @@ $(document).ready(function() {
  eventSources: [{
 
     events: [ 
-        {
-            title  : 'event1',
-            start  : '2010-01-01'
-        },
-       
-        {
-            title  : 'event2',
-            start  : '2014-03-20',
-            end    : '2014-03-22'
-        },
-        {
-            title  : 'event3',
-            start  : '2014-03-01 12:30:00',
-            allDay : false // will make the time show
-        }
-    ],   color: 'black',     // an option!
+   <?php  
+foreach($listMeetings as $throughMeetings) 
+{
+  echo 
+  "
+{
+     title : '".$throughMeetings->getTitle()."',
+     start : '".$throughMeetings->getStartDate()."',
+     end   : '".$throughMeetings->getFinishDate()."' 
+},
+  ";
+}
+
+
+
+
+?>
+     
+    ],   color: 'white',     // an option!
             textColor: 'yellow'
 }]
 
