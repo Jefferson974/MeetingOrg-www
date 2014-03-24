@@ -9,7 +9,7 @@ class AttendeesMeetingManager{
 
 	public function __construct($db){
 		$this->_db=$db;
-		echo "Class instnaciated !";
+		echo "Class instanciated !";
 	}
 
 	public function add($meetingId, $attendees){
@@ -38,23 +38,38 @@ echo "dadadad";
 		$this->_db->exec('DELETE FROM jnct_users_meetings WHERE id = '.$meetingId);
 	}
 
-
+/*    *VERSION JF ROCOCO*
 	public function getMeetingsIdByEmailA($emailAttendee){
-		echo "inside the getMeetingIdbyEmail step 1";
 		$meetingsId = array();
 		$q = $this->_db->prepare('SELECT meeting_id FROM jnct_users_meetings WHERE user_email ='.$emailAttendee);
 		$q->execute();
-			//echo "\n inside the getMeetingIdbyEmail step 2;";
-		$result = $q->fetchAll(PDO::FETCH_COLUMN,1);
+		$result = $q->fetchAll();
 		return $result;
+	}*/
+
+//**VERSIONRAPHAEL**
+	public function getMeetingsIdByEmailA($emailAttendee){
+		$meetingsId = array();
+		$q = $this->_db->prepare('SELECT meeting_id FROM jnct_users_meetings WHERE user_email ='.$emailAttendee);
+		$q->execute();
+		$result = $q->fetchAll();
+
+		if(count($result)!=0){
+		return $result[0][0];
 	}
+	else {
+		return "You have no meeting scheduled!";
+	}
+	}
+		
 
 	public function getEmailsByMeetingId($meetingId){
 		$q = $this->_db->prepare('SELECT user_email FROM jnct_users_meetings WHERE meeting_id ='.$meetingId);
 		$q->execute();
-		 echo $q->errorInfo()[2];
+		 echo $q->errorInfo();
 		$result = $q->fetchAll();
 		return $result;
 	}
 }
+
 ?>
