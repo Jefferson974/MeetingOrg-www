@@ -16,17 +16,17 @@ require_once(__DIR__.'/../config/required.php');
 
 
 
-<label for="title">Title:</label> <input type="text" id=title name="title" required> 
+<label for="title">Title:</label> <input type="text" id="title" name="title" required> 
 <div>
 <label for="startDate">Start of meeting :</label><input type="date" id="startDate" name="startDate" required>  <input type="time" name="startTime" id="startTime" required>
 <label for="finishDate">End of meeting :</label><input type="date" id="finishDate" name="finishDate" required>  <input type="time" name="finishTime" id="finishTime" required>
-<label for="allDay">All day:</label> <input type="checkbox" name="allDay" id="allDay">
+<label for="allDay">All day:</label> <input type="checkbox" name="allDay" id="allDay" value="TRUE">
 </div>
   
 
 <div>
 <label for="repeatM" >Repeat :</label> <select id="repeatM" name="repeatM">
-          <option selected="selected" value="none"> none</option>
+          <option selected="selected" value="None"> none</option>
           <option value="daily"> daily</option>
           <option value="weekly"> weekly</option>
           <option value="monthly"> monthly</option>

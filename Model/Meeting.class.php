@@ -7,6 +7,7 @@ private $_startDate;
 private $_finishDate;
 private $_startTime;
 private $_finishTime;
+private $_allDay;
 private $_place;
 private $_organizerId;
 private $_duration;
@@ -22,6 +23,7 @@ public function getStartDate(){ return $this->_startDate ;}
 public function getFinishDate(){ return $this->_finishDate ;}
 public function getStartTime(){ return $this->_startTime ;}
 public function getFinishTime(){ return $this->_finishTime ;}
+public function getAllDay(){ return $this->_allDay ;}
 public function getPlace(){ return $this->_place ;}
 public function getOrganizerId(){ return $this->_organizerId ;}
 public function getDuration(){ return $this->_duration ;}
@@ -36,6 +38,7 @@ public function setStartDate($startDate){ if (is_string($startDate)) $this->_sta
 public function setFinishDate($finishDate){ if (is_string($finishDate)) $this->_finishDate = $finishDate; }
 public function setStartTime($startTime){ if (is_string($startTime)) $this->_startTime = $startTime; }
 public function setFinishTime($finishTime){ if (is_string($finishTime)) $this->_finishTime = $finishTime; }
+public function setAllDay($allDay){  if (is_string($allDay)) $this->_allDay = $allDay;  }
 public function setPlace($place){  if (is_string($place)) $this->_place = $place;  }
 public function setOrganizerId($organizer){  $this->_organizerId = (int) $organizer;  }
 public function setDuration($duration){   if ($duration <0){trigger_error('Duration needs to be a positive number.', E_USER_WARNING); return;} $this->_duration = (int)$duration;  }

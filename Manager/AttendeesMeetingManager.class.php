@@ -45,5 +45,13 @@ echo "dadadad";
 		$result = $q->fetchAll();
 		return $result;
 	}
+
+	public function getEmailsByMeetingId($meetingId){
+		$q = $this->_db->prepare('SELECT user_email FROM jnct_users_meetings WHERE meeting_id ='.$meetingId);
+		$q->execute();
+		 echo $q->errorInfo()[2];
+		$result = $q->fetchAll();
+		return $result;
+	}
 }
 ?>
