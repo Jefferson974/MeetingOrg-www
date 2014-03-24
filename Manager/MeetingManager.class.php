@@ -16,7 +16,7 @@ class MeetingManager{
 		try {
 	    $q = $this->_db->prepare('INSERT INTO meetings SET title = :title, startDate = :startDate, finishDate = :finishDate, -startTime = :startTime, finishTime = :finishTime, place = :place, organizer_id= :organizerId, duration = :duration, description= :description, repeatM = :repeatM, colorM = :colorM');
 
-	    $q->bindValue(':title', $rdv->title(), PDO::PARAM_STR);
+	    $q->bindValue(':title', $rdv->getTitle(), PDO::PARAM_STR);
 	    $q->bindValue(':startDate', $rdv->getStartDate(), PDO::PARAM_STR);
 	    $q->bindValue(':finishDate', $rdv->getFinishDate(), PDO::PARAM_STR);
 	    $q->bindValue(':startTime', $rdv->getStartTime(), PDO::PARAM_STR);
@@ -42,7 +42,7 @@ class MeetingManager{
 
 	public function edit(Meeting $m){
 		$q = $this->_db->prepare('UPDATE meetings SET title = :title, startDate = :startDate, finishDate = :finishDate, startTime = :startTime, finishTime = :finishTime, place = :place, organizer_id= :organizerId, duration = :duration, description= :description, repeatM = :repeatM, colorM = :colorM WHERE id = :id');
-  		$q->bindValue(':title', $rdv->title(), PDO::PARAM_STR);
+  		$q->bindValue(':title', $rdv->getTitle(), PDO::PARAM_STR);
 	    $q->bindValue(':startDate', $rdv->getStartDate(), PDO::PARAM_STR);
 	    $q->bindValue(':finishDate', $rdv->getFinishDate(), PDO::PARAM_STR);
 	    $q->bindValue(':startTime', $rdv->getStartTime(), PDO::PARAM_STR);
@@ -91,11 +91,17 @@ class MeetingManager{
 
 	// Get a list of meetings by attendees
 	public function getListByAttendees($arrayIdMeetings){
+
 		$meetings = array();
+
+if (is_array($arrayIdMeetings))
+{
 		foreach ($arrayIdMeetings as $value) {
 			$meetings[] = get($value); 
 		}
+	} else {$meetings = "Meeting is not an array.";}
 		return $meetings;
+	
 	}
 
 

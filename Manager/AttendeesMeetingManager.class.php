@@ -6,7 +6,7 @@ spl_autoload_register('loadClass');
 class AttendeesMeetingManager{
 
 	private $_db;
-
+    public function getDb() { return $this->_db; }
 	public function __construct($db){
 		$this->_db=$db;
 	}
@@ -36,12 +36,16 @@ class AttendeesMeetingManager{
 	}
 
 
+
 	public function getMeetingsIdByEmailA($emailAttendee){
-		$meetingsId = array();
-		$q = $this->_db->prepare('SELECT meeting_id FROM jnct_users_meetings WHERE user_email ='.$emailAttendee);
+		
+		//$meetingsId = array();
+		$q = $this->getDb()->prepare('SELECT meeting_id FROM jnct_users_meetings WHERE user_email ='.$emailAttendee);
 		$q->execute();
-		$result = $q->fetchAll();
+		$result = $q->fetchAll(PDO::FETCH_COLUMN, 0);
 		return $result;
 	}
 }
+
+
 ?>

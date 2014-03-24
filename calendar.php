@@ -15,18 +15,22 @@ $db = new PDO('mysql:host='. DB_HOST .';dbname='. DB_NAME . ';charset=utf8', DB_
 
 //NEED TO IMPORT THE SESSION HERE<=== PROBLEM
 // SO I CREATE ARTIFICIALLY THE SESSION FROM HERE
-  $_SESSION['user_mail'] = "13103897@brookes.ac.uk";
+$_SESSION['user_mail'] = "j-f.luciano@hotmail.com";
 $managerObject = new MeetingManager($db);
 if(isset($_SESSION['user_mail'])) {
 $userMail = $_SESSION['user_mail'];
-echo $userMail;
+echo "Calendar display of user name==>".$userMail."<==|";
 $attendeeList = new AttendeesMeetingManager($db);
 $listMeetingsId= $attendeeList->getMeetingsIdByEmailA($userMail);
-$listMeetings = $managerObject->getListByAttendees($listMeetingsId);
-
+ $listMeetings = $managerObject->getListByAttendees($listMeetingsId);
+ $mm = $listMeetings;
+ echo $mm[0];
     }  
-  
-
+    $db = new PDO('mysql:host=localhost;dbname=test', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+    $q = $db->prepare('SELECT meeting_id FROM jnct_users_meetings WHERE user_email ="j-f.luciano@hotmail.com"');
+    $q->execute();
+    $result = $q->fetchAll(PDO::FETCH_COLUMN, 0);
+    echo " result ->" . $result[2]." <-fin de result .";
      
 ?>
 <!-- This script loads the calendar -->
@@ -74,25 +78,26 @@ $(document).ready(function() {
         {
             title  : 'event1',
             start  : '2010-01-01'
-        },
+        }
          <?php 
 if(isset($listMeetings)) {
 foreach($listMeetings as $throughMeetings) {
-echo "{
+echo ",{
   title:". $throughMeetings->getTitle()."
   start :". $throughMeetings->getStartDate().",
   end:". $throughMeetings->getFinishDate().",
-  color:". $throughMeetings->getColor()
-."}";
+  color:". $throughMeetings->getColorM()."}";
 }
-}
-/*{
+} else {
+  echo "{
   title : 'BUG THE VAR DOES NOT COME HRE',
   start : '2014-03-22',
-  end : '2014-03-22'
-  },*/
-  ?>,
-        {
+  end : '2014-03-22' 
+  } ";
+   }
+   
+  ?>
+       , {
             title  : 'event2',
             start  : '2014-03-20',
             end    : '2014-03-22'
@@ -104,7 +109,7 @@ echo "{
         }
     ],   color: 'black',     // an option!
             textColor: 'yellow'
-}
+
 }]
 
 
@@ -149,15 +154,18 @@ echo "{
   <section class="container">
 
  <div id="calendarFields">
-<?php echo "salut"; 
 
-if(isset($_SESSION['user_mail'])) {
-  echo "fuck it bitch!!";
+<?php 
+if (isset($listMeetings)) 
+{
+echo "First meeting==> ".$listMeetings[0];
+}
+else {
+  echo "fuck";
 }
 
-?>   
-  
 
+ ?>
 
 
   </div>
