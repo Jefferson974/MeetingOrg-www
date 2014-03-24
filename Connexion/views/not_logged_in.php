@@ -10,12 +10,12 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>Login Form</title>
-  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 	<section class="top">
 		<div id="logo">
-			<img class ="logoLogin" src="..\images\logo transparent.png" height="120px">
+			<img class ="logoLogin" src="images/logoTransparent.png" height="120px">
 		</div>
 	</section>
   <section class="container">
@@ -38,8 +38,8 @@
     <input type="submit" name="login" value="<?php echo WORDING_LOGIN; ?>" />
 </form>
 
-<a style="color:black" href="register.php"><?php echo WORDING_REGISTER_NEW_ACCOUNT; ?></a>
-<a style="color:black" href="password_reset.php"><?php echo WORDING_FORGOT_MY_PASSWORD; ?></a>
+<a style="color:black" href="Connexion/register.php"><?php echo WORDING_REGISTER_NEW_ACCOUNT; ?></a>
+<a style="color:black" href="Connexion/password_reset.php"><?php echo WORDING_FORGOT_MY_PASSWORD; ?></a>
 
 <?php include('_footer.php'); ?>
 

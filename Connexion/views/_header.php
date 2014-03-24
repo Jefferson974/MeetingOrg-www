@@ -2,9 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>php-login-advanced</title>
     <style type="text/css">
-        /* just for the demo */
         body {
             font-family: Arial, sans-serif;
             font-size: 12px;

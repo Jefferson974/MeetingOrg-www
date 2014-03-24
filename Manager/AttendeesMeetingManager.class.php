@@ -13,13 +13,15 @@ class AttendeesMeetingManager{
 
 	public function add($meetingId, $attendees){
 			try {
-			    foreach ($attendees as $key => $value) {
+			    foreach ($attendees as $value) {
 			    	$q = $this->_db->prepare('INSERT INTO jnct_users_meetings SET meeting_id = :meetingId, user_email = :userEmail');
 
 				    $q->bindValue(':meetingId', $meetingId, PDO::PARAM_INT);
 				    $q->bindValue(':userEmail', $value, PDO::PARAM_STR);
 
 				    $q->execute();
+echo "dadadad";
+	   				echo $q->errorInfo()[2];
 			    }	    
 			}catch (Exception $e){
 			        echo 'Erreur : ',  $e->getMessage();

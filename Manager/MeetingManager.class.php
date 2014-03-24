@@ -14,21 +14,22 @@ class MeetingManager{
 
 	public function add(Meeting $m){
 		try {
-	    $q = $this->_db->prepare('INSERT INTO meetings SET title = :title, startDate = :startDate, finishDate = :finishDate, -startTime = :startTime, finishTime = :finishTime, place = :place, organizer_id= :organizerId, duration = :duration, description= :description, repeatM = :repeatM, colorM = :colorM');
-
-	    $q->bindValue(':title', $rdv->title(), PDO::PARAM_STR);
-	    $q->bindValue(':startDate', $rdv->getStartDate(), PDO::PARAM_STR);
-	    $q->bindValue(':finishDate', $rdv->getFinishDate(), PDO::PARAM_STR);
-	    $q->bindValue(':startTime', $rdv->getStartTime(), PDO::PARAM_STR);
-	    $q->bindValue(':finishTime', $rdv->getFinishTime(), PDO::PARAM_STR);
-	    $q->bindValue(':place', $rdv->getPlace(), PDO::PARAM_STR);
-	    $q->bindValue(':organizerId', $rdv->getOrganizerId(), PDO::PARAM_INT);
-	    $q->bindValue(':duration', $rdv->getDuration(), PDO::PARAM_STR);
-	    $q->bindValue(':description', $rdv->getDescription(), PDO::PARAM_STR);
-	    $q->bindValue(':repeatM', $rdv->getRepeatM(), PDO::PARAM_STR);
-	    $q->bindValue(':colorM', $rdv->getColorM(), PDO::PARAM_STR);
+	    $q = $this->_db->prepare('INSERT INTO meetings SET title = :title, startDate = :startDate, finishDate = :finishDate, startTime = :startTime, finishTime = :finishTime, place = :place, organizer_id= :organizerId, duration = :duration, description= :description, repeatM = :repeatM, colorM = :colorM');
+	   
+	    $q->bindValue(':title', $m->getTitle(), PDO::PARAM_STR);
+	    $q->bindValue(':startDate', $m->getStartDate(), PDO::PARAM_STR);
+	    $q->bindValue(':finishDate', $m->getFinishDate(), PDO::PARAM_STR);
+	    $q->bindValue(':startTime', $m->getStartTime(), PDO::PARAM_STR);
+	    $q->bindValue(':finishTime', $m->getFinishTime(), PDO::PARAM_STR);
+	    $q->bindValue(':place', $m->getPlace(), PDO::PARAM_STR);
+	    $q->bindValue(':organizerId', $m->getOrganizerId(), PDO::PARAM_INT);
+	    $q->bindValue(':duration', $m->getDuration(), PDO::PARAM_STR);
+	    $q->bindValue(':description', $m->getDescription(), PDO::PARAM_STR);
+	    $q->bindValue(':repeatM', $m->getRepeatM(), PDO::PARAM_STR);
+	    $q->bindValue(':colorM', $m->getColorM(), PDO::PARAM_STR);
 	    
 	    $q->execute();
+	    echo $q->errorInfo()[2];
 		}catch (PDOException $e){
 		echo 'Erreur : ',  $e->getMessage();
 		}
@@ -42,18 +43,18 @@ class MeetingManager{
 
 	public function edit(Meeting $m){
 		$q = $this->_db->prepare('UPDATE meetings SET title = :title, startDate = :startDate, finishDate = :finishDate, startTime = :startTime, finishTime = :finishTime, place = :place, organizer_id= :organizerId, duration = :duration, description= :description, repeatM = :repeatM, colorM = :colorM WHERE id = :id');
-  		$q->bindValue(':title', $rdv->title(), PDO::PARAM_STR);
-	    $q->bindValue(':startDate', $rdv->getStartDate(), PDO::PARAM_STR);
-	    $q->bindValue(':finishDate', $rdv->getFinishDate(), PDO::PARAM_STR);
-	    $q->bindValue(':startTime', $rdv->getStartTime(), PDO::PARAM_STR);
-	    $q->bindValue(':finishTime', $rdv->getFinishTime(), PDO::PARAM_STR);
-	    $q->bindValue(':place', $rdv->getPlace(), PDO::PARAM_STR);
-	    $q->bindValue(':organizerId', $rdv->getOrganizerId(), PDO::PARAM_INT);
-	    $q->bindValue(':duration', $rdv->getDuration(), PDO::PARAM_STR);
-	    $q->bindValue(':description', $rdv->getDescription(), PDO::PARAM_STR);
-	    $q->bindValue(':repeat', $rdv->getRepeat(), PDO::PARAM_STR);
-	    $q->bindValue(':colorM', $rdv->getColorM(), PDO::PARAM_STR);
-    	$q->bindValue(':id', $rdv->getId(), PDO::PARAM_INT);
+  		$q->bindValue(':title', $m->title(), PDO::PARAM_STR);
+	    $q->bindValue(':startDate', $m->getStartDate(), PDO::PARAM_STR);
+	    $q->bindValue(':finishDate', $m->getFinishDate(), PDO::PARAM_STR);
+	    $q->bindValue(':startTime', $m->getStartTime(), PDO::PARAM_STR);
+	    $q->bindValue(':finishTime', $m->getFinishTime(), PDO::PARAM_STR);
+	    $q->bindValue(':place', $m->getPlace(), PDO::PARAM_STR);
+	    $q->bindValue(':organizerId', $m->getOrganizerId(), PDO::PARAM_INT);
+	    $q->bindValue(':duration', $m->getDuration(), PDO::PARAM_STR);
+	    $q->bindValue(':description', $m->getDescription(), PDO::PARAM_STR);
+	    $q->bindValue(':repeat', $m->getRepeat(), PDO::PARAM_STR);
+	    $q->bindValue(':colorM', $m->getColorM(), PDO::PARAM_STR);
+    	$q->bindValue(':id', $m->getId(), PDO::PARAM_INT);
     	$q->execute();
 	}
 
