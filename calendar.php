@@ -7,7 +7,7 @@
 <style>
     .black_overlay{
         display: none;
-        position: absolute;
+        position: fixed;
         top: 0%;
         left: 0%;
         width: 100%;
@@ -20,13 +20,13 @@
     }
     .white_content {
         display: none;
-        position: absolute;
+        position: fixed;
         top: 25%;
         left: 25%;
         width: 50%;
         height: 50%;
         padding: 16px;
-        border: 16px solid orange;
+        border: 16px solid #0CA3D2;
         background-color: white;
         z-index:1002;
         overflow: auto;
@@ -47,8 +47,7 @@ if(isset($_SESSION['user_mail'])) {
 $userMail = $_SESSION['user_mail'];
 $attendeeList = new AttendeesMeetingManager($db);
 $listMeetingsId= $attendeeList->getMeetingsIdByEmailA($userMail);
-
- $listMeetings = $managerObject->getListByAttendees($listMeetingsId);
+$listMeetings = $managerObject->getListByAttendees($listMeetingsId);
     }  
 ?>
 
@@ -70,7 +69,8 @@ $listMeetingsId= $attendeeList->getMeetingsIdByEmailA($userMail);
 <script>
 
 
-$(document).ready(function() {
+
+$( window ).load(function() {
 
 
 
@@ -113,7 +113,7 @@ foreach($listMeetings as $throughMeetings)
      organizerId: '" .$throughMeetings->getOrganizerId() ."',
      duration :   '" .$throughMeetings->getDuration()       ."',
      repeated :   '" .$throughMeetings->getRepeatM()     ."',
-     color    :   '" .$throughMeetings->getAllDay()      ."'
+     color    :   '" .$throughMeetings->getColorM()      ."'
 
 },
   ";
@@ -129,8 +129,32 @@ foreach($listMeetings as $throughMeetings)
 
 //Management of the click events.
  eventClick: function(calEvent, jsEvent, view) {
-        alert('Event: ' + calEvent.title);
-        var contentInnerHtml ="";
+
+document.getElementById('light').style.display='block';
+document.getElementById('fade').style.display='block';
+var inText= "";
+ inText += "<div>ID of the event : "+calEvent.id+"</div>";
+ inText += "<div>Name of the event : "+calEvent.title+"</div>";
+ inText += "<div>Day of the event : "+calEvent.start+"</div>";
+ inText += "<div>Day when event ends : "+calEvent.end+"</div>";
+ inText += "<div>All day : "+calEvent.allDay+"</div>";
+ inText += "<div>Description : "+calEvent.description+"</div>";
+ inText += "<div>Place : "+calEvent.place+"</div>";
+ inText += "<div>Organizer ID : "+calEvent.organizerId+"</div>";
+ inText += "<div>Duration : "+calEvent.duration+"</div>";
+ inText += "<div>Repeated : "+calEvent.getRepeatM+"</div>";
+
+document.getElementById('light').innerHTML=inText;
+
+
+  document.getElementById('light').onclick = function() {
+  document.getElementById('light').style.display='none';
+  document.getElementById('fade').style.display='none';
+}
+ document.getElementById('fade').onclick = function() {
+  document.getElementById('light').style.display='none';
+  document.getElementById('fade').style.display='none';
+}
 
         // change the border color just for fun
         $(this).css('border-color', 'red');
@@ -207,7 +231,15 @@ foreach($listMeetings as $throughMeetings)
   </section>
 <div id='calendar'></div>
 
+<script>
 
+function close(){
+document.getElementById('fade').onmouse
+document.getElementById('light').style.display='block';
+document.getElementById('fade').style.display='block';
+}
+
+</script>
 
 </body>
 </html>
