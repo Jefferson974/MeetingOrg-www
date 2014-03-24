@@ -157,7 +157,7 @@ document.getElementById('light').innerHTML=inText;
 }
 
         // change the border color just for fun
-        $(this).css('border-color', 'red');
+        $(this).css('border-color', '#B1A0BA');
         
     }
 
