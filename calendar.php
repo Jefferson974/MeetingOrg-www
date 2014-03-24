@@ -4,10 +4,39 @@
 <!--[if IE 8]> <html class="lt-ie9" lang="en"> <![endif]-->
 <!--[if gt IE 8]><!--> <html lang="en"> <!--<![endif]-->
 <head>
+<style>
+    .black_overlay{
+        display: none;
+        position: absolute;
+        top: 0%;
+        left: 0%;
+        width: 100%;
+        height: 100%;
+        background-color: black;
+        z-index:1001;
+        -moz-opacity: 0.8;
+        opacity:.80;
+        filter: alpha(opacity=80);
+    }
+    .white_content {
+        display: none;
+        position: absolute;
+        top: 25%;
+        left: 25%;
+        width: 50%;
+        height: 50%;
+        padding: 16px;
+        border: 16px solid orange;
+        background-color: white;
+        z-index:1002;
+        overflow: auto;
+    }
+
+</style>
 <?php 
-echo "----------user_name :". $_SESSION['user_name']."<br/>";
+/*echo "----------user_name :". $_SESSION['user_name']."<br/>";
 echo "----------user_email :". $_SESSION['user_email']."<br/>" ;
-echo "----------user_credential:". $_SESSION['user_credential']."<br/>" ;  
+echo "----------user_credential:". $_SESSION['user_credential']."<br/>" ;  */
 include('config/required.php');
 include('Manager/MeetingManager.class.php');
 include('Manager/AttendeesMeetingManager.class.php');
@@ -16,16 +45,11 @@ $managerObject = new MeetingManager($db);
 $_SESSION['user_mail'] = "test@test.com";
 if(isset($_SESSION['user_mail'])) {
 $userMail = $_SESSION['user_mail'];
-echo "Calendar display of user name==>".$userMail."<==|";
 $attendeeList = new AttendeesMeetingManager($db);
 $listMeetingsId= $attendeeList->getMeetingsIdByEmailA($userMail);
 
  $listMeetings = $managerObject->getListByAttendees($listMeetingsId);
- $mm = $listMeetings;
- echo $mm[0]->INFO();
     }  
-
-
 ?>
 
 
@@ -44,6 +68,8 @@ $listMeetingsId= $attendeeList->getMeetingsIdByEmailA($userMail);
 <script src='lib/moment.min.js'></script>
 <script src='Calendar/fullcalendar.js'></script>
 <script>
+
+
 $(document).ready(function() {
 
 
@@ -77,21 +103,40 @@ foreach($listMeetings as $throughMeetings)
   echo 
   "
 {
-     title : '".$throughMeetings->getTitle()."',
-     start : '".$throughMeetings->getStartDate()."',
-     end   : '".$throughMeetings->getFinishDate()."' 
+     id :         '" .$throughMeetings->getId()          ."',
+     title :      '" .$throughMeetings->getTitle()       ."',
+     start :      '" .$throughMeetings->getStartDate()   ." ".$throughMeetings->getStartTime() ."',
+     end   :      '" .$throughMeetings->getFinishDate()  ." ".$throughMeetings->getFinishTime()."',
+     allDay :     '" .$throughMeetings->getAllDay()      ."',
+     description :'" .$throughMeetings->getDescription() ."',
+     place :      '" .$throughMeetings->getPlace()       ."',
+     organizerId: '" .$throughMeetings->getOrganizerId() ."',
+     duration :   '" .$throughMeetings->getDuration()       ."',
+     repeated :   '" .$throughMeetings->getRepeatM()     ."',
+     color    :   '" .$throughMeetings->getAllDay()      ."'
+
 },
   ";
+
 }
-
-
 
 
 ?>
      
-    ],   color: 'white',     // an option!
+    ],   color: 'black',     // an option!
             textColor: 'yellow'
-}]
+}],
+
+//Management of the click events.
+ eventClick: function(calEvent, jsEvent, view) {
+        alert('Event: ' + calEvent.title);
+        var contentInnerHtml ="";
+
+        // change the border color just for fun
+        $(this).css('border-color', 'red');
+        
+    }
+
 
 
     //end  of Calendar initializer
@@ -117,6 +162,7 @@ foreach($listMeetings as $throughMeetings)
 	</section>
 	<section class="main">
 	<div id="createMeeting">
+
 			<h1><a href="Meetings/create.php">Create Meeting</a> </h1>
 		</div>
 		<div id="calendar">
@@ -136,6 +182,21 @@ foreach($listMeetings as $throughMeetings)
 
  <div id="calendarFields">
 
+
+
+
+
+
+//Attempt to put a layer on each click with this:
+
+    <p>This is the main content. To display a lightbox click <a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='block';document.getElementById('fade').style.display='block'">here</a></p>
+    <div id="light" class="white_content">This is the lightbox content. <a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'">Close</a></div>
+    <div id="fade" class="black_overlay"></div>
+
+
+
+
+
   </div>
   <div style="text-align:center;">
   <p>
@@ -145,6 +206,9 @@ foreach($listMeetings as $throughMeetings)
 
   </section>
 <div id='calendar'></div>
+
+
+
 </body>
 </html>
 

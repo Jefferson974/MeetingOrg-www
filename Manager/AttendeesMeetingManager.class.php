@@ -10,7 +10,7 @@ class AttendeesMeetingManager{
 	public function __construct($db){
 		$this->_db= new PDO('mysql:host=localhost;dbname=test', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
          
-		echo "Class instanciated !";
+	
 	}
 
 	public function add($meetingId, $attendees){
@@ -22,7 +22,7 @@ class AttendeesMeetingManager{
 				    $q->bindValue(':userEmail', $value, PDO::PARAM_STR);
 
 				    $q->execute();
-echo "dadadad";
+
 	   				echo $q->errorInfo()[2];
 			    }	    
 			}catch (Exception $e){
@@ -56,8 +56,7 @@ echo "dadadad";
 	
 		$q->execute();
 		$result = $q->fetchAll(PDO::FETCH_COLUMN, 0);
-echo "variable determine";
-echo "=======>COMPTEUR :".count($result);
+
 		if(count($result)!=0){
 		return $result ;
 	}
