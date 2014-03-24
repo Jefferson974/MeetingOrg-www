@@ -42,9 +42,9 @@ include('Manager/MeetingManager.class.php');
 include('Manager/AttendeesMeetingManager.class.php');
 
 $managerObject = new MeetingManager($db);
-$_SESSION['user_mail'] = "test@test.com";
-if(isset($_SESSION['user_mail'])) {
-$userMail = $_SESSION['user_mail'];
+
+if(isset($_SESSION['user_email'])) {
+$userMail = $_SESSION['user_email'];
 $attendeeList = new AttendeesMeetingManager($db);
 $listMeetingsId= $attendeeList->getMeetingsIdByEmailA($userMail);
 $listMeetings = $managerObject->getListByAttendees($listMeetingsId);
@@ -111,7 +111,7 @@ foreach($listMeetings as $throughMeetings)
      description :'" .$throughMeetings->getDescription() ."',
      place :      '" .$throughMeetings->getPlace()       ."',
      organizerId: '" .$throughMeetings->getOrganizerId() ."',
-     duration :   '" .$throughMeetings->getDuration()       ."',
+     duration :   '" .$throughMeetings->getDuration()    ."',
      repeated :   '" .$throughMeetings->getRepeatM()     ."',
      color    :   '" .$throughMeetings->getColorM()      ."'
 
@@ -124,7 +124,7 @@ foreach($listMeetings as $throughMeetings)
 ?>
      
     ],   color: 'black',     // an option!
-            textColor: 'yellow'
+     textColor: 'yellow'
 }],
 
 //Management of the click events.
