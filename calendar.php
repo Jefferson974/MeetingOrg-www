@@ -13,26 +13,31 @@ include('Manager/MeetingManager.class.php');
 include('Manager/AttendeesMeetingManager.class.php');
 
 $managerObject = new MeetingManager($db);
-$_SESSION['user_mail'] = 'test@test.com';
+$_SESSION['user_mail'] = "test@test.com";
 if(isset($_SESSION['user_mail'])) {
 $userMail = $_SESSION['user_mail'];
 echo "Calendar display of user name==>".$userMail."<==|";
 $attendeeList = new AttendeesMeetingManager($db);
 $listMeetingsId= $attendeeList->getMeetingsIdByEmailA($userMail);
-echo "\n <br>List meeting item :".$listMeetingsId." ";
-/* $listMeetings = $managerObject->getListByAttendees($listMeetingsId);
+
+ $listMeetings = $managerObject->getListByAttendees($listMeetingsId);
  $mm = $listMeetings;
- echo $mm[0];*/
+ echo $mm[0]->INFO();
     }  
-     
+/*     
 $db = new PDO('mysql:host='. DB_HOST .';dbname='. DB_NAME . ';charset=utf8', DB_USER, DB_PASS);
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
      echo "<br> <br> TESTING PURPOSES";
      echo "\n";
      $q = $db->prepare('SELECT meeting_id FROM jnct_users_meetings WHERE user_email ="test@test.com"');
      $q->execute();
-     $result = $q->fetchAll();
-     echo $result[0][0];
+     $result = $q->fetchAll(PDO::FETCH_COLUMN, 0);
+    foreach($result as $table) 
+    {
+      echo $table." ";
+    }
+   */
+
 ?>
 
 

@@ -6,9 +6,10 @@ spl_autoload_register('loadClass');
 class AttendeesMeetingManager{
 
 	private $_db;
-
+    public function getDb() {return $this->_db;}
 	public function __construct($db){
-		$this->_db=$db;
+		$this->_db= new PDO('mysql:host=localhost;dbname=test', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+         
 		echo "Class instanciated !";
 	}
 
@@ -49,13 +50,16 @@ echo "dadadad";
 
 //**VERSIONRAPHAEL**
 	public function getMeetingsIdByEmailA($emailAttendee){
+		
 		$meetingsId = array();
-		$q = $this->_db->prepare('SELECT meeting_id FROM jnct_users_meetings WHERE user_email ='.$emailAttendee);
+		$q = $this->getDb()->prepare('SELECT meeting_id FROM jnct_users_meetings WHERE user_email ="test@test.com"');
+	
 		$q->execute();
-		$result = $q->fetchAll();
-
+		$result = $q->fetchAll(PDO::FETCH_COLUMN, 0);
+echo "variable determine";
+echo "=======>COMPTEUR :".count($result);
 		if(count($result)!=0){
-		return $result[0][0];
+		return $result ;
 	}
 	else {
 		return "You have no meeting scheduled!";
@@ -67,7 +71,7 @@ echo "dadadad";
 		$q = $this->_db->prepare('SELECT user_email FROM jnct_users_meetings WHERE meeting_id ='.$meetingId);
 		$q->execute();
 		 echo $q->errorInfo();
-		$result = $q->fetchAll();
+		$result = $q->fetchAll(PDO::FETCH_COLUMN, 0);
 		return $result;
 	}
 }
