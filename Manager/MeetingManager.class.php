@@ -96,12 +96,17 @@ class MeetingManager{
 
 	// Get a list of meetings by attendees
 	public function getListByAttendees($arrayIdMeetings){
+		if($arrayIdMeetings!= "") {
 		$meetings = array();
+		
 		foreach ($arrayIdMeetings as $value) {
 			$meetings[] = $this->get($value); 
+			
 		}
 		return $meetings;
 	}
+	else { $meetings = [] ; return $meetings;}
+}
 
 
 

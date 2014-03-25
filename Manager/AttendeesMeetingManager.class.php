@@ -50,9 +50,9 @@ class AttendeesMeetingManager{
 
 //**VERSIONRAPHAEL**
 	public function getMeetingsIdByEmailA($emailAttendee){
-		
-		$meetingsId = array();
-		$q = $this->getDb()->prepare('SELECT meeting_id FROM jnct_users_meetings WHERE user_email ="$emailAttendee"');
+		echo $emailAttendee;
+		//$meetingsId = array();
+		$q = $this->getDb()->prepare("SELECT meeting_id FROM jnct_users_meetings WHERE user_email = '$emailAttendee' ");
 	
 		$q->execute();
 		$result = $q->fetchAll(PDO::FETCH_COLUMN, 0);
@@ -61,7 +61,9 @@ class AttendeesMeetingManager{
 		return $result ;
 	}
 	else {
-		return "You have no meeting scheduled!";
+		$result = "";
+		//return "You have no meeting scheduled!";
+		return $result;
 	}
 	}
 		
