@@ -14,20 +14,20 @@ class AttendeeManager{
 
     // Add a list of attendees to a meeting
 	public function add($meetingId, $attendees){
-			try {
-			    foreach ($attendees as $value) {
-			    	$q = $this->_db->prepare('INSERT INTO jnct_users_meetings SET meeting_id = :meetingId, user_email = :userEmail');
+		try {
+		    foreach ($attendees as $value) {
+		    	$q = $this->_db->prepare('INSERT INTO jnct_users_meetings SET meeting_id = :meetingId, user_email = :userEmail');
 
-				    $q->bindValue(':meetingId', $meetingId, PDO::PARAM_INT);
-				    $q->bindValue(':userEmail', $value, PDO::PARAM_STR);
+			    $q->bindValue(':meetingId', $meetingId, PDO::PARAM_INT);
+			    $q->bindValue(':userEmail', $value, PDO::PARAM_STR);
 
-				    $q->execute();
+			    $q->execute();
 
-	   				echo $q->errorInfo()[2];
-			    }	    
-			}catch (Exception $e){
-			        echo 'Erreur : ',  $e->getMessage();
-			}
+					echo $q->errorInfo()[2];
+		    }	    
+		}catch (Exception $e){
+		        echo 'Erreur : ',  $e->getMessage();
+		}
 	}
 
 	//Edit a list of attendees for a meeting
@@ -52,28 +52,24 @@ class AttendeeManager{
 
 //**VERSIONRAPHAEL**
 	public function getMeetingsIdByEmailA($emailAttendee){
-		echo $emailAttendee;
-		//$meetingsId = array();
 		$q = $this->getDb()->prepare("SELECT meeting_id FROM jnct_users_meetings WHERE user_email = '$emailAttendee' ");
-	
 		$q->execute();
 		$result = $q->fetchAll(PDO::FETCH_COLUMN, 0);
 
 		if(count($result)!=0){
-		return $result ;
-	}
-	else {
+		return $result;
+		}else{
 		$result = "";
 		//return "You have no meeting scheduled!";
 		return $result;
-	}
+		}
 	}
 		
 
 	public function getEmailsByMeetingId($meetingId){
 		$q = $this->_db->prepare('SELECT user_email FROM jnct_users_meetings WHERE meeting_id =$meetingId');
 		$q->execute();
-		 echo $q->errorInfo();
+		echo $q->errorInfo();
 		$result = $q->fetchAll(PDO::FETCH_COLUMN, 0);
 		return $result;
 	}

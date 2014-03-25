@@ -5,52 +5,58 @@
 <!--[if gt IE 8]><!--> <html lang="en"> <!--<![endif]-->
 <html>
 <head>
-<style>
-    .black_overlay{
-        display: none;
-        position: fixed;
-        top: 0%;
-        left: 0%;
-        width: 100%;
-        height: 100%;
-        background-color: black;
-        z-index:1001;
-        -moz-opacity: 0.8;
-        opacity:.80;
-        filter: alpha(opacity=80);
-    }
-    .white_content {
-        display: none;
-        position: fixed;
-        top: 25%;
-        left: 25%;
-        width: 50%;
-        height: 50%;
-        padding: 16px;
-        border: 16px solid #0CA3D2;
-        background-color: white;
-        z-index:1002;
-        overflow: auto;
-    }
-</style>
+  <style>
+      .black_overlay{
+          display: none;
+          position: fixed;
+          top: 0%;
+          left: 0%;
+          width: 100%;
+          height: 100%;
+          background-color: black;
+          z-index:1001;
+          -moz-opacity: 0.8;
+          opacity:.80;
+          filter: alpha(opacity=80);
+      }
+      .white_content {
+          display: none;
+          position: fixed;
+          top: 25%;
+          left: 25%;
+          width: 50%;
+          height: 50%;
+          padding: 16px;
+          border: 16px solid #0CA3D2;
+          background-color: white;
+          z-index:1002;
+          overflow: auto;
+      }
+  </style>
 
-<?php 
-/*echo "----------user_name :". $_SESSION['user_name']."<br/>";
-echo "----------user_email :". $_SESSION['user_email']."<br/>" ;
-echo "----------user_credential:". $_SESSION['user_credential']."<br/>" ;  */
-include('config/required.php');
-include('Manager/MeetingManager.class.php');
-include('Manager/AttendeeManager.class.php');
+  <?php 
+  /*echo "----------user_name :". $_SESSION['user_name']."<br/>";
+  echo "----------user_email :". $_SESSION['user_email']."<br/>" ;
+  echo "----------user_credential:". $_SESSION['user_credential']."<br/>" ;  */
+  include('config/required.php');
+  include('Manager/MeetingManager.class.php');
+  include('Manager/AttendeeManager.class.php');
 
-//
-if(isset($_SESSION['user_email'])) {
-    $userMail = $_SESSION['user_email'];
-    $meetingManager = new MeetingManager($db);
-    $attendeeManager = new AttendeeManager($db);
-    $listMeetingsId= $attendeeManager->getMeetingsIdByEmailA($userMail);
-    $listMeetings = $meetingManager->getListByAttendees($listMeetingsId);
-}  
-?>
+  //
+  if(isset($_SESSION['user_email'])) {
+      $userMail = $_SESSION['user_email'];
+      $meetingManager = new MeetingManager($db);
+      $attendeeManager = new AttendeeManager($db);
+      $listMeetingsId= $attendeeManager->getMeetingsIdByEmailA($userMail);
+      $listMeetings = $meetingManager->getListByAttendee($listMeetingsId);
+
+      if ($_SESSION['user_credential']) {
+        $userId = $_SESSION['user_id'];
+        $listMeetingsByOrg = $meetingManager->getListByOrg($userId);
+        $listMeetings = array_merge((array)$listMeetings, (array)$listMeetingsByOrg);
+      }
+  }  
+  ?>
 
 
 <!-- This script loads the calendar -->
@@ -63,113 +69,89 @@ if(isset($_SESSION['user_email'])) {
   
 
   <!--CALENDAR HEAD TAG ELEMENTS -->
- <link rel='stylesheet' href='Calendar/fullcalendar.css' />
-<script src='lib/jquery.min.js'></script>
-<script src='lib/moment.min.js'></script>
-<script src='Calendar/fullcalendar.js'></script>
-<script>
-
-
-
-$( window ).load(function() {
-
-
-
-    // page is now ready, initialize the calendar...
+  <link rel='stylesheet' href='Calendar/fullcalendar.css' />
+  <script src='lib/jquery.min.js'></script>
+  <script src='lib/moment.min.js'></script>
+  <script src='Calendar/fullcalendar.js'></script>
+  <script>
+  $( window ).load(function() {
+  // page is now ready, initialize the calendar...
     $('#calendarFields').fullCalendar({
-        // put your options and callbacks here
+    // put your options and callbacks here
+      aspectRatio:1.2,
+      header:
+    	{
+    	    left:   'title',
+    	    center: 'agendaDay agendaWeek month',
+    	    right:  'today prev,next'
+    	},
 
+      // PART OF THE CODE THAT DISPLAY THE EVENTS
+      eventSources: [{
+        events: [ 
+        <?php  
+          foreach($listMeetings as $value){
+            echo 
+                "
+              {
+                   id :         '" .$value->getId()          ."',
+                   title :      '" .$value->getTitle()       ."',
+                   start :      '" .$value->getStartDate()   ." ".$value->getStartTime() ."',
+                   end   :      '" .$value->getFinishDate()  ." ".$value->getFinishTime()."',
+                   allDay :     '" .$value->getAllDay()      ."',
+                   description :'" .$value->getDescription() ."',
+                   place :      '" .$value->getPlace()       ."',
+                   organizerId: '" .$value->getOrganizerId() ."',
+                   duration :   '" .$value->getDuration()    ."',
+                   repeated :   '" .$value->getRepeatM()     ."',
+                   color    :   '" .$value->getColorM()      ."'
 
+              },
+                ";
+          }
+        ?>
+         
+        ],   color: 'black',     // an option!
+         textColor: 'yellow'
+        }],
 
- 	
- aspectRatio:1.2,
-  
+      //Management of the click events.
+      eventClick: function(calEvent, jsEvent, view) {
+        document.getElementById('light').style.display='block';
+        document.getElementById('fade').style.display='block';
+        var inText= "";
+        //inText += "<div>ID of the event : "+calEvent.id+"</div>";
+        inText += "<div>Name of the event : "+calEvent.title+"</div>";
+        inText += "<div>Day of the event : "+calEvent.start+"</div>";
+        inText += "<div>Day when event ends : "+calEvent.end+"</div>";
+        inText += "<div>All day : "+calEvent.allDay+"</div>";
+        inText += "<div>Description : "+calEvent.description+"</div>";
+        inText += "<div>Place : "+calEvent.place+"</div>";
+        inText += "<div>Organizer ID : "+calEvent.organizerId+"</div>";
+        inText += "<div>Duration : "+calEvent.duration+"</div>";
+        inText += "<div>Repeated : "+calEvent.getRepeatM+"</div>";
 
+        document.getElementById('light').innerHTML=inText;
 
-	header:
-	{
-	    left:   'title',
-	    center: 'agendaDay agendaWeek month',
-	    right:  'today prev,next'
-	},
-
-// PART OF THE CODE THAT DISPLAY THE EVENTS
-
- eventSources: [{
-
-    events: [ 
-   <?php  
-foreach($listMeetings as $throughMeetings) 
-{
-  echo 
-  "
-{
-     id :         '" .$throughMeetings->getId()          ."',
-     title :      '" .$throughMeetings->getTitle()       ."',
-     start :      '" .$throughMeetings->getStartDate()   ." ".$throughMeetings->getStartTime() ."',
-     end   :      '" .$throughMeetings->getFinishDate()  ." ".$throughMeetings->getFinishTime()."',
-     allDay :     '" .$throughMeetings->getAllDay()      ."',
-     description :'" .$throughMeetings->getDescription() ."',
-     place :      '" .$throughMeetings->getPlace()       ."',
-     organizerId: '" .$throughMeetings->getOrganizerId() ."',
-     duration :   '" .$throughMeetings->getDuration()    ."',
-     repeated :   '" .$throughMeetings->getRepeatM()     ."',
-     color    :   '" .$throughMeetings->getColorM()      ."'
-
-},
-  ";
-
-}
-
-
-?>
-     
-    ],   color: 'black',     // an option!
-     textColor: 'yellow'
-}],
-
-//Management of the click events.
- eventClick: function(calEvent, jsEvent, view) {
-
-document.getElementById('light').style.display='block';
-document.getElementById('fade').style.display='block';
-var inText= "";
- inText += "<div>ID of the event : "+calEvent.id+"</div>";
- inText += "<div>Name of the event : "+calEvent.title+"</div>";
- inText += "<div>Day of the event : "+calEvent.start+"</div>";
- inText += "<div>Day when event ends : "+calEvent.end+"</div>";
- inText += "<div>All day : "+calEvent.allDay+"</div>";
- inText += "<div>Description : "+calEvent.description+"</div>";
- inText += "<div>Place : "+calEvent.place+"</div>";
- inText += "<div>Organizer ID : "+calEvent.organizerId+"</div>";
- inText += "<div>Duration : "+calEvent.duration+"</div>";
- inText += "<div>Repeated : "+calEvent.getRepeatM+"</div>";
-
-document.getElementById('light').innerHTML=inText;
-
-
-  document.getElementById('light').onclick = function() {
-  document.getElementById('light').style.display='none';
-  document.getElementById('fade').style.display='none';
-}
- document.getElementById('fade').onclick = function() {
-  document.getElementById('light').style.display='none';
-  document.getElementById('fade').style.display='none';
-}
+        document.getElementById('light').onclick = function() {
+          document.getElementById('light').style.display='none';
+          document.getElementById('fade').style.display='none';
+        }
+        document.getElementById('fade').onclick = function() {
+          document.getElementById('light').style.display='none';
+          document.getElementById('fade').style.display='none';
+        }
 
         // change the border color just for fun
         $(this).css('border-color', '#B1A0BA');
-        
-    }
-
-
-
-    //end  of Calendar initializer
+              
+      }
+      //end  of Calendar initializer
     })
-//end  of page initialized event
-});
-
-</script>
+  //end  of page initialized event
+  }
+  );
+  </script>
 
 
 
@@ -204,43 +186,29 @@ document.getElementById('light').innerHTML=inText;
 		</div>
 	</section>
   <section class="container">
-
- <div id="calendarFields">
-
-
-
-
-
-
-//Attempt to put a layer on each click with this:
-
-    <p>This is the main content. To display a lightbox click <a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='block';document.getElementById('fade').style.display='block'">here</a></p>
-    <div id="light" class="white_content">This is the lightbox content. <a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'">Close</a></div>
-    <div id="fade" class="black_overlay"></div>
-
-
-
-
-
-  </div>
-  <div style="text-align:center;">
-  <p>
-  &nbsp;</br>
-  &nbsp;</br>2014 Meeting Organizer ©</p>
-  </div>
-
+     <div id="calendarFields">
+      //Attempt to put a layer on each click with this:
+      
+      <p>This is the main content. To display a lightbox click <a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='block';document.getElementById('fade').style.display='block'">here</a></p>
+      <div id="light" class="white_content">This is the lightbox content. <a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'">Close</a></div>
+      <div id="fade" class="black_overlay"></div>
+     </div>
+      <div style="text-align:center;">
+        <p>
+        &nbsp;</br>
+        &nbsp;</br>2014 Meeting Organizer ©</p>
+      </div>
   </section>
-<div id='calendar'></div>
+  <div id='calendar'></div>
+    <script>
 
-<script>
+    function close(){
+    document.getElementById('fade').onmouse
+    document.getElementById('light').style.display='block';
+    document.getElementById('fade').style.display='block';
+    }
 
-function close(){
-document.getElementById('fade').onmouse
-document.getElementById('light').style.display='block';
-document.getElementById('fade').style.display='block';
-}
-
-</script>
+    </script>
 
 </body>
 </html>

@@ -1,8 +1,5 @@
 <?php
-
-//function loadClass($classe){ require '../Model/'.$classe . '.class.php'; }
-
-//require_once('./Model/Meeting.class.php');
+ 
 function loadClass($classe){ require __DIR__.'/../Model/'.$classe . '.class.php'; }
 spl_autoload_register('loadClass');
 
@@ -10,10 +7,12 @@ class MeetingManager{
 
 	private $_db;
 
+
 	public function __construct($db){
 		$this->_db=$db;
 	}
 
+	// Add a meeting to the database
 	public function add(Meeting $m){
 		try {
 	    $q = $this->_db->prepare('INSERT INTO meetings SET title = :title, startDate = :startDate, finishDate = :finishDate, startTime = :startTime, finishTime = :finishTime, allDay = : allDay, place = :place, organizer_id= :organizerId, duration = :duration, description= :description, repeatM = :repeatM, colorM = :colorM');
@@ -39,11 +38,12 @@ class MeetingManager{
 	}
 
 	
-
+	// Delete a meeting using its ID
 	public function delete($id){
 		$this->_db->exec('DELETE FROM meetings WHERE id = '.$id);
 	}
 
+	//Edit a meeting using its ID
 	public function edit(Meeting $m){
 		$q = $this->_db->prepare('UPDATE meetings SET title = :title, startDate = :startDate, finishDate = :finishDate, startTime = :startTime, finishTime = :finishTime, allDay = : allDay, place = :place, organizer_id= :organizerId, duration = :duration, description= :description, repeatM = :repeatM, colorM = :colorM WHERE id = :id');
   		$q->bindValue(':title', $m->title(), PDO::PARAM_STR);
@@ -64,7 +64,7 @@ class MeetingManager{
 	    echo $q->errorInfo()[2];
 	}
 
-
+	//Retrieve meeting from its ID
 	public function get($id){
 		$id = (int) $id;
 		$q = $this->_db->query('SELECT * FROM meetings WHERE id ='.$id);
@@ -83,32 +83,28 @@ class MeetingManager{
 	}
 	*/
 
-	// Get a list of meetings created by an organizer and invited to.
-	public function getListByOrg($id){
-		$id = (int) $id;
+	// Get a list of meetings created by an organizer 
+	public function getListByOrg($organizerId){
+		$id = (int) $organizerId;
 		$meetings = array();
-		$attendeesM = array();
 		$q = $this->_db->query('SELECT * FROM meetings WHERE organizer_id ='.$id);
 		while($result = $q->fetch(PDO::FETCH_ASSOC)){
 			$meetings[] = new Meeting($result); 
-		}
-		$attendeesM = getListByAttendees();
+		} 
 		return $meetings;
 	}
 
 
-	// Get a list of meetings by attendees
-	public function getListByAttendees($arrayIdMeetings){
-		if($arrayIdMeetings!= "") {
-		$meetings = array();
-		
-		foreach ($arrayIdMeetings as $value) {
-			$meetings[] = $this->get($value); 
-			
-		}
-		return $meetings;
-		}
-		else { $meetings = [] ; return $meetings;}
+	// Get a list of meetings by attendee
+	public function getListByAttendee($meetingIdList){
+		if($meetingIdList!= "") {
+			$meetings = array();
+			// Retrieve meeting for each meeting ID
+			foreach ($arrayIdMeetings as $value) {
+				$meetings[] = $this->get($value); 				
+			}
+			return $meetings;
+		}else{ $meetings = [] ; return $meetings;}
 	}
 
 
