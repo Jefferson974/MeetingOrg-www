@@ -2,8 +2,10 @@
 
 //function loadClass($classe){ require '../Model/'.$classe . '.class.php'; }
 
-require_once('./Model/Meeting.class.php');
-//
+//require_once('./Model/Meeting.class.php');
+function loadClass($classe){ require __DIR__.'/../Model/'.$classe . '.class.php'; }
+spl_autoload_register('loadClass');
+
 class MeetingManager{
 
 	private $_db;
@@ -94,6 +96,7 @@ class MeetingManager{
 		return $meetings;
 	}
 
+
 	// Get a list of meetings by attendees
 	public function getListByAttendees($arrayIdMeetings){
 		if($arrayIdMeetings!= "") {
@@ -104,9 +107,9 @@ class MeetingManager{
 			
 		}
 		return $meetings;
+		}
+		else { $meetings = [] ; return $meetings;}
 	}
-	else { $meetings = [] ; return $meetings;}
-}
 
 
 

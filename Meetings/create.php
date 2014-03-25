@@ -10,7 +10,8 @@ require_once(__DIR__.'/../config/required.php');
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>Create a meeting</title>
 </head>
-<form action="invit.php" method="POST" name="MeetingCreation">
+<body>
+<form action="invit.php" method="POST" name="create">
 
 <h2>Create Event</h2>
 
@@ -55,3 +56,4 @@ Event Color: <input type="radio" name="colorM"  checked="checked"  value="None">
 </div>
 <input type="submit" value = "Next">
 </form>
+</body>

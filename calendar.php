@@ -3,6 +3,7 @@
 <!--[if IE 7]> <html class="lt-ie9 lt-ie8" lang="en"> <![endif]-->
 <!--[if IE 8]> <html class="lt-ie9" lang="en"> <![endif]-->
 <!--[if gt IE 8]><!--> <html lang="en"> <!--<![endif]-->
+<html>
 <head>
 <style>
     .black_overlay{
@@ -31,24 +32,24 @@
         z-index:1002;
         overflow: auto;
     }
-
 </style>
+
 <?php 
 /*echo "----------user_name :". $_SESSION['user_name']."<br/>";
 echo "----------user_email :". $_SESSION['user_email']."<br/>" ;
 echo "----------user_credential:". $_SESSION['user_credential']."<br/>" ;  */
 include('config/required.php');
 include('Manager/MeetingManager.class.php');
-include('Manager/AttendeesMeetingManager.class.php');
+include('Manager/AttendeeManager.class.php');
 
-$managerObject = new MeetingManager($db);
-
+//
 if(isset($_SESSION['user_email'])) {
-$userMail = $_SESSION['user_email'];
-$attendeeList = new AttendeesMeetingManager($db);
-$listMeetingsId= $attendeeList->getMeetingsIdByEmailA($userMail);
-$listMeetings = $managerObject->getListByAttendees($listMeetingsId);
-    }  
+    $userMail = $_SESSION['user_email'];
+    $meetingManager = new MeetingManager($db);
+    $attendeeManager = new AttendeeManager($db);
+    $listMeetingsId= $attendeeManager->getMeetingsIdByEmailA($userMail);
+    $listMeetings = $meetingManager->getListByAttendees($listMeetingsId);
+}  
 ?>
 
 

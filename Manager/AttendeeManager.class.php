@@ -3,16 +3,16 @@
 function loadClass($classe){ require $classe . '.class.php'; }
 spl_autoload_register('loadClass');
 
-class AttendeesMeetingManager{
+class AttendeeManager{
 
 	private $_db;
     public function getDb() {return $this->_db;}
-	public function __construct($db){
-		$this->_db= new PDO('mysql:host=localhost;dbname=test', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-         
-	
-	}
 
+	public function __construct($db){
+		$this->_db=$db;
+    }
+
+    // Add a list of attendees to a meeting
 	public function add($meetingId, $attendees){
 			try {
 			    foreach ($attendees as $value) {
@@ -30,11 +30,13 @@ class AttendeesMeetingManager{
 			}
 	}
 
+	//Edit a list of attendees for a meeting
 	public function edit($meetingId, $attendees){
 		delete($meetingId);
 		add($meetingId, $attendees);	
 	}
 
+	//Delete all attendees from a meeting
 	public function delete($meetingId){
 		$this->_db->exec('DELETE FROM jnct_users_meetings WHERE id = '.$meetingId);
 	}
