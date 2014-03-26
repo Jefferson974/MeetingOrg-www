@@ -84,10 +84,15 @@ if($_SESSION['user_credential']==1 && !empty($_POST)){
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <link rel="stylesheet" href="../css/style.css">
   <title>Invite attendees</title>
+  
 </head>
 <body>
+	<section class="container">
+	<div id="invitePeopleForm">
 	<form action="inviteProcess.php" method="POST" name="invite">
+	
 		<h2>Invite people: </h2>
 		<div>
 			List of attendees

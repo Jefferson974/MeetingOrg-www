@@ -235,6 +235,12 @@ margin-top: 46px;
   font-size: 13px;
 }
 
+/*.marginInput{
+	position:absolute;
+	left:50px;
+ /* margin-left: 50px;
+}*/
+
 input {
   font-family: 'Lucida Grande', Tahoma, Verdana, sans-serif;
   font-size: 14px;

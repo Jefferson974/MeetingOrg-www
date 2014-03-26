@@ -19,16 +19,16 @@ require_once(__DIR__.'/../config/required.php');
 
 
 
-<label for="title">Title:</label> <input type="text" id="title" name="title" required> 
+<label for="title">Title of the meeting:</label> <input class="marginInput" type="text" id="title" name="title" required> 
 <div>
-<label for="startDate">Start of meeting :</label><input type="date" id="startDate" name="startDate" required>  <input type="time" name="startTime" id="startTime" required>
-<label for="finishDate">End of meeting :</label><input type="date" id="finishDate" name="finishDate" required>  <input type="time" name="finishTime" id="finishTime" required>
-<label for="allDay">All day:</label> <input type="checkbox" name="allDay" id="allDay" value="TRUE">
+<div><label for="startDate">Start of the meeting :</label><input class="marginInput" type="date" id="startDate" name="startDate" required>  <input type="time" name="startTime" id="startTime" required></div>
+<div><label for="finishDate">End of the meeting :</label><input class="marginInput" type="date" id="finishDate" name="finishDate" required>  <input type="time" name="finishTime" id="finishTime" required></div>
+<label for="allDay">All day:</label> <input class="marginInput" type="checkbox" name="allDay" id="allDay" value="TRUE">
 </div>
   
 
 <div>
-<label for="repeatM" >Repeat :</label> <select id="repeatM" name="repeatM">
+<label for="repeatM" >Repeat :</label> <select class="marginInput" id="repeatM" name="repeatM">
           <option selected="selected" value="None"> none</option>
           <option value="daily"> daily</option>
           <option value="weekly"> weekly</option>
@@ -38,7 +38,7 @@ require_once(__DIR__.'/../config/required.php');
  
 
 <div>
-Event Color: <input type="radio" name="colorM"  checked="checked"  value="None">
+Event Color: <input class="marginInput" type="radio" name="colorM"  checked="checked"  value="None">
              <input type="radio" name="colorM" value="00FF00">
              <input type="radio" name="colorM" value="0000FF">
              <input type="radio" name="colorM" value="FFFF00">
@@ -48,12 +48,12 @@ Event Color: <input type="radio" name="colorM"  checked="checked"  value="None">
 </div>
 
 
-<label for="location">Location :</label> <input type="text" name="place" id="location" required>
+<label for="location">Location :</label> <input class="marginInput" type="text" name="place" id="location" required>
 
 
 <div>
 <label for="description">Description :</label> 
-<textarea id="description" name="description" cols="25" rows="5">
+<textarea class="marginInput" id="description" name="description" cols="25" rows="5">
 </textarea>
 </div>
 <input type="submit" value = "Next">
