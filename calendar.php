@@ -35,12 +35,12 @@
   </style>
 
   <?php 
-  /*echo "----------user_name :". $_SESSION['user_name']."<br/>";
+  echo "----------user_name :". $_SESSION['user_name']."<br/>";
   echo "----------user_email :". $_SESSION['user_email']."<br/>" ;
-  echo "----------user_credential:". $_SESSION['user_credential']."<br/>" ;  */
-  include('config/required.php');
-  include('Manager/MeetingManager.class.php');
-  include('Manager/AttendeeManager.class.php');
+  echo "----------user_credential:". $_SESSION['user_credential']."<br/>" ;  
+  require_once('config/required.php');
+  require_once('Manager/MeetingManager.class.php');
+  require_once('Manager/AttendeeManager.class.php');
 
   //
   if(isset($_SESSION['user_email'])) {
@@ -188,7 +188,7 @@
   <section class="container">
      <div id="calendarFields">
       //Attempt to put a layer on each click with this:
-      
+
       <p>This is the main content. To display a lightbox click <a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='block';document.getElementById('fade').style.display='block'">here</a></p>
       <div id="light" class="white_content">This is the lightbox content. <a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'">Close</a></div>
       <div id="fade" class="black_overlay"></div>
@@ -202,11 +202,11 @@
   <div id='calendar'></div>
     <script>
 
-    function close(){
-    document.getElementById('fade').onmouse
-    document.getElementById('light').style.display='block';
-    document.getElementById('fade').style.display='block';
-    }
+      function close(){
+      document.getElementById('fade').onmouse
+      document.getElementById('light').style.display='block';
+      document.getElementById('fade').style.display='block';
+      }
 
     </script>
 

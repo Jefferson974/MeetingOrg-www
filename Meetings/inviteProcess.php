@@ -3,10 +3,14 @@
 require_once(__DIR__.'/../config/required.php');
 require_once(__DIR__."/../Manager/MeetingManager.class.php"); 
 require_once(__DIR__."/../Manager/AttendeeManager.class.php");  
-
+echo "start" . $_SESSION['user_credential'];
+echo "<br/> :  1";
 //check the form input and user credential
+  echo "----------user_name :". $_SESSION['user_name']."<br/>";
+  echo "----------user_email :". $_SESSION['user_email']."<br/>" ;
+  echo "----------user_credential:". $_SESSION['user_credential']."<br/>" ;  
 if(isset($_POST['invite'], $_SESSION['user_credential']) && $_SESSION['user_credential']==1){
-
+echo "<br/> :  2";
 	$attendeeManager = new AttendeeManager($db);
 	// Clean user input
 	$result = filter_input(INPUT_POST, $_POST['attendees'], FILTER_SATINIZE_STRING);
@@ -27,7 +31,7 @@ if(isset($_POST['invite'], $_SESSION['user_credential']) && $_SESSION['user_cred
 				$nb_errors++;
 			}
 		}
-
+echo "<br/> : 51";
 		// Add attendees to the meeting
 		if ($nb_errors == 0 && $_SESSION['user_credential']==1) {
 			$meetingId = (int) $_SESSION['lastInsertM'];

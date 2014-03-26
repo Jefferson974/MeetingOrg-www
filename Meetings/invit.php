@@ -2,10 +2,11 @@
 require_once(__DIR__.'/../config/required.php');
 require_once(__DIR__."/../Manager/MeetingManager.class.php"); 
 require_once(__DIR__."/../Manager/AttendeeManager.class.php");   
-
+echo"2<br/>";
 //check the form input and user credential
-if(isset($_POST['create'], $_SESSION['user_credential']) && $_SESSION['user_credential']==1){
-	
+if($_SESSION['user_credential']==1 && !empty($_POST)){
+	echo"3<br/>";
+	//echo $_POST['title']."<br/>";
 	//Validate user input
 	$options = array(
 		'title' => FILTER_SANITIZE_STRING,
@@ -21,6 +22,9 @@ if(isset($_POST['create'], $_SESSION['user_credential']) && $_SESSION['user_cred
 	);
 	$result = filter_input_array(INPUT_POST, $options);
 
+	foreach ($result  as $value) {
+		echo "<br/>".$value;
+	}
 	//check if the form is sent
 	if($result != null) { 	   
 	    $nbrErreurs = 0;	
@@ -60,8 +64,15 @@ if(isset($_POST['create'], $_SESSION['user_credential']) && $_SESSION['user_cred
 
 		// add new meeting and retrieve the id meeting for invit form.
 		$meetingManager = new MeetingManager($db);
+		foreach ($dataMeeting as $value) {
+			echo "---".$value."------<br/>";
+		}
+		
 		$meeting = new Meeting($dataMeeting);
+		echo "before";
+		echo $meeting->getTitle();
 		$meetingManager->add($meeting);
+		echo "apres";
 		$lastInsertM = $db->lastInsertId();
 		$_SESSION['lastInsertM'] = $lastInsertM;
 		}

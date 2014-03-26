@@ -1,7 +1,6 @@
 <?php
-
-function loadClass($classe){ require $classe . '.class.php'; }
-spl_autoload_register('loadClass');
+ 
+require_once(__DIR__."/../Model/Meeting.class.php");   
 
 class AttendeeManager{
 
