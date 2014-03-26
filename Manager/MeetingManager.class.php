@@ -16,8 +16,8 @@ class MeetingManager{
 
 	// Add a meeting to the database
 	public function add(Meeting $m){
-	//	try {
-	    $q = $this->_db->prepare('INSERT INTO meetings SET title = :title, startDate = :startDate, finishDate = :finishDate, startTime = :startTime, finishTime = :finishTime, allDay = : allDay, place = :place, organizer_id= :organizerId, duration = :duration, description= :description, repeatM = :repeatM, colorM = :colorM');
+		try {
+	    $q = $this->_db->prepare('INSERT INTO meetings SET title = :title, startDate = :startDate, finishDate = :finishDate, startTime = :startTime, finishTime = :finishTime, place = :place, organizer_id= :organizerId, duration = :duration, description= :description, repeatM = :repeatM, colorM = :colorM');
 	   
 	    $q->bindValue(':title', $m->getTitle(), PDO::PARAM_STR);
 	    $q->bindValue(':startDate', $m->getStartDate(), PDO::PARAM_STR);
@@ -33,9 +33,9 @@ class MeetingManager{
 	    $q->bindValue(':colorM', $m->getColorM(), PDO::PARAM_STR);
 	    echo "execute";
 	    $q->execute();
-		//}catch (PDOException $e){
-		//echo 'Erreur : ',  $e->getMessage();
-	//	}
+		}catch (PDOException $e){
+       echo 'Erreur : ',  $e->getMessage();
+		}
 	}
 
 	
