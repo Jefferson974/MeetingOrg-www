@@ -17,7 +17,7 @@ class MeetingManager{
 	// Add a meeting to the database
 	public function add(Meeting $m){
 		try {
-	    $q = $this->_db->prepare('INSERT INTO meetings SET title = :title, startDate = :startDate, finishDate = :finishDate, startTime = :startTime, allDay = :allDay, place = :place, organizer_id= :organizerId, duration = :duration, description= :description, repeatM = :repeatM, colorM = :colorM');
+	    $q = $this->_db->prepare('INSERT INTO meetings SET title = :title, startDate = :startDate, finishDate = :finishDate, startTime = :startTime, allDay = :allDay, place = :place, organizerId= :organizerId, duration = :duration, description= :description, repeatM = :repeatM, colorM = :colorM');
 	   
 	    $q->bindValue(':title', $m->getTitle(), PDO::PARAM_STR);
 	    $q->bindValue(':startDate', $m->getStartDate(), PDO::PARAM_STR);
@@ -46,7 +46,7 @@ class MeetingManager{
 
 	//Edit a meeting using its ID
 	public function edit(Meeting $m){
-		$q = $this->_db->prepare('UPDATE meetings SET title = :title, startDate = :startDate, finishDate = :finishDate, startTime = :startTime, allDay = : allDay, place = :place, organizer_id= :organizerId, duration = :duration, description= :description, repeatM = :repeatM, colorM = :colorM WHERE id = :id');
+		$q = $this->_db->prepare('UPDATE meetings SET title = :title, startDate = :startDate, finishDate = :finishDate, startTime = :startTime, allDay = : allDay, place = :place, organizerId= :organizerId, duration = :duration, description= :description, repeatM = :repeatM, colorM = :colorM WHERE id = :id');
   		$q->bindValue(':title', $m->title(), PDO::PARAM_STR);
 	    $q->bindValue(':startDate', $m->getStartDate(), PDO::PARAM_STR);
 	    $q->bindValue(':finishDate', $m->getFinishDate(), PDO::PARAM_STR);
@@ -56,7 +56,7 @@ class MeetingManager{
 	    $q->bindValue(':organizerId', $m->getOrganizerId(), PDO::PARAM_INT);
 	    $q->bindValue(':duration', $m->getDuration(), PDO::PARAM_STR);
 	    $q->bindValue(':description', $m->getDescription(), PDO::PARAM_STR);
-	    $q->bindValue(':repeat', $m->getRepeat(), PDO::PARAM_STR);
+	    $q->bindValue(':repeatM', $m->getRepeatM(), PDO::PARAM_STR);
 	    $q->bindValue(':colorM', $m->getColorM(), PDO::PARAM_STR);
     	$q->bindValue(':id', $m->getId(), PDO::PARAM_INT);
     	$q->execute();
@@ -87,7 +87,7 @@ class MeetingManager{
 	public function getListByOrg($organizerId){
 		$id = (int) $organizerId;
 		$meetings = array();
-		$q = $this->_db->query('SELECT * FROM meetings WHERE organizer_id ='.$id);
+		$q = $this->_db->query('SELECT * FROM meetings WHERE organizerId ='.$id);
 		while($result = $q->fetch(PDO::FETCH_ASSOC)){
 			$meetings[] = new Meeting($result); 
 		} 
@@ -100,7 +100,7 @@ class MeetingManager{
 		if($meetingIdList!= "") {
 			$meetings = array();
 			// Retrieve meeting for each meeting ID
-			foreach ($arrayIdMeetings as $value) {
+			foreach ($meetingIdList as $value) {
 				$meetings[] = $this->get($value); 				
 			}
 			return $meetings;

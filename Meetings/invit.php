@@ -4,7 +4,7 @@ require_once(__DIR__."/../Manager/MeetingManager.class.php");
 require_once(__DIR__."/../Manager/AttendeeManager.class.php");   
  
 //check the form input and user credential
-if($_SESSION['user_credential']==1 && !empty($_POST)){
+if($_SESSION['user_credential']==1 && !empty($_POST['create_submit'])){
 	 
 	$options = array(
 		'title' => FILTER_SANITIZE_STRING,
@@ -269,7 +269,7 @@ if($_SESSION['user_credential']==1 && !empty($_POST)){
 			<br/>
 			Email have to be written followed by semicolon.
 		</div>
-		<input type="submit" value = "Finish">
+		<input type="submit" value = "Finish" name="invite_submit">
 	</form>
 </body>
 </html>

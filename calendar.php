@@ -35,25 +35,40 @@
   </style>
 
   <?php 
-  echo "----------user_name :". $_SESSION['user_name']."<br/>";
-  echo "----------user_email :". $_SESSION['user_email']."<br/>" ;
-  echo "----------user_credential:". $_SESSION['user_credential']."<br/>" ;  
+  // echo "----------user_name :". $_SESSION['user_name']."<br/>";
+  // echo "----------user_email :". $_SESSION['user_email']."<br/>" ;
+  // echo "----------user_credential:". $_SESSION['user_credential']."<br/>" ;  
   require_once('config/required.php');
   require_once('Manager/MeetingManager.class.php');
   require_once('Manager/AttendeeManager.class.php');
 
-  //
+  //echo "string";
   if(isset($_SESSION['user_email'])) {
       $userMail = $_SESSION['user_email'];
+      echo "--". $userMail."--<br/>";
+
       $meetingManager = new MeetingManager($db);
       $attendeeManager = new AttendeeManager($db);
       $listMeetingsId= $attendeeManager->getMeetingsIdByEmailA($userMail);
-      $listMeetings = $meetingManager->getListByAttendee($listMeetingsId);
+     // echo $listMeetingsId;
 
+      foreach ($listMeetingsId as $value) {
+         echo "+++". $value. "+++<br/>";
+      }
+      $listMeetings = $meetingManager->getListByAttendee($listMeetingsId);
+      //echo "stringadsd";
       if ($_SESSION['user_credential']) {
         $userId = $_SESSION['user_id'];
         $listMeetingsByOrg = $meetingManager->getListByOrg($userId);
         $listMeetings = array_merge((array)$listMeetings, (array)$listMeetingsByOrg);
+// echo "stringdddddddddd<br/>";
+// foreach ($listMeetings as  $value) {
+//     echo $value->getTitle();
+//     echo "org".$value->getOrganizerId()."-||";
+//     echo "id".$value->getAllDay();
+//      echo "repeat".$value->getRepeatM();
+// }
+
       }
   }  
   ?>
@@ -97,7 +112,7 @@
                    id :         '" .$value->getId()          ."',
                    title :      '" .$value->getTitle()       ."',
                    start :      '" .$value->getStartDate()   ." ".$value->getStartTime() ."',
-                   end   :      '" .$value->getFinishDate()  ." ".$value->getFinishTime()."',
+                   end   :      '" .$value->getFinishDate()  ."',
                    allDay :     '" .$value->getAllDay()      ."',
                    description :'" .$value->getDescription() ."',
                    place :      '" .$value->getPlace()       ."',
@@ -123,7 +138,7 @@
         //inText += "<div>ID of the event : "+calEvent.id+"</div>";
         inText += "<div>Name of the event : "+calEvent.title+"</div>";
         inText += "<div>Day of the event : "+calEvent.start+"</div>";
-        inText += "<div>Day when event ends : "+calEvent.end+"</div>";
+        // inText += "<div>Day when event ends : "+calEvent.end+"</div>";
         inText += "<div>All day : "+calEvent.allDay+"</div>";
         inText += "<div>Description : "+calEvent.description+"</div>";
         inText += "<div>Place : "+calEvent.place+"</div>";

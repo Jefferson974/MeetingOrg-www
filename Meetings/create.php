@@ -78,7 +78,7 @@ if(isset($_SESSION['user_name'])){
       <textarea class="marginInput" id="description" name="description" cols="25" rows="5">
       </textarea>
       </div>
-      <div><input type="submit" value = "Next"></div>
+      <div><input type="submit" value="Next" name="create_submit"></div>
       </form>
 </div>
 </section>	

@@ -3,44 +3,44 @@
 require_once(__DIR__.'/../config/required.php');
 require_once(__DIR__."/../Manager/MeetingManager.class.php"); 
 require_once(__DIR__."/../Manager/AttendeeManager.class.php");  
-echo "start" . $_SESSION['user_credential'];
-echo "<br/> :  1";
+
 //check the form input and user credential
-  echo "----------user_name :". $_SESSION['user_name']."<br/>";
-  echo "----------user_email :". $_SESSION['user_email']."<br/>" ;
-  echo "----------user_credential:". $_SESSION['user_credential']."<br/>" ;  
-if(isset($_POST[], $_SESSION['user_credential']) && $_SESSION['user_credential']==1){
-echo "<br/> :  2";
+ 
+if(isset($_SESSION['user_credential']) && !empty($_POST) && $_SESSION['user_credential']==1){
 	$attendeeManager = new AttendeeManager($db);
 	// Clean user input
-	$result = filter_input(INPUT_POST, $_POST['attendees'], FILTER_SATINIZE_STRING);
-
+	$result = filter_input(INPUT_POST, 'attendees' , FILTER_SANITIZE_STRING);
 	if ($result == null) {
-		$newURL="../index.php"; 
-		header('Location: '.$newURL);
+		// redirect to index without inviting people
+		 $newURL="../index.php"; 
+		 header('Location: '.$newURL);
 	}elseif($result !== false){
 		// Extract email from the input
+		echo "extract<br/>";
 		$arrayEmails = preg_split("/[\r\n,;]+/", $result, -1, PREG_SPLIT_NO_EMPTY);
 
 		$nb_errors=0;
 		// Valide extracted inputs
 		foreach ($arrayEmails as $value) {
 			$value=trim($value);
+			foreach ($arrayEmails as $value) {
+				echo "emails".$value."end<br/>";
+			}
 			if(filter_var($value, FILTER_VALIDATE_EMAIL) === false){
 				echo "The format of this email ".$value." is not valid. ";
 				$nb_errors++;
 			}
 		}
-echo "<br/> : 51";
+ 
 		// Add attendees to the meeting
 		if ($nb_errors == 0 && $_SESSION['user_credential']==1) {
 			$meetingId =  $_SESSION['lastInsertM'];
 			foreach ($meetingId as $value) {
 				$attendeeManager->add((int)$value, $arrayEmails);	
-			}
+			} 
 			// redirect to index
-			$newURL="../index.php"; 
-			header('Location: '.$newURL);
+		//	$newURL="../index.php"; 
+		//	header('Location: '.$newURL);
 		}else include("invit.php"); // display invit.php and error messages.
 	}else echo "The format of the input is not valid."; include("invit.php");
 }?>

@@ -25,7 +25,7 @@ class AttendeeManager{
 					echo $q->errorInfo()[2];
 		    }	    
 		}catch (Exception $e){
-		        echo 'Erreur : ',  $e->getMessage();
+		        echo 'Erreur : ',  $e->getMesBsage();
 		}
 	}
 
@@ -51,10 +51,13 @@ class AttendeeManager{
 
 //**VERSIONRAPHAEL**
 	public function getMeetingsIdByEmailA($emailAttendee){
-		$q = $this->getDb()->prepare("SELECT meeting_id FROM jnct_users_meetings WHERE user_email = '$emailAttendee' ");
-		$q->execute();
+		echo "...".$emailAttendee."...<br/>"; 
+		$q = $this->getDb()->query('SELECT meeting_id FROM jnct_users_meetings WHERE user_email='.$emailAttendee);
+		// $q->execute();
 		$result = $q->fetchAll(PDO::FETCH_COLUMN, 0);
 
+		//echo "string".$result."haha<br/>";
+		// echo "string".$result[0]."string";
 		if(count($result)!=0){
 		return $result;
 		}else{
