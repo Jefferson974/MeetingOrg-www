@@ -53,13 +53,15 @@ if(isset($_SESSION['user_name'])){
      document.getElementById("startTime").disabled = true;
      document.getElementById("duration").disabled = true;
      document.getElementById("startTime").title = "You have disabled it, to activate it, uncheck the 'all day box'.";
-     document.getElementById("duration").disabled = "You have disabled it, to activate it, uncheck the 'all day box'.";
+     document.getElementById("duration").title = "You have disabled it, to activate it, uncheck the 'all day box'.";
       
    
       } 
       else  if(!document.getElementById("allDay").checked) {
      document.getElementById("startTime").disabled = false;
      document.getElementById("duration").disabled = false;
+     document.getElementById("startTime").title = "";
+     document.getElementById("duration").title = "";
   
     }
         }
