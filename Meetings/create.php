@@ -45,9 +45,25 @@ if(isset($_SESSION['user_name'])){
       <div><label for="StartTime">Time of the meeting :</label> <input type="time" name="startTime" id="startTime"></div>
       <div><label for="duration">Duration of the meeting :</label> <input type="time" name="duration" id="duration"></div>
       <div><label for="allDay">All day:</label> <input class="marginInput" type="checkbox" name="allDay" id="allDay" value="1"></div>
-      
+      <script>
+      var disable = false;
+      document.getElementById("allDay").onclick = function() {
         
-
+    if(document.getElementById("allDay").checked ) {
+     document.getElementById("startTime").disabled = true;
+     document.getElementById("duration").disabled = true;
+     document.getElementById("startTime").title = "You have disabled it, to activate it, uncheck the 'all day box'.";
+     document.getElementById("duration").disabled = "You have disabled it, to activate it, uncheck the 'all day box'.";
+      
+   
+      } 
+      else  if(!document.getElementById("allDay").checked) {
+     document.getElementById("startTime").disabled = false;
+     document.getElementById("duration").disabled = false;
+  
+    }
+        }
+      </script>
       <div>
       <label for="repeatM" >Repeat :</label> <select class="marginInput" id="repeatM" name="repeatM">
                 <option selected="selected" value="None"> none</option>
