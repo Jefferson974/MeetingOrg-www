@@ -17,22 +17,23 @@ class MeetingManager{
 	// Add a meeting to the database
 	public function add(Meeting $m){
 		try {
-	    $q = $this->_db->prepare('INSERT INTO meetings SET title = :title, startDate = :startDate, finishDate = :finishDate, startTime = :startTime, finishTime = :finishTime, place = :place, organizer_id= :organizerId, duration = :duration, description= :description, repeatM = :repeatM, colorM = :colorM');
+	    $q = $this->_db->prepare('INSERT INTO meetings SET title = :title, startDate = :startDate, finishDate = :finishDate, startTime = :startTime, finishTime = :finishTime, allDay = :allDay, place = :place, organizer_id= :organizerId, duration = :duration, description= :description, repeatM = :repeatM, colorM = :colorM');
 	   
 	    $q->bindValue(':title', $m->getTitle(), PDO::PARAM_STR);
 	    $q->bindValue(':startDate', $m->getStartDate(), PDO::PARAM_STR);
 	    $q->bindValue(':finishDate', $m->getFinishDate(), PDO::PARAM_STR);
 	    $q->bindValue(':startTime', $m->getStartTime(), PDO::PARAM_STR);
 	    $q->bindValue(':finishTime', $m->getFinishTime(), PDO::PARAM_STR);
-	 //  $q->bindValue(':allDay', $m->getAllDay(), PDO::PARAM_BOOL);
+	    $q->bindValue(':allDay', $m->getAllDay(), PDO::PARAM_STR);
 	    $q->bindValue(':place', $m->getPlace(), PDO::PARAM_STR);
 	    $q->bindValue(':organizerId', $m->getOrganizerId(), PDO::PARAM_INT);
 	    $q->bindValue(':duration', $m->getDuration(), PDO::PARAM_STR);
 	    $q->bindValue(':description', $m->getDescription(), PDO::PARAM_STR);
 	    $q->bindValue(':repeatM', $m->getRepeatM(), PDO::PARAM_STR);
 	    $q->bindValue(':colorM', $m->getColorM(), PDO::PARAM_STR);
-	    echo "execute";
-	    $q->execute();
+	     
+	    $q->execute(); 
+	    echo $q->errorInfo()[2];
 		}catch (PDOException $e){
        echo 'Erreur : ',  $e->getMessage();
 		}

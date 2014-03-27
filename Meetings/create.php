@@ -19,10 +19,12 @@ require_once(__DIR__.'/../config/required.php');
 
 
 
-<label for="title">Title of the meeting:</label> <input class="marginInput" type="text" id="title" name="title" required> 
+<label for="title">Title of the meeting:</label> <input class="marginInput" type="text" id="title" name="title" required>
 <div>
-<div><label for="startDate">Start of the meeting :</label><input class="marginInput" type="date" id="startDate" name="startDate" required>  <input type="time" name="startTime" id="startTime" required></div>
-<div><label for="finishDate">End of the meeting :</label><input class="marginInput" type="date" id="finishDate" name="finishDate" required>  <input type="time" name="finishTime" id="finishTime" required></div>
+<div><label for="startDate">Start of the meeting :</label><input class="marginInput" type="date" id="startDate" name="startDate" required>
+        <input type="time" name="startTime" id="startTime" required></div>
+<div><label for="finishDate">End of the meeting :</label><input class="marginInput" type="date" id="finishDate" name="finishDate" required>  
+        <input type="time" name="finishTime" id="finishTime" required></div>
 <label for="allDay">All day:</label> <input class="marginInput" type="checkbox" name="allDay" id="allDay" value="TRUE">
 </div>
   
