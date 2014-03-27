@@ -9,11 +9,11 @@ if($_SESSION['user_credential']==1 && !empty($_POST)){
 	$options = array(
 		'title' => FILTER_SANITIZE_STRING,
 		'startDate' => FILTER_SANITIZE_STRING,
-		'finishDate' => FILTER_SANITIZE_STRING,
 		'startTime' => FILTER_SANITIZE_STRING,
-		'finishTime' => FILTER_SANITIZE_STRING,
-		'allDay' => FILTER_SANITIZE_STRING,
+		'duration' => FILTER_SANITIZE_STRING,
+		'allDay' => FILTER_SANITIZE_NUMBER_INT,
 		'repeatM' => FILTER_SANITIZE_STRING,
+		'repeatMTimes' => FILTER_SANITIZE_NUMBER_INT,
 		'colorM' => FILTER_SANITIZE_STRING,
 		'place' => FILTER_SANITIZE_STRING,
 		'description' => FILTER_SANITIZE_STRING,
@@ -34,41 +34,29 @@ if($_SESSION['user_credential']==1 && !empty($_POST)){
 	    // case 1: allDay option checked: 	
 	    }elseif(!empty($_POST["allDay"])){
 	    	// the others time inputs except for startDate should be disabled
-	    	if( empty($_POST['startDate']) || !empty($_POST['finishDate']) || !empty($_POST['startTime']) || !empty($_POST['finishTime']) ){
+	    	if( empty($_POST['startDate']) || !empty($_POST['startTime']) || !empty($_POST['duration'])){
 				echo "Conflicting date : all day option and date can't be chosen together."; 
 	   			$nbrErreurs++;
 			}else{
-				$duration = "1 day";
+				$duration = "24:00" ; // All working day
 			}
 		
 		// case 2 : no allDay option
 	   	}elseif(empty($_POST['allDay'])){
 	   		// if all day option is not checked, a meeting should have a start/end date and start/end time
-	   		if(empty($_POST['startDate']) || empty($_POST['finishDate']) || empty($_POST['startTime']) || empty($_POST['finishTime'])){
-	   			echo "Missing Start or End date / start or end time";
+	   		if(empty($_POST['startDate']) || empty($_POST['startTime']) || empty($_POST['duration'])){
+	   			echo "Missing Start date/time";
 	   			$nbrErreurs++;
 	   		// Normal condition : Date and Time Check
 	   		}else{
-	   			$startTime = preg_split("/[:]+/", $result['startTime'], -1, PREG_SPLIT_NO_EMPTY);
-	   			$finishTime = preg_split("/[:]+/", $result['finishTime'], -1, PREG_SPLIT_NO_EMPTY);
-	   			$startDate = new DateTime($result['startDate']);
-	   			$finishDate = new DateTime($result['finishDate']);
-	   			$startDate->setTime((int)$startTime[0], (int)$startTime[1]);
-	   			$finishDate->setTime((int)$finishTime[0], (int)$finishTime[1]);
-	   			echo "Start Date : ".$startDate->format('F j, Y, H:i ')."----<br/>";
-	   			echo "finish Date : ".$finishDate->format('F j, Y, H:i ')."----<br/>";
-	   			if($startDate > $finishDate){
-	   				echo "Start of the meeting is greater than the finish date";
-					$nbrErreurs++;	   			
-	   			}else{
-	   				//Compute duration 
-	   				$dateDiff = $startDate->diff($finishDate);
-	   				$duration = $dateDiff->format('%d day(s), %h hour(s), %i minute(s)');
-	   				echo $duration;
-	   			}
-	   			
+	   			$duration = $result['duration'];		   			
 	   		}
 	   	
+	   	}elseif (empty($_POST['repeatM'])) {
+	   		echo "Missing Repeat Option";
+	    // Default setting for repeat option {10 times}		
+	   	}elseif (empty($_POST['repeatMTimes'])){
+	   		$result['repeatMTimes'] = 10;
 	   	}
 
 	    //check invalid inputs
@@ -78,6 +66,10 @@ if($_SESSION['user_credential']==1 && !empty($_POST)){
 	       		 $nbrErreurs++;
 	        }
 	    }
+	    //check negative number
+	    if ($result['repeatMTimes']<0) {
+	    	$result['repeatMTimes'] = 0;
+	    }
 
 		// array of data to create a meeting's object
 	   	$userId = $_SESSION['user_id'];
@@ -85,33 +77,160 @@ if($_SESSION['user_credential']==1 && !empty($_POST)){
 		     $dataMeeting = array(
 			'title' => $result['title'],
 			'startDate' => $result['startDate'],
-			'finishDate' => $result['finishDate'],
 			'startTime' => $result['startTime'],
-			'finishTime' => $result['finishTime'],
 			'allDay' => $result['allDay'],
 			'repeatM' => $result['repeatM'],
+			'repeatMTimes' => $result['repeatMTimes'],
 			'colorM' => $result['colorM'],
 			'place' => $result['place'],
 			'description' => $result['description'],
 			'duration' => $duration,
-			'organizerId' => $userId
+			'organizerId' => $userId,
 			);
 
 			// add new meeting and retrieve the id meeting for invit form.
-			$meetingManager = new MeetingManager($db);
-			// foreach ($dataMeeting as $value) {
-			// 	echo "---".$value."------<br/>";
-			// }
-			
+			$meetingManager = new MeetingManager($db);			
 			$meeting = new Meeting($dataMeeting);
-			// echo "before";
-			// echo $meeting->getTitle();
-			$meetingManager->add($meeting);
-			// echo "apres";
-			$lastInsertM = $db->lastInsertId();
+			$lastInsertM = array();
+
+			switch ($meeting->getRepeatM()) {
+				case 'None':
+				echo "None";
+					if($result['allDay']!=1){
+						//retrieve time variables 
+						$time = preg_split("/[:]+/", $meeting->getStartTime(), -1, PREG_SPLIT_NO_EMPTY);
+						$durationToAdd = preg_split("/[:]+/", $duration, -1, PREG_SPLIT_NO_EMPTY);
+						//set DateTime
+				 
+						$finishDate = new DateTime($meeting->getStartDate());
+						$finishDate->setTime((int)$time[0], (int)$time[1]);
+						//add duration
+						$finishDate->add(new DateInterval("PT".(int)$durationToAdd[0]."H".(int)$durationToAdd[1]."M"));
+						 
+						//Set finish date
+						$meeting->setFinishDate($finishDate->format('Y-m-d G:i'));
+					}else $meeting->setFinishDate($result['startDate']); 
+					//add meeting
+					$meetingManager->add($meeting);
+					$lastInsertM[] = $db->lastInsertId();
+					break;
+
+				case 'Daily': 
+					echo "daily";
+					for( $i = 0; $i <= $result['repeatMTimes']; $i++){
+						if($result['allDay']!=1){
+							//-----set new finishDate------	
+							//retrieve time variables
+							$time = preg_split("/[:]+/", $meeting->getStartTime(), -1, PREG_SPLIT_NO_EMPTY);
+							$durationToAdd = preg_split("/[:]+/", $duration, -1, PREG_SPLIT_NO_EMPTY);
+							//set DateTime
+							$finishDate = new DateTime($meeting->getStartDate());
+							$finishDate->setTime((int)$time[0], (int)$time[1]);
+							//add duration
+							$finishDate->add(new DateInterval("PT".(int)$durationToAdd[0]."H".(int)$durationToAdd[1]."M"));
+							$meeting->setFinishDate($finishDate->format('Y-m-d G:i'));
+						}else $meeting->setFinishDate($meeting->getStartDate());
+
+							//add meeting
+							$meetingManager->add($meeting);
+							$lastInsertM[] = $db->lastInsertId();
+
+						//-----set new StartDate------						 
+						$startDate = new DateTime($meeting->getStartDate());
+						$startDate->add(new DateInterval('P1D'));
+						$meeting->setStartDate($startDate->format('Y-m-d'));
+					}
+					break;
+
+				case 'Weekly':
+				echo "weekly";
+					for( $i = 0; $i <= $result['repeatMTimes']; $i++){
+						if($result['allDay']!=1){
+							//-----set new finishDate------	
+							//retrieve time variables
+							$time = preg_split("/[:]+/", $meeting->getStartTime(), -1, PREG_SPLIT_NO_EMPTY);
+							$durationToAdd = preg_split("/[:]+/", $duration, -1, PREG_SPLIT_NO_EMPTY);
+							//set DateTime
+							$finishDate = new DateTime($meeting->getStartDate());
+							$finishDate->setTime((int)$time[0], (int)$time[1]);
+							//add duration
+							$finishDate->add(new DateInterval("PT".(int)$durationToAdd[0]."H".(int)$durationToAdd[1]."M"));
+							$meeting->setFinishDate($finishDate->format('Y-m-d G:i'));
+						}else $meeting->setFinishDate($meeting->getStartDate());
+
+						//add meeting
+						$meetingManager->add($meeting);
+						$lastInsertM[] = $db->lastInsertId();
+
+
+						//-----set new StartDate------						 
+						$startDate = new DateTime($meeting->getStartDate());
+						$startDate->add(new DateInterval('P1W'));
+						$meeting->setStartDate($startDate->format('Y-m-d'));
+					}
+					break;
+				
+				case 'Monthly':
+				echo "Monthly";
+					for( $i = 0; $i <= $result['repeatMTimes']; $i++){
+						if($result['allDay']!=1){
+							//-----set new finishDate------	
+							//retrieve time variables
+							$time = preg_split("/[:]+/", $meeting->getStartTime(), -1, PREG_SPLIT_NO_EMPTY);
+							$durationToAdd = preg_split("/[:]+/", $duration, -1, PREG_SPLIT_NO_EMPTY);
+							//set DateTime
+							$finishDate = new DateTime($meeting->getStartDate());
+							$finishDate->setTime((int)$time[0], (int)$time[1]);
+							//add duration
+							$finishDate->add(new DateInterval("PT".(int)$durationToAdd[0]."H".(int)$durationToAdd[1]."M"));
+							$meeting->setFinishDate($finishDate->format('Y-m-d G:i'));
+						}else $meeting->setFinishDate($meeting->getStartDate());
+
+						//add meeting
+						$meetingManager->add($meeting);
+						$lastInsertM[] = $db->lastInsertId();
+
+
+						//-----set new StartDate------						 
+						$startDate = new DateTime($meeting->getStartDate());
+						$startDate->add(new DateInterval('P1M'));
+						$meeting->setStartDate($startDate->format('Y-m-d'));
+					}
+					break;
+				
+				
+				default:
+					echo "default";
+					if($result['allDay']!=1){
+						//retrieve time variables
+						 
+						$time = preg_split("/[:]+/", $meeting->getStartTime(), -1, PREG_SPLIT_NO_EMPTY);
+						$durationToAdd = preg_split("/[:]+/", $duration, -1, PREG_SPLIT_NO_EMPTY);
+						//set DateTime
+					 
+						$finishDate = new DateTime($meeting->getStartDate());
+						$finishDate->setTime((int)$time[0], (int)$time[1]);
+						//add duration
+						$finishDate->add(new DateInterval("PT".(int)$durationToAdd[0]."H".(int)$durationToAdd[1]."M"));
+						 
+						//Set finish date
+						$meeting->setFinishDate($finishDate->format('Y-m-d G:i'));
+					}else $meeting->setFinishDate($result['startDate']);
+					 
+					//add meeting
+					$meetingManager->add($meeting);
+					$lastInsertM[] = $db->lastInsertId();
+					break;
+			}
+
+
 			$_SESSION['lastInsertM'] = $lastInsertM;
+			foreach ($lastInsertM as $value) {
+				echo "id".$value."<br/>";
+			}
+
 		}
-	
+				
 	}else{echo "The form is empty. You must fill the form to create a meeting.";}
 }?>
 
@@ -125,6 +244,19 @@ if($_SESSION['user_credential']==1 && !empty($_POST)){
   
 </head>
 <body>
+	<section class="top">
+    <div id="logo">   
+     <a href="../index.php"><img class ="logoLogin" src="../images/logoTransparent.png" height="120px"></a>
+    </div>
+    <div id="loggedIn">
+      <img src="../images/personIcon.png" height="20px;" >
+      <p><?php echo $_SESSION['user_name'];?> | <a href="../index.php?logout">Logout</a> </p>
+    </div>
+    
+	</section>
+	<section class="main">
+	    <h1>Edit a meeting</h1>
+	</section>
 	<section class="container">
 	<div id="invitePeopleForm">
 	<form action="inviteProcess.php" method="POST" name="invite">

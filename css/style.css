@@ -69,6 +69,7 @@ body {
 	float: right;
 	margin: -162px 60px 0px 0px;
 	width: 168px;
+
 }
 	
   
@@ -95,13 +96,34 @@ padding-right:4px;
   float:left;
   padding-left: 100px;
   }
-  #createMeeting h1, #calendar h1, #meetings h1{
+
+  .main h1{
+    font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
+  color:#fff;
+  font-size:28px;
+  text-decoration:none;
+  }
+  /*#createMeeting h1, #calendar h1, #meetings h1{
   font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
   color:#fff;
   font-size:28px;
   text-decoration:none;
   
+  }*/
+
+  #createMeetingForm{
+    width: 310px;
+  background: white;
+  border-radius: 3px;
+  -webkit-box-shadow: 0 0 200px rgba(255, 255, 255, 0.5), 0 1px 2px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 200px rgba(255, 255, 255, 0.5), 0 1px 2px rgba(0, 0, 0, 0.3);
   }
+
+  #createMeetingForm div{
+
+  margin-top:15px;
+  }
+
   #meetings {
   float:right;
   margin-right:80px;
@@ -246,7 +268,7 @@ input {
   font-size: 14px;
 }
 
-input[type=text], input[type=password] {
+input[type=text], input[type=password], input[type=date], input[type=number], input[type=time], select, textarea {
   margin: 5px;
   padding: 0 10px;
   width: 200px;

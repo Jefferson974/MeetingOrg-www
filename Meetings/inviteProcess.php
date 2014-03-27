@@ -9,7 +9,7 @@ echo "<br/> :  1";
   echo "----------user_name :". $_SESSION['user_name']."<br/>";
   echo "----------user_email :". $_SESSION['user_email']."<br/>" ;
   echo "----------user_credential:". $_SESSION['user_credential']."<br/>" ;  
-if(isset($_POST['invite'], $_SESSION['user_credential']) && $_SESSION['user_credential']==1){
+if(isset($_POST[], $_SESSION['user_credential']) && $_SESSION['user_credential']==1){
 echo "<br/> :  2";
 	$attendeeManager = new AttendeeManager($db);
 	// Clean user input
@@ -34,8 +34,10 @@ echo "<br/> :  2";
 echo "<br/> : 51";
 		// Add attendees to the meeting
 		if ($nb_errors == 0 && $_SESSION['user_credential']==1) {
-			$meetingId = (int) $_SESSION['lastInsertM'];
-			$attendeeManager->add($meetingId, $arrayEmails);	
+			$meetingId =  $_SESSION['lastInsertM'];
+			foreach ($meetingId as $value) {
+				$attendeeManager->add((int)$value, $arrayEmails);	
+			}
 			// redirect to index
 			$newURL="../index.php"; 
 			header('Location: '.$newURL);

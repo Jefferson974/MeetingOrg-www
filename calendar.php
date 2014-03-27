@@ -159,7 +159,7 @@
 <body>
 	<section class="top">
 		<div id="logo">		
-			<img class ="logoLogin" src="images/logoTransparent.png" height="120px">
+		<a href="index.php"><img class ="logoLogin" src="images/logoTransparent.png" height="120px"></a>
 		</div>
 		<div id="loggedIn">
 			<img src="images/personIcon.png" height="20px;" >
