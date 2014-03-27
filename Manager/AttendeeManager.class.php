@@ -50,14 +50,10 @@ class AttendeeManager{
 	}*/
 
 //**VERSIONRAPHAEL**
-	public function getMeetingsIdByEmailA($emailAttendee){
-		echo "...".$emailAttendee."...<br/>"; 
-		$q = $this->getDb()->query('SELECT meeting_id FROM jnct_users_meetings WHERE user_email='.$emailAttendee);
-		// $q->execute();
-		$result = $q->fetchAll(PDO::FETCH_COLUMN, 0);
-
-		//echo "string".$result."haha<br/>";
-		// echo "string".$result[0]."string";
+	public function getMeetingsIdByEmailA($emailAttendee){ 
+		$q = $this->getDb()->prepare("SELECT meeting_id FROM jnct_users_meetings WHERE user_email=?");
+		$q->execute(array($emailAttendee));
+		$result = $q->fetchAll(PDO::FETCH_COLUMN, 0); 
 		if(count($result)!=0){
 		return $result;
 		}else{
@@ -69,8 +65,8 @@ class AttendeeManager{
 		
 
 	public function getEmailsByMeetingId($meetingId){
-		$q = $this->_db->prepare('SELECT user_email FROM jnct_users_meetings WHERE meeting_id =$meetingId');
-		$q->execute();
+		$q = $this->_db->prepare("SELECT user_email FROM jnct_users_meetings WHERE meeting_id =?");
+		$q->execute(array($meetingId));
 		echo $q->errorInfo();
 		$result = $q->fetchAll(PDO::FETCH_COLUMN, 0);
 		return $result;

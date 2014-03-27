@@ -44,31 +44,18 @@
 
   //echo "string";
   if(isset($_SESSION['user_email'])) {
-      $userMail = $_SESSION['user_email'];
-      echo "--". $userMail."--<br/>";
+      $userMail = $_SESSION['user_email']; 
 
       $meetingManager = new MeetingManager($db);
       $attendeeManager = new AttendeeManager($db);
       $listMeetingsId= $attendeeManager->getMeetingsIdByEmailA($userMail);
-     // echo $listMeetingsId;
-
-      foreach ($listMeetingsId as $value) {
-         echo "+++". $value. "+++<br/>";
-      }
       $listMeetings = $meetingManager->getListByAttendee($listMeetingsId);
-      //echo "stringadsd";
+      
       if ($_SESSION['user_credential']) {
         $userId = $_SESSION['user_id'];
         $listMeetingsByOrg = $meetingManager->getListByOrg($userId);
         $listMeetings = array_merge((array)$listMeetings, (array)$listMeetingsByOrg);
-// echo "stringdddddddddd<br/>";
-// foreach ($listMeetings as  $value) {
-//     echo $value->getTitle();
-//     echo "org".$value->getOrganizerId()."-||";
-//     echo "id".$value->getAllDay();
-//      echo "repeat".$value->getRepeatM();
-// }
-
+ 
       }
   }  
   ?>
@@ -202,9 +189,10 @@
 	</section>
   <section class="container">
      <div id="calendarFields">
-      //Attempt to put a layer on each click with this:
+    <!--  //Attempt to put a layer on each click with this:
 
       <p>This is the main content. To display a lightbox click <a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='block';document.getElementById('fade').style.display='block'">here</a></p>
+      -->
       <div id="light" class="white_content">This is the lightbox content. <a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'">Close</a></div>
       <div id="fade" class="black_overlay"></div>
      </div>

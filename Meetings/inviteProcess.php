@@ -19,15 +19,15 @@ if(isset($_SESSION['user_credential']) && !empty($_POST) && $_SESSION['user_cred
 		echo "extract<br/>";
 		$arrayEmails = preg_split("/[\r\n,;]+/", $result, -1, PREG_SPLIT_NO_EMPTY);
 
-		$nb_errors=0;
+		$nb_errors=0; $cleanedEmails = array();
 		// Valide extracted inputs
 		foreach ($arrayEmails as $value) {
-			$value=trim($value);
-			foreach ($arrayEmails as $value) {
-				echo "emails".$value."end<br/>";
-			}
-			if(filter_var($value, FILTER_VALIDATE_EMAIL) === false){
-				echo "The format of this email ".$value." is not valid. ";
+			 
+			$cleanedEmails[]=trim($value);
+				 
+			
+			if(filter_var(trim($value), FILTER_VALIDATE_EMAIL) === false){
+				echo "The format of this email ".trim($value)." is not valid. ";
 				$nb_errors++;
 			}
 		}
@@ -36,11 +36,11 @@ if(isset($_SESSION['user_credential']) && !empty($_POST) && $_SESSION['user_cred
 		if ($nb_errors == 0 && $_SESSION['user_credential']==1) {
 			$meetingId =  $_SESSION['lastInsertM'];
 			foreach ($meetingId as $value) {
-				$attendeeManager->add((int)$value, $arrayEmails);	
+				$attendeeManager->add((int)$value, $cleanedEmails);	
 			} 
 			// redirect to index
-		//	$newURL="../index.php"; 
-		//	header('Location: '.$newURL);
+			$newURL="../index.php"; 
+			header('Location: '.$newURL);
 		}else include("invit.php"); // display invit.php and error messages.
 	}else echo "The format of the input is not valid."; include("invit.php");
 }?>
