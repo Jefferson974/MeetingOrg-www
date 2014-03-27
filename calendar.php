@@ -3,7 +3,7 @@
 <!--[if IE 7]> <html class="lt-ie9 lt-ie8" lang="en"> <![endif]-->
 <!--[if IE 8]> <html class="lt-ie9" lang="en"> <![endif]-->
 <!--[if gt IE 8]><!--> <html lang="en"> <!--<![endif]-->
-<html>
+ 
 <head>
   <style>
       .black_overlay{
@@ -125,13 +125,13 @@
         //inText += "<div>ID of the event : "+calEvent.id+"</div>";
         inText += "<div>Name of the event : "+calEvent.title+"</div>";
         inText += "<div>Day of the event : "+calEvent.start+"</div>";
-        // inText += "<div>Day when event ends : "+calEvent.end+"</div>";
+         inText += "<div>Day when event ends : "+calEvent.end+"</div>";
         inText += "<div>All day : "+calEvent.allDay+"</div>";
         inText += "<div>Description : "+calEvent.description+"</div>";
         inText += "<div>Place : "+calEvent.place+"</div>";
-        inText += "<div>Organizer ID : "+calEvent.organizerId+"</div>";
+       // inText += "<div>Organizer ID : "+calEvent.organizerId+"</div>";
         inText += "<div>Duration : "+calEvent.duration+"</div>";
-        inText += "<div>Repeated : "+calEvent.getRepeatM+"</div>";
+        inText += "<div>Repeated : "+calEvent.repeated+"</div>";
 
         document.getElementById('light').innerHTML=inText;
 
