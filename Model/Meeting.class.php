@@ -38,7 +38,7 @@ public function setStartTime($startTime){ if (is_string($startTime)) $this->_sta
 public function setAllDay($allDay){  if (is_string($allDay)) $this->_allDay = $allDay;  }
 public function setPlace($place){  if (is_string($place)) $this->_place = $place;  }
 public function setOrganizerId($organizer){  $this->_organizerId = (int) $organizer;  }
-public function setDuration($duration){   if ($duration <0){trigger_error('Duration needs to be a positive number.', E_USER_WARNING); return;} $this->_duration = (int)$duration;  }
+public function setDuration($duration){ if (is_string($duration)) $this->_duration = $duration;  }
 public function setDescription($description){ if (is_string($description))  $this->_description = $description;  }
 public function setRepeatM($repeat){ if (is_string($repeat)) $this->_repeatM = $repeat; }
 public function setColorM($color){ if(is_string($color)) $this->_colorM = $color ;}

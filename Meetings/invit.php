@@ -49,7 +49,8 @@ if($_SESSION['user_credential']==1 && !empty($_POST['create_submit'])){
 	   			$nbrErreurs++;
 	   		// Normal condition : Date and Time Check
 	   		}else{
-	   			$duration = $result['duration'];		   			
+	   			$duration = $result['duration'];	
+	   			echo $duration. "bouyaaa";	   			
 	   		}
 	   	
 	   	}elseif (empty($_POST['repeatM'])) {
