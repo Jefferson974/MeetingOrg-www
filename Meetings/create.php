@@ -46,7 +46,7 @@ if(isset($_SESSION['user_name'])){
       <div><label for="duration">Duration of the meeting :</label> <input type="time" name="duration" id="duration"></div>
       <div><label for="allDay">All day:</label> <input class="marginInput" type="checkbox" name="allDay" id="allDay" value="1"></div>
       <script>
-      var disable = false;
+     
       document.getElementById("allDay").onclick = function() {
         
     if(document.getElementById("allDay").checked ) {
