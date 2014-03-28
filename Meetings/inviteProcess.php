@@ -3,11 +3,12 @@
 require_once(__DIR__.'/../config/required.php');
 require_once(__DIR__."/../Manager/MeetingManager.class.php"); 
 require_once(__DIR__."/../Manager/AttendeeManager.class.php");  
-
+require_once('swift/lib/swift_required.php');
 //check the form input and user credential
  
 if(isset($_SESSION['user_credential']) && !empty($_POST) && $_SESSION['user_credential']==1){
 	$attendeeManager = new AttendeeManager($db);
+	$meetingManager  = new MeetingManager($db);
 	// Clean user input
 	$result = filter_input(INPUT_POST, 'attendees' , FILTER_SANITIZE_STRING);
 	if ($result == null) {
@@ -23,8 +24,7 @@ if(isset($_SESSION['user_credential']) && !empty($_POST) && $_SESSION['user_cred
 		// Valide extracted inputs
 		foreach ($arrayEmails as $value) {
 			 
-			$cleanedEmails[]=trim($value);
-				 
+			$cleanedEmails[]=trim($value);				 
 			
 			if(filter_var(trim($value), FILTER_VALIDATE_EMAIL) === false){
 				echo "The format of this email ".trim($value)." is not valid. ";
@@ -38,9 +38,14 @@ if(isset($_SESSION['user_credential']) && !empty($_POST) && $_SESSION['user_cred
 			foreach ($meetingId as $value) {
 				$attendeeManager->add((int)$value, $cleanedEmails);	
 			} 
+			echo "start";
+			$firstMeeting = $meetingManager->get($meetingId[0]);
+			sendMails($cleanedEmails, $firstMeeting);
+			echo "stop";
+
 			// redirect to index
-			$newURL="../index.php"; 
-			header('Location: '.$newURL);
+			//$newURL="../index.php"; 
+			//header('Location: '.$newURL);
 		}else include("invit.php"); // display invit.php and error messages.
 	}else echo "The format of the input is not valid."; include("invit.php");
 }?>

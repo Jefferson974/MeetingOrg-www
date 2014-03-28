@@ -116,7 +116,7 @@
         ],   color: 'black',     // an option!
          textColor: 'yellow'
         }],
-
+ 
       //Management of the click events.
       eventClick: function(calEvent, jsEvent, view) {
         document.getElementById('light').style.display='block';
@@ -125,13 +125,15 @@
         //inText += "<div>ID of the event : "+calEvent.id+"</div>";
         inText += "<div>Name of the event : "+calEvent.title+"</div>";
         inText += "<div>Day of the event : "+calEvent.start+"</div>";
-         inText += "<div>Day when event ends : "+calEvent.end+"</div>";
+        inText += "<div>Day when event ends : "+calEvent.end+"</div>";
         inText += "<div>All day : "+calEvent.allDay+"</div>";
         inText += "<div>Description : "+calEvent.description+"</div>";
         inText += "<div>Place : "+calEvent.place+"</div>";
        // inText += "<div>Organizer ID : "+calEvent.organizerId+"</div>";
         inText += "<div>Duration : "+calEvent.duration+"</div>";
         inText += "<div>Repeated : "+calEvent.repeated+"</div>";
+        inText += "<div><a href='Meetings/edit.php'> Edit meeting <a/></div>";
+        inText += "<div>Going ?<a href='Meetings/inviteProcess.php?answer='Yes''>Yes $nbsp<a/>|&nbsp<a href='Meetings/inviteProcess.php?answer='No''>No<a/></div>";
 
         document.getElementById('light').innerHTML=inText;
 
