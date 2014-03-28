@@ -1,6 +1,5 @@
 
 <?php
-
 require_once (__DIR__.'/../swift/lib/swift_required.php');
 
 

@@ -17,7 +17,7 @@ class MeetingManager{
 	// Add a meeting to the database
 	public function add(Meeting $m){
 		try {
-	    $q = $this->_db->prepare('INSERT INTO meetings SET title = :title, startDate = :startDate, finishDate = :finishDate, startTime = :startTime, allDay = :allDay, place = :place, organizerId= :organizerId, duration = :duration, description= :description, repeatM = :repeatM, colorM = :colorM');
+	    $q = $this->_db->prepare('INSERT INTO meetings SET title = :title, startDate = :startDate, finishDate = :finishDate, startTime = :startTime, allDay = :allDay, place = :place, organizerId= :organizerId, duration = :duration, description= :description, repeatM = :repeatM, colorM = :colorM, repeatIdList = :repeatIdList');
 	   
 	    $q->bindValue(':title', $m->getTitle(), PDO::PARAM_STR);
 	    $q->bindValue(':startDate', $m->getStartDate(), PDO::PARAM_STR);
@@ -30,6 +30,7 @@ class MeetingManager{
 	    $q->bindValue(':description', $m->getDescription(), PDO::PARAM_STR);
 	    $q->bindValue(':repeatM', $m->getRepeatM(), PDO::PARAM_STR);
 	    $q->bindValue(':colorM', $m->getColorM(), PDO::PARAM_STR);
+	    $q->bindValue(':repeatIdList', $m->getRepeatIdList(), PDO::PARAM_STR); 
 	     
 	    $q->execute(); 
 	    echo $q->errorInfo()[2];
@@ -44,10 +45,23 @@ class MeetingManager{
 		$this->_db->exec('DELETE FROM meetings WHERE id = '.$id);
 	}
 
+	// Delete a meeting using a array of ID
+	public function deleteByIdArrays($idList){
+		echo "string".$idList."--<br/>";
+		$idList = stripslashes($idList);
+		echo "string - Stripped".$idList."--<br/>";
+		$arrayl= unserialize(base64_decode($idList));
+		echo "arraystring".$arrayl."--<br/>";
+		foreach ($arrayl as $value) {
+			echo "--id :".$value."--<br/>";
+			//$this->delete($value);
+		}
+	}
+
 	//Edit a meeting using its ID
 	public function edit(Meeting $m){
-		$q = $this->_db->prepare('UPDATE meetings SET title = :title, startDate = :startDate, finishDate = :finishDate, startTime = :startTime, allDay = : allDay, place = :place, organizerId= :organizerId, duration = :duration, description= :description, repeatM = :repeatM, colorM = :colorM WHERE id = :id');
-  		$q->bindValue(':title', $m->title(), PDO::PARAM_STR);
+		$q = $this->_db->prepare('UPDATE meetings SET title = :title, startDate = :startDate, finishDate = :finishDate, startTime = :startTime, allDay = :allDay, place = :place, organizerId= :organizerId, duration = :duration, description= :description, repeatM = :repeatM, colorM = :colorM, repeatIdList = :repeatIdList WHERE id = :id');
+  		$q->bindValue(':title', $m->getTitle(), PDO::PARAM_STR);
 	    $q->bindValue(':startDate', $m->getStartDate(), PDO::PARAM_STR);
 	    $q->bindValue(':finishDate', $m->getFinishDate(), PDO::PARAM_STR);
 	    $q->bindValue(':startTime', $m->getStartTime(), PDO::PARAM_STR); 
@@ -57,11 +71,15 @@ class MeetingManager{
 	    $q->bindValue(':duration', $m->getDuration(), PDO::PARAM_STR);
 	    $q->bindValue(':description', $m->getDescription(), PDO::PARAM_STR);
 	    $q->bindValue(':repeatM', $m->getRepeatM(), PDO::PARAM_STR);
-	    $q->bindValue(':colorM', $m->getColorM(), PDO::PARAM_STR);
+	    $q->bindValue(':colorM', $m->getColorM(), PDO::PARAM_STR);	    
+	    $q->bindValue(':repeatIdList', $m->getRepeatIdList(), PDO::PARAM_STR); 
     	$q->bindValue(':id', $m->getId(), PDO::PARAM_INT);
+
     	$q->execute();
     	
 	    echo $q->errorInfo()[2];
+	    echo $q->errorInfo()[1];
+
 	}
 
 	//Retrieve meeting from its ID

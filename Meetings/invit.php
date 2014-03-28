@@ -49,8 +49,7 @@ if($_SESSION['user_credential']==1 && !empty($_POST['create_submit'])){
 	   			$nbrErreurs++;
 	   		// Normal condition : Date and Time Check
 	   		}else{
-	   			$duration = $result['duration'];	
-	   			echo $duration. "bouyaaa";	   			
+	   			$duration = $result['duration'];	   			
 	   		}
 	   	
 	   	}elseif (empty($_POST['repeatM'])) {
@@ -224,15 +223,22 @@ if($_SESSION['user_credential']==1 && !empty($_POST['create_submit'])){
 					break;
 			}
 
-
-			$_SESSION['lastInsertM'] = $lastInsertM;
-			foreach ($lastInsertM as $value) {
-				echo "id".$value."<br/>";
+			$_SESSION['lastInsertM'] = $lastInsertM; 
+			$repeatIdList = $lastInsertM;
+			foreach ($lastInsertM as $value) {				
+				$firstMeeting = $meetingManager->get($value);
+				array_shift($repeatIdList);
+				$arrayToString= mysql_real_escape_string(serialize($repeatIdList));
+				$firstMeeting->setRepeatIdList($arrayToString);
+				$meetingManager->edit($firstMeeting);
 			}
 
 		}
 				
-	}else{echo "The form is empty. You must fill the form to create a meeting.";}
+}else{
+	echo "The form is empty. You must fill the form to create a meeting.";}
+//	$newURL="../index.php"; 
+ 	//header('Location: '.$newURL);
 }?>
 
 <!DOCTYPE html>
@@ -256,7 +262,7 @@ if($_SESSION['user_credential']==1 && !empty($_POST['create_submit'])){
     
 	</section>
 	<section class="main">
-	    <h1>Edit a meeting</h1>
+	    <h1>Invite to your meeting</h1>
 	</section>
 	<section class="container">
 	<div id="invitePeopleForm">

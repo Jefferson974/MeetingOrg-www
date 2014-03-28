@@ -3,10 +3,10 @@
 require_once(__DIR__.'/../config/required.php');
 require_once(__DIR__."/../Manager/MeetingManager.class.php"); 
 require_once(__DIR__."/../Manager/AttendeeManager.class.php");  
-require_once('swift/lib/swift_required.php');
+require_once(__DIR__.'/mailsender.php');
 //check the form input and user credential
  
-if(isset($_SESSION['user_credential']) && !empty($_POST) && $_SESSION['user_credential']==1){
+if(isset($_SESSION['user_credential']) && !empty($_POST['invite_submit']) && $_SESSION['user_credential']==1){
 	$attendeeManager = new AttendeeManager($db);
 	$meetingManager  = new MeetingManager($db);
 	// Clean user input
@@ -17,7 +17,6 @@ if(isset($_SESSION['user_credential']) && !empty($_POST) && $_SESSION['user_cred
 		 header('Location: '.$newURL);
 	}elseif($result !== false){
 		// Extract email from the input
-		echo "extract<br/>";
 		$arrayEmails = preg_split("/[\r\n,;]+/", $result, -1, PREG_SPLIT_NO_EMPTY);
 
 		$nb_errors=0; $cleanedEmails = array();
@@ -38,14 +37,28 @@ if(isset($_SESSION['user_credential']) && !empty($_POST) && $_SESSION['user_cred
 			foreach ($meetingId as $value) {
 				$attendeeManager->add((int)$value, $cleanedEmails);	
 			} 
-			echo "start";
 			$firstMeeting = $meetingManager->get($meetingId[0]);
 			sendMails($cleanedEmails, $firstMeeting);
-			echo "stop";
 
 			// redirect to index
-			//$newURL="../index.php"; 
-			//header('Location: '.$newURL);
+			$newURL="../index.php"; 
+			header('Location: '.$newURL);
 		}else include("invit.php"); // display invit.php and error messages.
 	}else echo "The format of the input is not valid."; include("invit.php");
-}?>
+
+}elseif($_SESSION['user_credential']==1 && isset($_GET['answer']) && !empty($_GET['id'])){
+	$attendeeManager = new AttendeeManager($db);
+	$answer = filter_input(INPUT_GET, 'answer' , FILTER_SANITIZE_NUMBER_INT);
+	$id =  filter_input(INPUT_GET, 'id' , FILTER_SANITIZE_NUMBER_INT);
+	$attendeeManager->answer($id, $_SESSION['user_email'], $answer);
+
+	$newURL="../index.php"; 
+	 header('Location: '.$newURL);
+}else{
+ echo "arguments missing or wrong form<br/>"; 
+ echo $_SESSION['user_credential']."cred<br/>";
+ echo $_GET['answer']."answer<br/>";
+ echo $_GET['id']."id<br/>";
+
+}
+?>

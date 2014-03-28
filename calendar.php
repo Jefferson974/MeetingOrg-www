@@ -55,7 +55,6 @@
         $userId = $_SESSION['user_id'];
         $listMeetingsByOrg = $meetingManager->getListByOrg($userId);
         $listMeetings = array_merge((array)$listMeetings, (array)$listMeetingsByOrg);
- 
       }
   }  
   ?>
@@ -92,7 +91,12 @@
       eventSources: [{
         events: [ 
         <?php  
+
+         
           foreach($listMeetings as $value){
+            if($value->getOrganizerId()==$_SESSION['user_id']){
+              $answer = "FALSE";
+            }else $answer = "TRUE";
             echo 
                 "
               {
@@ -106,7 +110,8 @@
                    organizerId: '" .$value->getOrganizerId() ."',
                    duration :   '" .$value->getDuration()    ."',
                    repeated :   '" .$value->getRepeatM()     ."',
-                   color    :   '" .$value->getColorM()      ."'
+                   color    :   '" .$value->getColorM()      ."',
+                   edit     :   '" .$answer."'      
 
               },
                 ";
@@ -132,9 +137,15 @@
        // inText += "<div>Organizer ID : "+calEvent.organizerId+"</div>";
         inText += "<div>Duration : "+calEvent.duration+"</div>";
         inText += "<div>Repeated : "+calEvent.repeated+"</div>";
-        inText += "<div><a href='Meetings/edit.php'> Edit meeting <a/></div>";
-        inText += "<div>Going ?<a href='Meetings/inviteProcess.php?answer='Yes''>Yes $nbsp<a/>|&nbsp<a href='Meetings/inviteProcess.php?answer='No''>No<a/></div>";
-
+        inText += "<div>test  : "+calEvent.edit+"</div>";
+    
+        if (calEvent.edit=='FALSE') {
+        inText += "<div><a href=Meetings/edit.php?id="+calEvent.id+"> Edit meeting <a/></div>";
+        }else if(calEvent.edit=='TRUE'){
+        inText += "<div>Going ?<a href=\'Meetings/inviteProcess.php?answer=1&id="+calEvent.id+"\'>Yes &nbsp<a/>";
+        inText += "|&nbsp<a href=\'Meetings/inviteProcess.php?answer=0&id="+calEvent.id+"\'>No<a/></div>";
+         }
+         
         document.getElementById('light').innerHTML=inText;
 
         document.getElementById('light').onclick = function() {
@@ -173,28 +184,21 @@
 	</section>
 	<section class="main">
 	<div id="createMeeting">
-
-			<h1><a href="Meetings/create.php">Create Meeting</a> </h1>
-		</div>
+      <?php
+      if (isset($_SESSION['user_credential'])){
+        if($_SESSION['user_credential'] == 1){
+          echo "<h1><a href='Meetings/create.php'>Create Meeting</a> </h1>";
+        }
+      }
+	    ?>
+  	</div>
 		<div id="calendar">
 			<h1><a href="">Calendar</a> </h1>
 		</div>
-		<div id="meetings">
-			<h1><a href="">Meetings </a></h1>
-			<ul>
-				<li><a href="">Sample Meeting 1</a></li>
-				<li><a href="">Sample Meeting 2</a></li>
-				<li><a href="">Sample Meeting 3</a></li>
-				<li><a href="">Sample Meeting 4</a></li>			
-			</ul>
-		</div>
+		 
 	</section>
   <section class="container">
      <div id="calendarFields">
-    <!--  //Attempt to put a layer on each click with this:
-
-      <p>This is the main content. To display a lightbox click <a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='block';document.getElementById('fade').style.display='block'">here</a></p>
-      -->
       <div id="light" class="white_content">This is the lightbox content. <a href = "javascript:void(0)" onclick = "document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'">Close</a></div>
       <div id="fade" class="black_overlay"></div>
      </div>

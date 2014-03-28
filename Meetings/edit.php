@@ -1,178 +1,103 @@
 <?php
-
 require_once(__DIR__.'/../config/required.php');
 require_once(__DIR__."/../Manager/MeetingManager.class.php"); 
-require_once(__DIR__."/../Manager/AttendeesMeetingManager.class.php");  
-
-if(isset($_GET['id'])){
-  $id =  $_GET[ 'id'];
-  $meetingManager = new MeetingManager($db);
-  $meeting = $meetingManager->get($id);
+require_once(__DIR__."/../Manager/AttendeeManager.class.php");  
+if (isset($_SESSION['user_name'])) {
+   if(isset($_GET['id']) && $_SESSION['user_credential']==1){
+      $id =  $_GET[ 'id'];
+      $meetingManager = new MeetingManager($db);
+      $meeting = $meetingManager->get($id);
+      $_SESSION['idEditedMeeting'] = $id;
+   }else{
+      echo "Meeting non-specified or missing";
+   }
 }else{
-  echo "Meeting non-specified or missing";
+  $newURL="../index.php"; 
+  header('Location: '.$newURL);
 }
 ?>
 <!DOCTYPE html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>Edit a meeting</title>
-</head>
-<form action="editInvit.php" method="POST" name="MeetingEditing">
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="stylesheet" href="../css/style.css">
+    <title>Edit a meeting</title>
+  </head>
+  <body>
+    <section class="top">
+        <div id="logo">   
+         <a href="../index.php"><img class ="logoLogin" src="../images/logoTransparent.png" height="120px"></a>
+        </div>
+        <div id="loggedIn">
+          <img src="../images/personIcon.png" height="20px;" >
+          <p><?php echo $_SESSION['user_name'];?> | <a href="../index.php?logout">Logout</a> </p>
+        </div>        
+    </section>
+    <section class="main">
+      <div id="createMeeting">
+        <h1>Edit a meeting</h1>
+      </div>
+    </section>
+    <section class="container">
+      <div id="createMeetingForm"> 
+        <form action="editInvit.php" method="POST" name="MeetingEditing">
+          <h2>Edit Event</h2>
 
-<h2>Edit Event</h2>
+          <div><label for="title">Title of the meeting:</label> <input class="marginInput" type="text" id="title" name="title" value=<?php echo $meeting->getTitle(); ?> required></div> 
+          <div><label for="startDate">Start of the meeting :</label><input class="marginInput" type="date" id="startDate" name="startDate" value=<?php echo $meeting->getStartDate(); ?>  required></div>
+          <div><label for="StartTime">Time of the meeting :</label> <input type="time" name="startTime" id="startTime" value=<?php echo $meeting->getStartTime(); ?>></div>
+          <div><label for="duration">Duration of the meeting :</label> <input type="time" name="duration" id="duration" value=<?php echo $meeting->getDuration(); ?>></div>
+          <div><label for="allDay">All day:</label> <input class="marginInput" type="checkbox" name="allDay" id="allDay" value="1" <?php if($meeting->getallDay()==1)echo "checked=checked" ; ?>></div>  
+          <script>
+             
+                  document.getElementById("allDay").onclick = function() {                      
+                    if(document.getElementById("allDay").checked ) {
+                       document.getElementById("startTime").disabled = true;
+                       document.getElementById("duration").disabled = true;
+                       document.getElementById("startTime").title = "You have disabled it, to activate it, uncheck the 'all day box'.";
+                       document.getElementById("duration").title = "You have disabled it, to activate it, uncheck the 'all day box'.";                         
+                    }else  if(!document.getElementById("allDay").checked) {
+                       document.getElementById("startTime").disabled = false;
+                       document.getElementById("duration").disabled = false;
+                       document.getElementById("startTime").title = "";
+                       document.getElementById("duration").title = "";
+                    }
+                  }
 
+          </script>
+          <div>
+                <label for="repeatM" >Repeat :</label> <select class="marginInput" id="repeatM" name="repeatM">
+                          <option <?php if ($meeting->getRepeatM()=="None") echo "selected=\"selected\"";?> value="None"> None</option>
+                          <option <?php if ($meeting->getRepeatM()=="Daily") echo "selected=\"selected\"";?>value="Daily"> Daily</option>
+                          <option <?php if ($meeting->getRepeatM()=="Weekly") echo "selected=\"selected\"";?>value="Weekly"> Weekly</option>
+                          <option <?php if ($meeting->getRepeatM()=="Monthly") echo "selected=\"selected\"";?>value="Monthly"> Monthly</option>
+                          </select>
+                <label for="times"> times :</label><input type="number" name="repeatMTimes" value=<?php echo $meeting->getTitle(); ?> id="times" min="0">
+          </div>       
+          <div>
+                Event Color: <input type="radio" name="colorM" <?php if ($meeting->getColorM()=="None")echo "checked=\"checked\"";?> value="None">
+                             <input type="radio" name="colorM" <?php if ($meeting->getColorM()=="00FF00")echo "checked=\"checked\"";?> value="00FF00">
+                             <input type="radio" name="colorM" <?php if ($meeting->getColorM()=="0000FF")echo "checked=\"checked\"";?> value="0000FF">
+                             <input type="radio" name="colorM" <?php if ($meeting->getColorM()=="FFFF00")echo "checked=\"checked\"";?> value="FFFF00">
+                             <input type="radio" name="colorM" <?php if ($meeting->getColorM()=="00FFFF")echo "checked=\"checked\"";?> value="00FFFF">
+                             <input type="radio" name="colorM" <?php if ($meeting->getColorM()=="FF00FF")echo "checked=\"checked\"";?> value="FF00FF">
+                             <input type="radio" name="colorM" <?php if ($meeting->getColorM()=="C0C0C0")echo "checked=\"checked\"";?> value="C0C0C0">
+          </div>
+        
+          <label for="place">Location :</label> <input type="text" name="place" id="place" value=<?php echo $meeting->getPlace(); ?>  required>
 
+          <div>
+            <label for="description">Description :</label> 
+            <textarea id="description" name="description" cols="25" rows="5" >
+            <?php echo $meeting->getDescription(); ?> 
+            </textarea>
+          </div>
 
-<label for="title">Title:</label> <input type="text" id="title" name="title" value=<?php echo $meeting->getTitle(); ?> required> 
-<div>
-<label for="startDate">Start of meeting :</label><input type="date" id="startDate" name="startDate" value=<?php echo $meeting->getStartDate(); ?> required>  <input type="time" name="startTime" id="startTime" value=<?php echo $meeting->getStartTime(); ?> required>
-<label for="finishDate">End of meeting :</label><input type="date" id="finishDate" name="finishDate" value=<?php echo $meeting->getFinishDate(); ?> required>  <input type="time" name="finishTime" id="finishTime" value=<?php echo $meeting->getFinishTime(); ?> required>
-<label for="allDay">All day:</label> <input type="checkbox" name="allDay" id="allDay" value="TRUE" <?php if($meeting->getAllDay()){ echo "checked=\"checked\"";}?> >
-</div>
-  
+          <input type="submit" value ="Next" name="edit_submit">
 
-<div>
-<label for="repeatM" >Repeat :</label> <select id="repeatM" name="repeatM">
-<?php 
-switch ($meeting->getRepeatM()) {
-            case 'None':
-            ?> <option <?php echo "selected=\"selected\"";?> value="None"> None</option>
-               <option value="daily"> daily</option>
-               <option value="weekly"> weekly</option>
-               <option value="monthly"> monthly</option>
-        <?php break;
-
-            case 'daily': ?>
-               <option value="None"> None</option>
-               <option <?php echo "selected=\"selected\"";?> value="daily"> daily</option>
-               <option value="weekly"> weekly</option>
-               <option value="monthly"> monthly</option>
-        <?php break;
-
-            case 'weekly': ?>
-               <option value="None"> None</option>
-               <option <?php echo "selected=\"selected\"";?>  value="weekly"> weekly</option>
-               <option value="weekly"> weekly</option>
-               <option value="monthly"> monthly</option>
-        <?php break;
-
-             case 'monthly': ?>
-               <option value="None"> None</option>
-               <option value="daily"> daily</option>
-               <option value="weekly"> weekly</option>
-               <option <?php echo "selected=\"selected\"";?> value="monthly"> monthly</option>
-        <?php break;
-            
-            default: ?>
-              <option selected="selected" value="None"> none</option>
-              <option value="daily"> daily</option>
-              <option value="weekly"> weekly</option>
-              <option value="monthly"> monthly</option>
-        <?php
-              break;
-} ?>          
-          
-          </select>
-</div>
- 
-
-<div>
-Event Color:
-<?php 
-switch ($meeting->getColorM()) {
-            case 'None': ?>           
-             <input type="radio" name="colorM" <?php echo "checked=\"checked\"";?> value="None">
-             <input type="radio" name="colorM" value="00FF00">
-             <input type="radio" name="colorM" value="0000FF">
-             <input type="radio" name="colorM" value="FFFF00">
-             <input type="radio" name="colorM" value="00FFFF">
-             <input type="radio" name="colorM" value="FF00FF">
-             <input type="radio" name="colorM" value="C0C0C0">
-             <?php break;
-
-            case '00FF00': ?>
-             <input type="radio" name="colorM" value="None">
-             <input type="radio" name="colorM" <?php echo "checked=\"checked\"";?> value="00FF00">
-             <input type="radio" name="colorM" value="0000FF">
-             <input type="radio" name="colorM" value="FFFF00">
-             <input type="radio" name="colorM" value="00FFFF">
-             <input type="radio" name="colorM" value="FF00FF">
-             <input type="radio" name="colorM" value="C0C0C0">
-             <?php break;
-
-            case '0000FF': ?>
-              <input type="radio" name="colorM" value="None">
-             <input type="radio" name="colorM" value="00FF00">
-             <input type="radio" name="colorM" <?php echo "checked=\"checked\"";?> value="0000FF">
-             <input type="radio" name="colorM" value="FFFF00">
-             <input type="radio" name="colorM" value="00FFFF">
-             <input type="radio" name="colorM" value="FF00FF">
-             <input type="radio" name="colorM" value="C0C0C0">
-             <?php break;
-
-            case 'FFFF00': ?>
-              <input type="radio" name="colorM" value="None">
-             <input type="radio" name="colorM" value="00FF00">
-             <input type="radio" name="colorM" value="0000FF"> 
-             <input type="radio" name="colorM" <?php echo "checked=\"checked\"";?> value="FFFF00">
-             <input type="radio" name="colorM" value="00FFFF">
-             <input type="radio" name="colorM" value="FF00FF">
-             <input type="radio" name="colorM" value="C0C0C0">
-             <?php break;
-
-            case '00FFFF': ?>
-             <input type="radio" name="colorM" value="None">
-             <input type="radio" name="colorM" value="00FF00">
-             <input type="radio" name="colorM" value="0000FF">
-             <input type="radio" name="colorM" value="FFFF00"> 
-             <input type="radio" name="colorM" <?php echo "checked=\"checked\"";?> value="00FFFF">
-             <input type="radio" name="colorM" value="FF00FF">
-             <input type="radio" name="colorM" value="C0C0C0">
-             <?php break;
-
-            case 'FF00FF': ?>
-             <input type="radio" name="colorM" value="None">
-             <input type="radio" name="colorM" value="00FF00">
-             <input type="radio" name="colorM" value="0000FF">
-             <input type="radio" name="colorM" value="FFFF00">
-             <input type="radio" name="colorM" value="00FFFF">
-             <input type="radio" name="colorM" value="FF00FF"> 
-             <input type="radio" name="colorM" <?php echo "checked=\"checked\"";?> value="FF00FF">
-             <input type="radio" name="colorM" value="C0C0C0">
-             <?php break;
-
-            case 'C0C0C0': ?>
-            <input type="radio" name="colorM" value="None">
-             <input type="radio" name="colorM" value="00FF00">
-             <input type="radio" name="colorM" value="0000FF">
-             <input type="radio" name="colorM" value="FFFF00">
-             <input type="radio" name="colorM" value="00FFFF">
-             <input type="radio" name="colorM" value="FF00FF"> 
-             <input type="radio" name="colorM" <?php echo "checked=\"checked\"";?> value="C0C0C0">
-            <?php break;
-            
-            default: ?>
-            <input type="radio" name="colorM"  checked="checked"  value="None">
-             <input type="radio" name="colorM" value="00FF00">
-             <input type="radio" name="colorM" value="0000FF">
-             <input type="radio" name="colorM" value="FFFF00">
-             <input type="radio" name="colorM" value="00FFFF">
-             <input type="radio" name="colorM" value="FF00FF">
-             <input type="radio" name="colorM" value="C0C0C0">
-       <?php       break;
-} ?>          
-</div>
-
-
-<label for="place">Location :</label> <input type="text" name="place" id="place" value=<?php echo $meeting->getPlace(); ?>  required>
-
-
-<div>
-<label for="description">Description :</label> 
-<textarea id="description" name="description" cols="25" rows="5" >
-<?php echo $meeting->getDescription(); ?> 
-</textarea>
-</div>
-<input type="submit" value = "Next">
-</form>
+        </form>
+      <div/>
+    <section/>
+  </body>
+</html>
