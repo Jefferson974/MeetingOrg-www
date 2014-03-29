@@ -73,13 +73,17 @@ if(isset($_SESSION['user_name'])){
                
 
               <div>
-                Event Color: <input  type="radio" name="colorM"  checked="checked"  value="None">
-                             <input type="radio" name="colorM" value="00FF00">
-                             <input type="radio" name="colorM" value="0000FF">
-                             <input type="radio" name="colorM" value="FFFF00">
-                             <input type="radio" name="colorM" value="00FFFF">
-                             <input type="radio" name="colorM" value="FF00FF">
-                             <input type="radio" name="colorM" value="C0C0C0">
+                Event Color: <select name="colorpicker">
+
+                <option name="colorM"   style="background:white" value="000000">
+                            <option name="colorM"   style="background:#00FF13" value="00FF13">Green</option>
+                            <option name="colorM"   style="background:#CE7EED" value="CE7EED">Violet</option>
+                            <option name="colorM"   style="background:#F73B7A" value="F73B7A">Pink</option>
+                            <option name="colorM"   style="background:#59474D" value="59474D">Dark Violet</option>
+                            <option name="colorM"   style="background:#FFB01C" value="FFB01C">Orange</option>
+                            <option name="colorM"   style="background:#000000" value="000000">Black</option>
+             </select>
+
               </div>
 
 

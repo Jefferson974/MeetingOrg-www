@@ -110,7 +110,7 @@ $db = new PDO('mysql:host=localhost;dbname=test', 'root', '', array(PDO::ATTR_ER
 
    echo "<br><br><br><br><br>affichons l'ensemble des meetings: ";
    echo $modify->id()."<br>";
-   echo "fucktarace";
+  
 
 	for($i=0;$i<7;++$i)
 echo $organizer->getAllMeetings()[$i]->displayMeetingInfo()."<br>";
