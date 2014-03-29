@@ -18,11 +18,8 @@ if($_SESSION['user_credential']==1 && !empty($_POST['create_submit'])){
 		'place' => FILTER_SANITIZE_STRING,
 		'description' => FILTER_SANITIZE_STRING,
 	);
-	$result = filter_input_array(INPUT_POST, $options);
+	$result = filter_input_array(INPUT_POST, $options); 
 
-	// foreach ($result  as $value) {
-	// 	echo "<br/>".$value;
-	// }
 	//check if the form is sent
 	if($result != null) { 	   
 	    $nbrErreurs = 0;	
@@ -68,11 +65,12 @@ if($_SESSION['user_credential']==1 && !empty($_POST['create_submit'])){
 	    }
 	    //check negative number
 	    if ($result['repeatMTimes']<0) {
-	    	$result['repeatMTimes'] = 0;
+	    	$result['repeatMTimes'] = 0;	
 	    }
 
 		// array of data to create a meeting's object
 	   	$userId = $_SESSION['user_id'];
+	   	$description = trim($result['description']);
 	    if($nbrErreurs == 0){
 		     $dataMeeting = array(
 			'title' => $result['title'],
@@ -83,10 +81,10 @@ if($_SESSION['user_credential']==1 && !empty($_POST['create_submit'])){
 			'repeatMTimes' => $result['repeatMTimes'],
 			'colorM' => $result['colorM'],
 			'place' => $result['place'],
-			'description' => $result['description'],
+			'description' => $description,
 			'duration' => $duration,
 			'organizerId' => $userId,
-			);
+			); 
 
 			// add new meeting and retrieve the id meeting for invit form.
 			$meetingManager = new MeetingManager($db);			
@@ -94,8 +92,7 @@ if($_SESSION['user_credential']==1 && !empty($_POST['create_submit'])){
 			$lastInsertM = array();
 
 			switch ($meeting->getRepeatM()) {
-				case 'None':
-				echo "None";
+				case 'None': 
 					if($result['allDay']!=1){
 						//retrieve time variables 
 						$time = preg_split("/[:]+/", $meeting->getStartTime(), -1, PREG_SPLIT_NO_EMPTY);
@@ -110,13 +107,12 @@ if($_SESSION['user_credential']==1 && !empty($_POST['create_submit'])){
 						//Set finish date
 						$meeting->setFinishDate($finishDate->format('Y-m-d G:i'));
 					}else $meeting->setFinishDate($result['startDate']); 
-					//add meeting
+					//add meeting 
 					$meetingManager->add($meeting);
 					$lastInsertM[] = $db->lastInsertId();
 					break;
 
-				case 'Daily': 
-					echo "daily";
+				case 'Daily':  
 					for( $i = 0; $i <= $result['repeatMTimes']; $i++){
 						if($result['allDay']!=1){
 							//-----set new finishDate------	
@@ -142,8 +138,7 @@ if($_SESSION['user_credential']==1 && !empty($_POST['create_submit'])){
 					}
 					break;
 
-				case 'Weekly':
-				echo "weekly";
+				case 'Weekly': 
 					for( $i = 0; $i <= $result['repeatMTimes']; $i++){
 						if($result['allDay']!=1){
 							//-----set new finishDate------	
@@ -170,8 +165,7 @@ if($_SESSION['user_credential']==1 && !empty($_POST['create_submit'])){
 					}
 					break;
 				
-				case 'Monthly':
-				echo "Monthly";
+				case 'Monthly': 
 					for( $i = 0; $i <= $result['repeatMTimes']; $i++){
 						if($result['allDay']!=1){
 							//-----set new finishDate------	
@@ -199,8 +193,7 @@ if($_SESSION['user_credential']==1 && !empty($_POST['create_submit'])){
 					break;
 				
 				
-				default:
-					echo "default";
+				default: 
 					if($result['allDay']!=1){
 						//retrieve time variables
 						 
@@ -225,20 +218,21 @@ if($_SESSION['user_credential']==1 && !empty($_POST['create_submit'])){
 
 			$_SESSION['lastInsertM'] = $lastInsertM; 
 			$repeatIdList = $lastInsertM;
-			foreach ($lastInsertM as $value) {				
+			foreach ($lastInsertM as $value) {				 	
 				$firstMeeting = $meetingManager->get($value);
-				array_shift($repeatIdList);
-				$arrayToString= mysql_real_escape_string(serialize($repeatIdList));
+				array_shift($repeatIdList);  
+				$arrayToString= base64_encode(serialize($repeatIdList)); 
 				$firstMeeting->setRepeatIdList($arrayToString);
 				$meetingManager->edit($firstMeeting);
 			}
 
-		}
+		}else 
+	}
 				
 }else{
-	echo "The form is empty. You must fill the form to create a meeting.";}
-//	$newURL="../index.php"; 
- 	//header('Location: '.$newURL);
+	echo "The form is empty. You must fill the form to create a meeting.";
+	$newURL="../index.php"; 
+	header('Location: '.$newURL);
 }?>
 
 <!DOCTYPE html>

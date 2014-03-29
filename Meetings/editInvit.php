@@ -68,8 +68,10 @@ if($_SESSION['user_credential']==1 && !empty($_POST["edit_submit"]) && !empty($_
 	    }
 
 		// array of data to create a meeting's object
-		$meetingId= $_SESSION['idEditedMeeting'];
+$meetingId= $_SESSION['idEditedMeeting']; 
 	   	$userId = $_SESSION['user_id'];
+
+	   	$description = trim($result['description']);
 	    if($nbrErreurs == 0){
 		     $dataMeeting = array(
 			'title' => $result['title'],
@@ -80,7 +82,7 @@ if($_SESSION['user_credential']==1 && !empty($_POST["edit_submit"]) && !empty($_
 			'repeatMTimes' => $result['repeatMTimes'],
 			'colorM' => $result['colorM'],
 			'place' => $result['place'],
-			'description' => $result['description'],
+			'description' => $description,
 			'duration' => $duration,
 			'organizerId' => $userId,
 			);
@@ -90,9 +92,126 @@ if($_SESSION['user_credential']==1 && !empty($_POST["edit_submit"]) && !empty($_
 			$meeting = new Meeting($dataMeeting);
 			$lastInsertM = array();
 
+			$attendeeManager = new AttendeeManager($db);
+			$emailList = $attendeeManager->getEmailsByMeetingId($meetingId);
+			//delete any meeting from the repeatIdList and the current meeting 
+			$m1= $meetingManager->get($meetingId);
+			$idList = $m1->getRepeatIdList();
+			$meetingManager->deleteByIdArrays($idList);
+			$meetingManager->delete($meetingId);
+
 			switch ($meeting->getRepeatM()) {
-				case 'None':
-				echo "None";
+				case 'None': 
+					if($result['allDay']!=1){
+						//retrieve time variables 
+						$time = preg_split("/[:]+/", $meeting->getStartTime(), -1, PREG_SPLIT_NO_EMPTY);
+						$durationToAdd = preg_split("/[:]+/", $duration, -1, PREG_SPLIT_NO_EMPTY);
+						//set DateTime
+				 
+						$finishDate = new DateTime($meeting->getStartDate());
+						$finishDate->setTime((int)$time[0], (int)$time[1]);
+						//add duration
+						$finishDate->add(new DateInterval("PT".(int)$durationToAdd[0]."H".(int)$durationToAdd[1]."M"));
+						 
+						//Set finish date
+						$meeting->setFinishDate($finishDate->format('Y-m-d G:i'));
+					}else $meeting->setFinishDate($result['startDate']); 
+					 
+
+					//add meeting
+					$meeting->setId($meetingId);
+					$meetingManager->add($meeting);
+					$lastInsertM[] = $meetingId;
+					break;
+
+				case 'Daily':  
+					$meeting->setId($meetingId);
+					for( $i = 0; $i <= $result['repeatMTimes']; $i++){
+						if($result['allDay']!=1){
+							//-----set new finishDate------	
+							//retrieve time variables
+							$time = preg_split("/[:]+/", $meeting->getStartTime(), -1, PREG_SPLIT_NO_EMPTY);
+							$durationToAdd = preg_split("/[:]+/", $duration, -1, PREG_SPLIT_NO_EMPTY);
+							//set DateTime
+							$finishDate = new DateTime($meeting->getStartDate());
+							$finishDate->setTime((int)$time[0], (int)$time[1]);
+							//add duration
+							$finishDate->add(new DateInterval("PT".(int)$durationToAdd[0]."H".(int)$durationToAdd[1]."M"));
+							$meeting->setFinishDate($finishDate->format('Y-m-d G:i'));
+						}else $meeting->setFinishDate($meeting->getStartDate());
+
+						
+						//add meeting
+						$meetingManager->add($meeting);
+						$lastInsertM[] = $db->lastInsertId();
+						$meeting->setId("");
+
+						//-----set new StartDate------						 
+						$startDate = new DateTime($meeting->getStartDate());
+						$startDate->add(new DateInterval('P1D'));
+						$meeting->setStartDate($startDate->format('Y-m-d'));
+					}
+					break;
+
+				case 'Weekly': 
+					$meeting->setId($meetingId);
+					for( $i = 0; $i <= $result['repeatMTimes']; $i++){
+						if($result['allDay']!=1){
+							//-----set new finishDate------	
+							//retrieve time variables
+							$time = preg_split("/[:]+/", $meeting->getStartTime(), -1, PREG_SPLIT_NO_EMPTY);
+							$durationToAdd = preg_split("/[:]+/", $duration, -1, PREG_SPLIT_NO_EMPTY);
+							//set DateTime
+							$finishDate = new DateTime($meeting->getStartDate());
+							$finishDate->setTime((int)$time[0], (int)$time[1]);
+							//add duration
+							$finishDate->add(new DateInterval("PT".(int)$durationToAdd[0]."H".(int)$durationToAdd[1]."M"));
+							$meeting->setFinishDate($finishDate->format('Y-m-d G:i'));
+						}else $meeting->setFinishDate($meeting->getStartDate());
+ 
+						//add meeting
+						$meetingManager->add($meeting);
+						$lastInsertM[] = (int) $db->lastInsertId();
+
+
+						//-----set new StartDate------						 
+						$startDate = new DateTime($meeting->getStartDate());
+						$startDate->add(new DateInterval('P1W'));
+						$meeting->setStartDate($startDate->format('Y-m-d'));
+					}
+					break;
+				
+				case 'Monthly': 
+					$meeting->setId($meetingId);
+					for( $i = 0; $i <= $result['repeatMTimes']; $i++){
+						if($result['allDay']!=1){
+							//-----set new finishDate------	
+							//retrieve time variables
+							$time = preg_split("/[:]+/", $meeting->getStartTime(), -1, PREG_SPLIT_NO_EMPTY);
+							$durationToAdd = preg_split("/[:]+/", $duration, -1, PREG_SPLIT_NO_EMPTY);
+							//set DateTime
+							$finishDate = new DateTime($meeting->getStartDate());
+							$finishDate->setTime((int)$time[0], (int)$time[1]);
+							//add duration
+							$finishDate->add(new DateInterval("PT".(int)$durationToAdd[0]."H".(int)$durationToAdd[1]."M"));
+							$meeting->setFinishDate($finishDate->format('Y-m-d G:i'));
+						}else $meeting->setFinishDate($meeting->getStartDate());
+
+					 
+						//add meeting
+						$meetingManager->add($meeting);
+						$lastInsertM[] = (int) $db->lastInsertId();
+
+
+						//-----set new StartDate------						 
+						$startDate = new DateTime($meeting->getStartDate());
+						$startDate->add(new DateInterval('P1M'));
+						$meeting->setStartDate($startDate->format('Y-m-d'));
+					}
+					break;
+				
+				
+				default: 
 					if($result['allDay']!=1){
 						//retrieve time variables 
 						$time = preg_split("/[:]+/", $meeting->getStartTime(), -1, PREG_SPLIT_NO_EMPTY);
@@ -111,178 +230,39 @@ if($_SESSION['user_credential']==1 && !empty($_POST["edit_submit"]) && !empty($_
 					//delete any meeting from the repeatIdList
 					$m1= $meetingManager->get($meetingId);
 					$idList = $m1->getRepeatIdList();
-
-						echo "<br/>
-						idlist".$idList."--++++<br/>";
 					$meetingManager->deleteByIdArrays($idList);
-					
-
 
 					//add meeting
 					$meeting->setId($meetingId);
 					$meetingManager->edit($meeting);
-						$lastInsertM[] = (int) $meeting->getId();
-						echo "baba". $lastInsertM[0]."adad";
-					break;
-
-				case 'Daily': 
-					echo "daily";
-					for( $i = 0; $i <= $result['repeatMTimes']; $i++){
-						if($result['allDay']!=1){
-							//-----set new finishDate------	
-							//retrieve time variables
-							$time = preg_split("/[:]+/", $meeting->getStartTime(), -1, PREG_SPLIT_NO_EMPTY);
-							$durationToAdd = preg_split("/[:]+/", $duration, -1, PREG_SPLIT_NO_EMPTY);
-							//set DateTime
-							$finishDate = new DateTime($meeting->getStartDate());
-							$finishDate->setTime((int)$time[0], (int)$time[1]);
-							//add duration
-							$finishDate->add(new DateInterval("PT".(int)$durationToAdd[0]."H".(int)$durationToAdd[1]."M"));
-							$meeting->setFinishDate($finishDate->format('Y-m-d G:i'));
-						}else $meeting->setFinishDate($meeting->getStartDate());
-
-						//delete any meeting from the repeatIdList
-						$m1= $meetingManager->get($meetingId);
-						$idList = $m1->getRepeatIdList();
-						echo "idlist".$idList."--<br/>";
-						$meetingManager->deleteByIdArrays($idList);
-
-						//add meeting
-						$meetingManager->add($meeting);
-						$lastInsertM[] = $db->lastInsertId();
-
-						//-----set new StartDate------						 
-						$startDate = new DateTime($meeting->getStartDate());
-						$startDate->add(new DateInterval('P1D'));
-						$meeting->setStartDate($startDate->format('Y-m-d'));
-					}
-					break;
-
-				case 'Weekly':
-				echo "weekly";
-					for( $i = 0; $i <= $result['repeatMTimes']; $i++){
-						if($result['allDay']!=1){
-							//-----set new finishDate------	
-							//retrieve time variables
-							$time = preg_split("/[:]+/", $meeting->getStartTime(), -1, PREG_SPLIT_NO_EMPTY);
-							$durationToAdd = preg_split("/[:]+/", $duration, -1, PREG_SPLIT_NO_EMPTY);
-							//set DateTime
-							$finishDate = new DateTime($meeting->getStartDate());
-							$finishDate->setTime((int)$time[0], (int)$time[1]);
-							//add duration
-							$finishDate->add(new DateInterval("PT".(int)$durationToAdd[0]."H".(int)$durationToAdd[1]."M"));
-							$meeting->setFinishDate($finishDate->format('Y-m-d G:i'));
-						}else $meeting->setFinishDate($meeting->getStartDate());
-
-						//delete any meeting from the repeatIdList
-						$m1= $meetingManager->get($meetingId);
-						$idList = $m1->getRepeatIdList();
-						$meetingManager->deleteByIdArrays($idList);
-					
-						//add meeting
-						$meetingManager->add($meeting);
-						$lastInsertM[] = (int) $db->lastInsertId();
-
-
-						//-----set new StartDate------						 
-						$startDate = new DateTime($meeting->getStartDate());
-						$startDate->add(new DateInterval('P1W'));
-						$meeting->setStartDate($startDate->format('Y-m-d'));
-					}
-					break;
-				
-				case 'Monthly':
-				echo "Monthly";
-					for( $i = 0; $i <= $result['repeatMTimes']; $i++){
-						if($result['allDay']!=1){
-							//-----set new finishDate------	
-							//retrieve time variables
-							$time = preg_split("/[:]+/", $meeting->getStartTime(), -1, PREG_SPLIT_NO_EMPTY);
-							$durationToAdd = preg_split("/[:]+/", $duration, -1, PREG_SPLIT_NO_EMPTY);
-							//set DateTime
-							$finishDate = new DateTime($meeting->getStartDate());
-							$finishDate->setTime((int)$time[0], (int)$time[1]);
-							//add duration
-							$finishDate->add(new DateInterval("PT".(int)$durationToAdd[0]."H".(int)$durationToAdd[1]."M"));
-							$meeting->setFinishDate($finishDate->format('Y-m-d G:i'));
-						}else $meeting->setFinishDate($meeting->getStartDate());
-
-						//delete any meeting from the repeatIdList
-						$m1= $meetingManager->get($meetingId);
-						$idList = $m1->getRepeatIdList();
-						$meetingManager->deleteByIdArrays($idList);
-					
-						//add meeting
-						$meetingManager->add($meeting);
-						$lastInsertM[] = (int) $db->lastInsertId();
-
-
-						//-----set new StartDate------						 
-						$startDate = new DateTime($meeting->getStartDate());
-						$startDate->add(new DateInterval('P1M'));
-						$meeting->setStartDate($startDate->format('Y-m-d'));
-					}
-					break;
-				
-				
-				default:
-					echo "default";
-					if($result['allDay']!=1){
-						//retrieve time variables
-						 
-						$time = preg_split("/[:]+/", $meeting->getStartTime(), -1, PREG_SPLIT_NO_EMPTY);
-						$durationToAdd = preg_split("/[:]+/", $duration, -1, PREG_SPLIT_NO_EMPTY);
-						//set DateTime
-					 
-						$finishDate = new DateTime($meeting->getStartDate());
-						$finishDate->setTime((int)$time[0], (int)$time[1]);
-						//add duration
-						$finishDate->add(new DateInterval("PT".(int)$durationToAdd[0]."H".(int)$durationToAdd[1]."M"));
-						 
-						//Set finish date
-						$meeting->setFinishDate($finishDate->format('Y-m-d G:i'));
-					}else $meeting->setFinishDate($result['startDate']);
-				 
-					//delete any meeting from the repeatIdList
-					$m1= $meetingManager->get($meetingId);
-					$idList = $m1->getRepeatIdList();
-					$meetingManager->deleteByIdArrays($idList);
-					
-					//add meeting
-					$meetingManager->add($meeting);
-					$lastInsertM[] = (int) $db->lastInsertId();
-					break;
+					$lastInsertM[] = $meetingId;
 			}
 
 
-			$_SESSION['lastInsertM'] = $meetingId;
-			$repeatIdList = $lastInsertM;
-			echo "string".$lastInsertM[0]. "string<br/>";
-			foreach($lastInsertM as $value) {		
-				echo "**id--". $value. "--<br/>";		
+			$_SESSION['lastInsertM'] = $lastInsertM;
+			$repeatIdList = $lastInsertM; 
+			foreach($lastInsertM as $value) {	 	
 				$firstMeeting = $meetingManager->get($value);
-				array_shift($repeatIdList);
-				$arrayToString= base64_encode(serialize($repeatIdList));
+				array_shift($repeatIdList); 
+				$arrayToString= base64_encode(serialize($repeatIdList)); 
 				$firstMeeting->setRepeatIdList($arrayToString);
 				$meetingManager->edit($firstMeeting);
 			} 		
-			$attendeeManager = new AttendeeManager($db);
-			$emailList = $attendeeManager->getEmailsByMeetingId($meetingId);
 			
 
 		}
 				
 	}else{
 		echo "Meeting ID missing or wrong credential";
-		// $newURL="../index.php"; 
- 	// 	header('Location: '.$newURL);
+		$newURL="../index.php"; 
+ 		header('Location: '.$newURL);
 	}
 
 
 }else {
 	echo "The form is empty. You must fill the form to edit a meeting.";
-	// $newURL="../index.php"; 
- // 	header('Location: '.$newURL);
+	$newURL="../index.php"; 
+ 	header('Location: '.$newURL);
 }
 ?>
 
@@ -318,7 +298,6 @@ if($_SESSION['user_credential']==1 && !empty($_POST["edit_submit"]) && !empty($_
 				List of attendees
 				<textarea name="attendees" cols="25" rows="5">
 					<?php
-					//echo $emailList['0'] ;
 					foreach ($emailList as $value) {
 						echo $value.", ";
 					}?>

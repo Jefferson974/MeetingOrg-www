@@ -4,12 +4,13 @@ require_once(__DIR__.'/../config/required.php');
 require_once(__DIR__."/../Manager/MeetingManager.class.php"); 
 require_once(__DIR__."/../Manager/AttendeeManager.class.php");  
 require_once(__DIR__.'/mailsender.php');
-//check the form input and user credential
- 
+
+//check the form input and user credential 
 if(isset($_SESSION['user_credential']) && !empty($_POST['invite_submit']) && $_SESSION['user_credential']==1){
 	$attendeeManager = new AttendeeManager($db);
 	$meetingManager  = new MeetingManager($db);
-	// Clean user input
+
+	// Clean user input 
 	$result = filter_input(INPUT_POST, 'attendees' , FILTER_SANITIZE_STRING);
 	if ($result == null) {
 		// redirect to index without inviting people
@@ -20,21 +21,20 @@ if(isset($_SESSION['user_credential']) && !empty($_POST['invite_submit']) && $_S
 		$arrayEmails = preg_split("/[\r\n,;]+/", $result, -1, PREG_SPLIT_NO_EMPTY);
 
 		$nb_errors=0; $cleanedEmails = array();
-		// Valide extracted inputs
-		foreach ($arrayEmails as $value) {
-			 
-			$cleanedEmails[]=trim($value);				 
-			
-			if(filter_var(trim($value), FILTER_VALIDATE_EMAIL) === false){
-				echo "The format of this email ".trim($value)." is not valid. ";
-				$nb_errors++;
+		// Valide extracted inputs 
+		foreach ($arrayEmails as $value) { 
+			if (trim($value)!=null)	{  
+				if(filter_var(trim($value), FILTER_VALIDATE_EMAIL) === false){
+					echo "The format of this email ".trim($value)." is not valid. ";
+					$nb_errors++;
+				}else $cleanedEmails[]=trim($value);	
 			}
-		}
- 
-		// Add attendees to the meeting
+		} 
+
 		if ($nb_errors == 0 && $_SESSION['user_credential']==1) {
 			$meetingId =  $_SESSION['lastInsertM'];
-			foreach ($meetingId as $value) {
+
+			foreach($meetingId as $value) { 
 				$attendeeManager->add((int)$value, $cleanedEmails);	
 			} 
 			$firstMeeting = $meetingManager->get($meetingId[0]);
@@ -43,22 +43,30 @@ if(isset($_SESSION['user_credential']) && !empty($_POST['invite_submit']) && $_S
 			// redirect to index
 			$newURL="../index.php"; 
 			header('Location: '.$newURL);
-		}else include("invit.php"); // display invit.php and error messages.
-	}else echo "The format of the input is not valid."; include("invit.php");
+		}else{
+			echo "il y a des errurs";
+		//include("invit.php"); // display invit.php and error messages.
+		}
+	}else echo "The format of the input is not valid."; //	include("invit.php");
 
 }elseif($_SESSION['user_credential']==1 && isset($_GET['answer']) && !empty($_GET['id'])){
 	$attendeeManager = new AttendeeManager($db);
 	$answer = filter_input(INPUT_GET, 'answer' , FILTER_SANITIZE_NUMBER_INT);
 	$id =  filter_input(INPUT_GET, 'id' , FILTER_SANITIZE_NUMBER_INT);
-	$attendeeManager->answer($id, $_SESSION['user_email'], $answer);
-
+	$attendeeManager->answer($id, $_SESSION['user_email'], $answer); 
 	$newURL="../index.php"; 
 	 header('Location: '.$newURL);
 }else{
- echo "arguments missing or wrong form<br/>"; 
- echo $_SESSION['user_credential']."cred<br/>";
- echo $_GET['answer']."answer<br/>";
- echo $_GET['id']."id<br/>";
+	 echo "arguments missing or wrong form<br/>"; 
+	 echo $_SESSION['user_credential']."cred<br/>";
+	 echo $_GET['answer']."answer<br/>";
+	 echo $_GET['id']."id<br/>";
 
 }
 ?>
+<html>
+<body>
+	
+</body>
+</html>
+

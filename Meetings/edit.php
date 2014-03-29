@@ -36,7 +36,7 @@ if (isset($_SESSION['user_name'])) {
     </section>
     <section class="main">
       <div id="createMeeting">
-        <h1>Edit a meeting</h1>
+        <h1>Edit a meeting</h1> <?php echo $meeting->getTitle(); ?>
       </div>
     </section>
     <section class="container">
@@ -44,10 +44,10 @@ if (isset($_SESSION['user_name'])) {
         <form action="editInvit.php" method="POST" name="MeetingEditing">
           <h2>Edit Event</h2>
 
-          <div><label for="title">Title of the meeting:</label> <input class="marginInput" type="text" id="title" name="title" value=<?php echo $meeting->getTitle(); ?> required></div> 
-          <div><label for="startDate">Start of the meeting :</label><input class="marginInput" type="date" id="startDate" name="startDate" value=<?php echo $meeting->getStartDate(); ?>  required></div>
-          <div><label for="StartTime">Time of the meeting :</label> <input type="time" name="startTime" id="startTime" value=<?php echo $meeting->getStartTime(); ?>></div>
-          <div><label for="duration">Duration of the meeting :</label> <input type="time" name="duration" id="duration" value=<?php echo $meeting->getDuration(); ?>></div>
+          <div><label for="title">Title of the meeting:</label> <input class="marginInput" type="text" id="title" name="title" value="<?php echo $meeting->getTitle(); ?>" required></div> 
+          <div><label for="startDate">Start of the meeting :</label><input class="marginInput" type="date" id="startDate" name="startDate" value="<?php echo $meeting->getStartDate(); ?>"  required></div>
+          <div><label for="StartTime">Time of the meeting :</label> <input type="time" name="startTime" id="startTime" value="<?php echo $meeting->getStartTime(); ?>"></div>
+          <div><label for="duration">Duration of the meeting :</label> <input type="time" name="duration" id="duration" value="<?php echo $meeting->getDuration(); ?>"></div>
           <div><label for="allDay">All day:</label> <input class="marginInput" type="checkbox" name="allDay" id="allDay" value="1" <?php if($meeting->getallDay()==1)echo "checked=checked" ; ?>></div>  
           <script>
              
@@ -85,7 +85,7 @@ if (isset($_SESSION['user_name'])) {
                              <input type="radio" name="colorM" <?php if ($meeting->getColorM()=="C0C0C0")echo "checked=\"checked\"";?> value="C0C0C0">
           </div>
         
-          <label for="place">Location :</label> <input type="text" name="place" id="place" value=<?php echo $meeting->getPlace(); ?>  required>
+          <label for="place">Location :</label> <input type="text" name="place" id="place" value="<?php echo $meeting->getPlace(); ?>"  required>
 
           <div>
             <label for="description">Description :</label> 

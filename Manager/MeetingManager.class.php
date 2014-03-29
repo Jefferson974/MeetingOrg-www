@@ -16,14 +16,14 @@ class MeetingManager{
 
 	// Add a meeting to the database
 	public function add(Meeting $m){
-		try {
-	    $q = $this->_db->prepare('INSERT INTO meetings SET title = :title, startDate = :startDate, finishDate = :finishDate, startTime = :startTime, allDay = :allDay, place = :place, organizerId= :organizerId, duration = :duration, description= :description, repeatM = :repeatM, colorM = :colorM, repeatIdList = :repeatIdList');
-	   
+		try { 
+	    $q = $this->_db->prepare('INSERT INTO meetings SET id = :id, title = :title, startDate = :startDate, finishDate = :finishDate, startTime = :startTime, allDay = :allDay, place = :place, organizerId= :organizerId, duration = :duration, description= :description, repeatM = :repeatM, colorM = :colorM, repeatIdList = :repeatIdList');
+	   	$q->bindValue(':id', $m->getId(), PDO::PARAM_INT);
 	    $q->bindValue(':title', $m->getTitle(), PDO::PARAM_STR);
 	    $q->bindValue(':startDate', $m->getStartDate(), PDO::PARAM_STR);
 	    $q->bindValue(':finishDate', $m->getFinishDate(), PDO::PARAM_STR);
 	    $q->bindValue(':startTime', $m->getStartTime(), PDO::PARAM_STR);
-	    $q->bindValue(':allDay', $m->getAllDay(), PDO::PARAM_BOOL);
+	    $q->bindValue(':allDay', $m->getAllDay(), PDO::PARAM_INT);
 	    $q->bindValue(':place', $m->getPlace(), PDO::PARAM_STR);
 	    $q->bindValue(':organizerId', $m->getOrganizerId(), PDO::PARAM_INT);
 	    $q->bindValue(':duration', $m->getDuration(), PDO::PARAM_STR);
@@ -47,14 +47,9 @@ class MeetingManager{
 
 	// Delete a meeting using a array of ID
 	public function deleteByIdArrays($idList){
-		echo "string".$idList."--<br/>";
-		$idList = stripslashes($idList);
-		echo "string - Stripped".$idList."--<br/>";
 		$arrayl= unserialize(base64_decode($idList));
-		echo "arraystring".$arrayl."--<br/>";
 		foreach ($arrayl as $value) {
-			echo "--id :".$value."--<br/>";
-			//$this->delete($value);
+			$this->delete($value);
 		}
 	}
 
@@ -84,9 +79,9 @@ class MeetingManager{
 
 	//Retrieve meeting from its ID
 	public function get($id){
-		$id = (int) $id;
+		$id = (int) $id; 
 		$q = $this->_db->query('SELECT * FROM meetings WHERE id ='.$id);
-		$result = $q->fetch(PDO::FETCH_ASSOC);
+		$result = $q->fetch(PDO::FETCH_ASSOC); 
 		return new Meeting($result);
 	}
 
