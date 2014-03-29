@@ -87,6 +87,7 @@
     	    right:  'today prev,next'
     	},
 
+    
       // PART OF THE CODE THAT DISPLAY THE EVENTS
       eventSources: [{
         events: [ 
@@ -97,13 +98,17 @@
             if($value->getOrganizerId()==$_SESSION['user_id']){
               $answer = "FALSE";
             }else $answer = "TRUE";
+            $startTime = new DateTime($value->getStartDate());
+            $endTime = new DateTime($value->getFinishDate());
+
+
             echo 
                 "
               {
                    id :         '" .$value->getId()          ."',
                    title :      '" .$value->getTitle()       ."',
-                   start :      '" .$value->getStartDate()   ." ".$value->getStartTime() ."',
-                   end   :      '" .$value->getFinishDate()  ."',
+                   start :      '" .$startTime->format('c')  . "',
+                   end :        '" .$endTime->format('c')    . "',
                    allDay :     '" .$value->getAllDay()      ."',
                    description :'" .$value->getDescription() ."',
                    place :      '" .$value->getPlace()       ."',
@@ -115,7 +120,9 @@
 
               },
                 ";
+             //  $test = $startTime->format('d-m-Y G:i');
           }
+           
         ?>
          
         ],   color: 'black',     // an option!
@@ -129,8 +136,8 @@
         var inText= "";
         //inText += "<div>ID of the event : "+calEvent.id+"</div>";
         inText += "<div>Name of the event : "+calEvent.title+"</div>";
-        inText += "<div>Day of the event : "+calEvent.start+"</div>";
-        inText += "<div>Day when event ends : "+calEvent.end+"</div>";
+        inText += "<div>Day of the event : "+calEvent.start.format('MMMM Do YYYY')+"</div>";
+        inText += "<div>Day when event ends : "+calEvent.end.format('MMMM Do YYYY, h:mm:ss a');+"</div>";
         inText += "<div>All day : "+calEvent.allDay+"</div>";
         inText += "<div>Description : "+calEvent.description+"</div>";
         inText += "<div>Place : "+calEvent.place+"</div>";
