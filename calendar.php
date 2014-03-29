@@ -18,6 +18,7 @@
           -moz-opacity: 0.8;
           opacity:.80;
           filter: alpha(opacity=80);
+
       }
       .white_content {
           display: none;
@@ -31,6 +32,7 @@
           background-color: white;
           z-index:1002;
           overflow: auto;
+          border-radius: 5px;
       }
   </style>
 
@@ -125,14 +127,16 @@
            
         ?>
          
-        ],   color: 'black',     // an option!
+        ],   eventColor: 'black',     // an option!
          textColor: 'yellow'
         }],
  
       //Management of the click events.
       eventClick: function(calEvent, jsEvent, view) {
+
         document.getElementById('light').style.display='block';
         document.getElementById('fade').style.display='block';
+        document.getElementById('light').style.borderColor="#"+calEvent.color;
         var inText= "";
         //inText += "<div>ID of the event : "+calEvent.id+"</div>";
         inText += "<div>Name of the event : "+calEvent.title+"</div>";
@@ -158,15 +162,16 @@
         document.getElementById('light').onclick = function() {
           document.getElementById('light').style.display='none';
           document.getElementById('fade').style.display='none';
+
         }
         document.getElementById('fade').onclick = function() {
           document.getElementById('light').style.display='none';
           document.getElementById('fade').style.display='none';
         }
 
-        // change the border color just for fun
-        $(this).css('border-color', '#B1A0BA');
-              
+        // change the border color
+        $(this).css('border-color', '#'+calEvent.color);
+             
       }
       //end  of Calendar initializer
     })
