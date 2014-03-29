@@ -103,6 +103,9 @@
             $startTime = new DateTime($value->getStartDate());
             $endTime = new DateTime($value->getFinishDate());
 
+            
+
+            
 
             echo 
                 "
@@ -149,8 +152,7 @@
         inText += "<div>Place : "+calEvent.place+"</div>";
        // inText += "<div>Organizer ID : "+calEvent.organizerId+"</div>";
         inText += "<div>Duration : "+calEvent.duration+"</div>";
-        inText += "<div>Repeated : "+calEvent.repeated+"</div>";
-        inText += "<div>test  : "+calEvent.edit+"</div>";
+        inText += "<div>Repeated : "+calEvent.repeated+"</div>"; 
     
         if (calEvent.edit=='FALSE') {
         inText += "<div><a href=Meetings/edit.php?id="+calEvent.id+"> Edit meeting <a/></div>";

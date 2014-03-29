@@ -53,7 +53,7 @@ if(isset($_SESSION['user_credential']) && !empty($_POST['invite_submit']) && $_S
 	$attendeeManager = new AttendeeManager($db);
 	$answer = filter_input(INPUT_GET, 'answer' , FILTER_SANITIZE_NUMBER_INT);
 	$id =  filter_input(INPUT_GET, 'id' , FILTER_SANITIZE_NUMBER_INT);
-	$attendeeManager->answer($id, $_SESSION['user_email'], $answer); 
+	$attendeeManager->setAnswer($id, $_SESSION['user_email'], $answer); 
 	$newURL="../index.php"; 
 	 header('Location: '.$newURL);
 }else{

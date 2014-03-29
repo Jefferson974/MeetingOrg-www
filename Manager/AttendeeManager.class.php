@@ -35,7 +35,7 @@ class AttendeeManager{
 		add($meetingId, $attendees);	
 	}
 
-	public function answer($meetingId, $user_email, $answer){
+	public function setAnswer($meetingId, $user_email, $answer){
 		$q = $this->_db->prepare('UPDATE jnct_users_meetings SET invitation_answer = :invitation_answer WHERE meeting_id = :meeting_id && user_email = :user_email');
   		$q->bindValue(':invitation_answer', $answer, PDO::PARAM_INT);
 	  	$q->bindValue(':meeting_id', $meetingId, PDO::PARAM_INT);  
@@ -44,6 +44,16 @@ class AttendeeManager{
     	
 	    echo $q->errorInfo()[2];
 	}
+
+	public function getAnswer($meetingId, $user_email){
+		$q = $this->getDb()->prepare("SELECT meeting_id FROM jnct_users_meetings WHERE meeting_id=? && user_email=? ");
+		$q->execute(array($meetingId, $user_email));
+		$result = $q->fetchAll(PDO::FETCH_COLUMN, 0);  
+		return $result;
+	}
+
+
+
 
 	//Delete all attendees from a meeting
 	public function delete($meetingId){

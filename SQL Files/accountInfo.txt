@@ -1,0 +1,12 @@
+Password for all Account :  qwerty
+
+
+Account's Name:
+ADMIN ACCOUNT : 
+Yannis
+Minu
+Raph
+Jeff
+---------------------
+TEST ACCOUNT : 
+Test

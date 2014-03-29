@@ -73,9 +73,9 @@ if(isset($_SESSION['user_name'])){
                
 
               <div>
-                Event Color: <select name="colorpicker">
+                Event Color: <select name="colorM">
 
-                <option name="colorM"   style="background:white" value="000000">
+                            <option name="colorM"   style="background:white" selected="selected" value="None">None</option>
                             <option name="colorM"   style="background:#00FF13" value="00FF13">Green</option>
                             <option name="colorM"   style="background:#CE7EED" value="CE7EED">Violet</option>
                             <option name="colorM"   style="background:#F73B7A" value="F73B7A">Pink</option>
