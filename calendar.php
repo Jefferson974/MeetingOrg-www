@@ -118,8 +118,11 @@
                    duration :   '" .$value->getDuration()    ."',
                    repeated :   '" .$value->getRepeatM()     ."',
                    color    :   '" .$value->getColorM()      ."',
-                   edit     :   '" .$answer."'      
-
+                   edit     :   '" .$answer."'  ,   
+    
+          
+                   textColor: 'black',
+                   backgroundColor    :   '" .'#'.$value->getColorM()      ."',
               },
                 ";
              //  $test = $startTime->format('d-m-Y G:i');
@@ -127,8 +130,7 @@
            
         ?>
          
-        ],   eventColor: 'black',     // an option!
-         textColor: 'yellow'
+        ]
         }],
  
       //Management of the click events.
