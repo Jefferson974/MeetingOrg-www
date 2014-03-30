@@ -70,7 +70,7 @@ define("COOKIE_SECRET_KEY", "1gp@TMPS{+$78sfpMJFe-92s");
 define("EMAIL_PASSWORDRESET_URL", "http://localhost/meetingorg-www/Connexion/password_reset.php");
 define("EMAIL_PASSWORDRESET_FROM", "no-reply@groupesevenmail.com");
 define("EMAIL_PASSWORDRESET_FROM_NAME", "My Project");
-define("EMAIL_PASSWORDRESET_SUBJECT", "Password reset for PROJECT XY");
+define("EMAIL_PASSWORDRESET_SUBJECT", "Password reset for Meeting Manager Project");
 define("EMAIL_PASSWORDRESET_CONTENT", "Please click on this link to reset your password:");
 
 /**
