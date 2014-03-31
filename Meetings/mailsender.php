@@ -17,7 +17,7 @@ $mailer = Swift_Mailer::newInstance($transport);
 $message = Swift_Message::newInstance('Invitation to a university event.')
   ->setFrom(array('meetingplannerseven@gmail.com' => 'INVITATION'))
   ->setTo($listmail)
-  ->setBody("Dear Student, <br> you have been invited to the event..<br><br><br><br>".$meeting->getTitle()."<br><br>Date:".$meeting->getStartDate()."<br><br><br>Place: ".$meeting->getPlace()."<br><br><br>Duration:".$meeting->getPlace() );
+  ->setBody("Dear Student, <br> <br>you have been invited to an event through the Meeting Organizer Portal<br><br><br><br>Title :<b>".$meeting->getTitle()."</b><br><font color=\"red\">Date:<b>".$meeting->getStartDate()."</font></b><br>Place: ".$meeting->getPlace()."<br>Duration:<b>".$meeting->getDuration()."</b><br> <br><i>Please login to the Meeting Organizer Portal in order to confirm weather you are coming or not.<br> Click here to log on to the portal : <a href=\"http://localhost/MeetingOrg-www/ \">Click here</a> or copy the following link to your internet browser : \"http://localhost/MeetingOrg-www/\"</i> <br><br><br><br><br><h4>Please do not answer to this e-mail.</h4><br><br><h7>Group Seven, Meeting Organizer Community</h7>", 'text/html' );
 
 
 
