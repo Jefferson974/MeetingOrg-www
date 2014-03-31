@@ -77,12 +77,12 @@ if (isset($_SESSION['user_name'])) {
           </div>       
           <div>
                 Event Color: <input type="radio" name="colorM" <?php if ($meeting->getColorM()=="None")echo "checked=\"checked\"";?> value="None">
-                             <input type="radio" name="colorM" <?php if ($meeting->getColorM()=="00FF00")echo "checked=\"checked\"";?> value="00FF00">
-                             <input type="radio" name="colorM" <?php if ($meeting->getColorM()=="0000FF")echo "checked=\"checked\"";?> value="0000FF">
-                             <input type="radio" name="colorM" <?php if ($meeting->getColorM()=="FFFF00")echo "checked=\"checked\"";?> value="FFFF00">
-                             <input type="radio" name="colorM" <?php if ($meeting->getColorM()=="00FFFF")echo "checked=\"checked\"";?> value="00FFFF">
+                             <input type="radio" name="colorM" <?php if ($meeting->getColorM()=="00FF13")echo "checked=\"checked\"";?> value="00FF13">
+                             <input type="radio" name="colorM" <?php if ($meeting->getColorM()=="CE7EED")echo "checked=\"checked\"";?> value="CE7EED">
+                             <input type="radio" name="colorM" <?php if ($meeting->getColorM()=="F73B7A")echo "checked=\"checked\"";?> value="F73B7A">
+                             <input type="radio" name="colorM" <?php if ($meeting->getColorM()=="FFA700")echo "checked=\"checked\"";?> value="FFA700">
                              <input type="radio" name="colorM" <?php if ($meeting->getColorM()=="FF00FF")echo "checked=\"checked\"";?> value="FF00FF">
-                             <input type="radio" name="colorM" <?php if ($meeting->getColorM()=="C0C0C0")echo "checked=\"checked\"";?> value="C0C0C0">
+                             <input type="radio" name="colorM" <?php if ($meeting->getColorM()=="FFFF8A")echo "checked=\"checked\"";?> value="FFFF8A">
           </div>
         
           <label for="place">Location :</label> <input type="text" name="place" id="place" value="<?php echo $meeting->getPlace(); ?>"  required>

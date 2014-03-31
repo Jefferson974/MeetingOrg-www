@@ -79,9 +79,9 @@ if(isset($_SESSION['user_name'])){
                             <option name="colorM"   style="background:#00FF13" value="00FF13">Green</option>
                             <option name="colorM"   style="background:#CE7EED" value="CE7EED">Violet</option>
                             <option name="colorM"   style="background:#F73B7A" value="F73B7A">Pink</option>
-                            <option name="colorM"   style="background:#59474D" value="59474D">Dark Violet</option>
-                            <option name="colorM"   style="background:#FFB01C" value="FFB01C">Orange</option>
-                            <option name="colorM"   style="background:#000000" value="000000">Black</option>
+                            <option name="colorM"   style="background:#FFA700" value="FFA700">Orange</option>
+                            <option name="colorM"   style="background:#FFFF8A" value="FFFF8A">Yellow</option>
+                            <option name="colorM"   style="background:#B5B5B5" value="B5B5B5">Grey</option>
              </select>
 
               </div>
