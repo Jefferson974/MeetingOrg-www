@@ -52,7 +52,6 @@
       $attendeeManager = new AttendeeManager($db);
       $listMeetingsId= $attendeeManager->getMeetingsIdByEmailA($userMail);
       $listMeetings = $meetingManager->getListByAttendee($listMeetingsId);
-      
       if ($_SESSION['user_credential']) {
         $userId = $_SESSION['user_id'];
         $listMeetingsByOrg = $meetingManager->getListByOrg($userId);
@@ -95,16 +94,26 @@
         events: [ 
         <?php  
 
-         
           foreach($listMeetings as $value){
             if($value->getOrganizerId()==$_SESSION['user_id']){
-              $answer = "FALSE";
-            }else $answer = "TRUE";
+              $edit = "FALSE";
+              $answer = "";
+            }else{
+              $edit = "TRUE";
+              $answerResult = $attendeeManager->getAnswer($value->getId(), $_SESSION['user_email']);
+              if ($answerResult[0]==0) { 
+                $answer = "FALSE";
+              }elseif ($answerResult[0]==1){
+                $answer = "TRUE";
+              }else $answer = "";
+            
+            } 
+
+            
             $startTime = new DateTime($value->getStartDate());
             $endTime = new DateTime($value->getFinishDate());
 
-            
-
+           
             
 
             echo 
@@ -121,8 +130,9 @@
                    duration :   '" .$value->getDuration()    ."',
                    repeated :   '" .$value->getRepeatM()     ."',
                    color    :   '" .$value->getColorM()      ."',
-                   edit     :   '" .$answer."'  ,   
-    
+                   edit     :   '" .$edit."',
+                   answer   :   '" .$answer."',   
+                  
           
                    textColor: 'black',
                    backgroundColor    :   '" .'#'.$value->getColorM()      ."',
@@ -142,24 +152,34 @@
         document.getElementById('light').style.display='block';
         document.getElementById('fade').style.display='block';
         document.getElementById('light').style.borderColor="#"+calEvent.color;
-        var inText= "";
-        //inText += "<div>ID of the event : "+calEvent.id+"</div>";
+        var inText= ""; 
         inText += "<div>Name of the event : "+calEvent.title+"</div>";
         inText += "<div>Day of the event : "+calEvent.start.format('MMMM Do YYYY')+"</div>";
         inText += "<div>Day when event ends : "+calEvent.end.format('MMMM Do YYYY, h:mm:ss a');+"</div>";
         inText += "<div>All day : "+calEvent.allDay+"</div>";
         inText += "<div>Description : "+calEvent.description+"</div>";
-        inText += "<div>Place : "+calEvent.place+"</div>";
-       // inText += "<div>Organizer ID : "+calEvent.organizerId+"</div>";
+        inText += "<div>Place : "+calEvent.place+"</div>"; 
         inText += "<div>Duration : "+calEvent.duration+"</div>";
         inText += "<div>Repeated : "+calEvent.repeated+"</div>"; 
     
         if (calEvent.edit=='FALSE') {
         inText += "<div><a href=Meetings/edit.php?id="+calEvent.id+"> Edit meeting <a/></div>";
+        inText += "<div><a href=Meetings/delete.php?id="+calEvent.id+"> Delete meeting <a/></div>";
         }else if(calEvent.edit=='TRUE'){
-        inText += "<div>Going ?<a href=\'Meetings/inviteProcess.php?answer=1&id="+calEvent.id+"\'>Yes &nbsp<a/>";
-        inText += "|&nbsp<a href=\'Meetings/inviteProcess.php?answer=0&id="+calEvent.id+"\'>No<a/></div>";
+            if(calEvent.answer=='FALSE'){ 
+            inText += "<div>Going ?<a href=\'Meetings/inviteProcess.php?answer=1&id="+calEvent.id+"\'>Yes &nbsp<a/>";
+            inText += "|&nbsp No</div>";
+            }else if(calEvent.answer=='TRUE'){
+             inText += "<div>Going ?Yes &nbsp" ;
+             inText += "|&nbsp<a href=\'Meetings/inviteProcess.php?answer=0&id="+calEvent.id+"\'>No<a/></div>";
+            }
+
          }
+
+
+        //inText += "|&nbsp<a href=\'Meetings/inviteProcess.php?answer=0&id="+calEvent.id+"\'>No<a/></div>";
+
+      
          
         document.getElementById('light').innerHTML=inText;
 

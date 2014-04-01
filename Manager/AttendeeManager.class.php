@@ -46,7 +46,7 @@ class AttendeeManager{
 	}
 
 	public function getAnswer($meetingId, $user_email){
-		$q = $this->getDb()->prepare("SELECT meeting_id FROM jnct_users_meetings WHERE meeting_id=? && user_email=? ");
+		$q = $this->getDb()->prepare("SELECT invitation_answer FROM jnct_users_meetings WHERE meeting_id=? && user_email=? ");
 		$q->execute(array($meetingId, $user_email));
 		$result = $q->fetchAll(PDO::FETCH_COLUMN, 0);  
 		return $result;

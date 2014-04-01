@@ -2,21 +2,18 @@
 
 /**
  * Configuration for: Database Connection
- * This is the place where your database login constants are saved
- *
- * For more info about constants please @see http://php.net/manual/en/function.define.php
- * If you want to know why we use "define" instead of "const" @see http://stackoverflow.com/q/2447791/1114320
  *
  * DB_HOST: database host, usually it's "127.0.0.1" or "localhost", some servers also need port info
  * DB_NAME: name of the database. please note: database and database table are not the same thing
- * DB_USER: user for your database. the user needs to have rights for SELECT, UPDATE, DELETE and INSERT.
- *          by the way, it's bad style to use "root", but for development it will work.
+ * DB_USER: user for your database. the user needs to have rights for SELECT, UPDATE, DELETE and INSERT. 
  * DB_PASS: the password of the above user
  */
 define("DB_HOST", "127.0.0.1");
-define("DB_NAME", "test");
-define("DB_USER", "root");
-define("DB_PASS", "");
+define("DB_NAME", "test");  // To change to the correct database name when release the software online.
+define("DB_USER", "root");   // To change to a less privilege user when released
+define("DB_PASS", "");  // To change for release. Current setting is just for development.
+
+
 
 /**
  * Configuration for: Cookies
@@ -50,7 +47,7 @@ define("COOKIE_SECRET_KEY", "1gp@TMPS{+$78sfpMJFe-92s");
  * Please note that there are several issues with gmail, like gmail will block your server
  * for "spam" reasons or you'll have a daily sending limit. See the readme.md for more info.
  *
-
+ *
  *
  * It's really recommended to use SMTP!
  *
