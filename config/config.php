@@ -78,9 +78,9 @@ define("EMAIL_PASSWORDRESET_CONTENT", "Please click on this link to reset your p
  * Set the absolute URL to register.php, necessary for email verification links
  */
 define("EMAIL_VERIFICATION_URL", "http://localhost/meetingorg-www/Connexion/register.php");
-define("EMAIL_VERIFICATION_FROM", "no-reply@example.com");
-define("EMAIL_VERIFICATION_FROM_NAME", "My Project");
-define("EMAIL_VERIFICATION_SUBJECT", "Account activation for PROJECT XY");
+define("EMAIL_VERIFICATION_FROM", "no-reply@MeetingOrganizeGroupSeven.com");
+define("EMAIL_VERIFICATION_FROM_NAME", "Group Seven");
+define("EMAIL_VERIFICATION_SUBJECT", "Account activation for Meeting Organize");
 define("EMAIL_VERIFICATION_CONTENT", "Please click on this link to activate your account:");
 
 /**
