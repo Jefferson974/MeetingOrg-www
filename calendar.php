@@ -106,24 +106,27 @@
               }elseif ($answerResult[0]==1){
                 $answer = "TRUE";
               }else $answer = "";
-            
-            } 
+           } 
+            $time = preg_split("/[:]+/", $value->getStartTime(), -1, PREG_SPLIT_NO_EMPTY); 
 
+            $startDate = new DateTime($value->getStartDate());    
             
-            $startTime = new DateTime($value->getStartDate());
-            $endTime = new DateTime($value->getFinishDate());
-
-           
-            
+            $startDate->setTime((int)$time[0], (int)$time[1]);             
+             
+              if ($value->getAllDay()==0) { 
+                $allDay = "false";
+              }elseif ($value->getAllDay()==1){
+                $allDay = "true";
+              }else $allDay = "";
 
             echo 
                 "
               {
                    id :         '" .$value->getId()          ."',
-                   title :      '" .$value->getTitle()       ."',
-                   start :      '" .$startTime->format('c')  . "',
-                   end :        '" .$endTime->format('c')    . "',
-                   allDay :     '" .$value->getAllDay()      ."',
+                   title :      '" .$value->getTitle()      ."',
+                   start :      '" .$startDate->format('c')."',
+                   end :        '" .$value->getFinishDate()  ."',
+                   allDay :     " .$allDay      .",
                    description :'" .$value->getDescription() ."',
                    place :      '" .$value->getPlace()       ."',
                    organizerId: '" .$value->getOrganizerId() ."',
@@ -131,7 +134,7 @@
                    repeated :   '" .$value->getRepeatM()     ."',
                    color    :   '" .$value->getColorM()      ."',
                    edit     :   '" .$edit."',
-                   answer   :   '" .$answer."',   
+                   answer   :   '" .$answer."',
                   
           
                    textColor: 'black',
@@ -257,14 +260,7 @@
 
     </script>
 
-
-   <?php
-      if (isset($_SESSION['user_credential'])){
-        if($_SESSION['user_credential'] == 1){
-          echo "<h1><a href='admintable.php'>ADMIN PAGE</a> </h1>";
-        }
-      }
-      ?>
+ 
 </body>
 </html>
 
