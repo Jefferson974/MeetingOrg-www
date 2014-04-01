@@ -165,7 +165,7 @@
         if (calEvent.edit=='FALSE') {
         inText += "<div><a href=Meetings/edit.php?id="+calEvent.id+"> Edit meeting <a/></div>";
         inText += "<div><a href=Meetings/delete.php?id="+calEvent.id+"> Delete meeting <a/></div>";
-        inText += "<div><h1><a href='admintable.php?id=610'>More information</a> </h1></div>";  
+        inText += "<div><h1><a href='admintable.php?id="+calEvent.id+"'>More information</a> </h1></div>";  
 
         }else if(calEvent.edit=='TRUE'){
             if(calEvent.answer=='FALSE'){ 
