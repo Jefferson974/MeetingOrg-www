@@ -68,7 +68,7 @@ if($_SESSION['user_credential']==1 && !empty($_POST["edit_submit"]) && !empty($_
 	    }
 
 		// array of data to create a meeting's object
-$meetingId= $_SESSION['idEditedMeeting']; 
+		$meetingId= $_SESSION['idEditedMeeting']; 
 	   	$userId = $_SESSION['user_id'];
 
 	   	$description = trim($result['description']);
@@ -85,7 +85,7 @@ $meetingId= $_SESSION['idEditedMeeting'];
 			'description' => $description,
 			'duration' => $duration,
 			'organizerId' => $userId,
-			);
+			); 
 
 			// add new meeting and retrieve the id meeting for invit form.
 			$meetingManager = new MeetingManager($db);			
@@ -99,6 +99,7 @@ $meetingId= $_SESSION['idEditedMeeting'];
 			$idList = $m1->getRepeatIdList();
 			$meetingManager->deleteByIdArrays($idList);
 			$meetingManager->delete($meetingId);
+
 
 			switch ($meeting->getRepeatM()) {
 				case 'None': 
@@ -124,7 +125,7 @@ $meetingId= $_SESSION['idEditedMeeting'];
 					$lastInsertM[] = $meetingId;
 					break;
 
-				case 'Daily':  
+				case 'Daily':   
 					$meeting->setId($meetingId);
 					for( $i = 0; $i <= $result['repeatMTimes']; $i++){
 						if($result['allDay']!=1){
@@ -140,6 +141,7 @@ $meetingId= $_SESSION['idEditedMeeting'];
 							$meeting->setFinishDate($finishDate->format('Y-m-d G:i'));
 						}else $meeting->setFinishDate($meeting->getStartDate());
 
+					
 						
 						//add meeting
 						$meetingManager->add($meeting);
@@ -153,7 +155,7 @@ $meetingId= $_SESSION['idEditedMeeting'];
 					}
 					break;
 
-				case 'Weekly': 
+				case 'Weekly':  
 					$meeting->setId($meetingId);
 					for( $i = 0; $i <= $result['repeatMTimes']; $i++){
 						if($result['allDay']!=1){
@@ -168,11 +170,11 @@ $meetingId= $_SESSION['idEditedMeeting'];
 							$finishDate->add(new DateInterval("PT".(int)$durationToAdd[0]."H".(int)$durationToAdd[1]."M"));
 							$meeting->setFinishDate($finishDate->format('Y-m-d G:i'));
 						}else $meeting->setFinishDate($meeting->getStartDate());
- 
+ 					  
 						//add meeting
 						$meetingManager->add($meeting);
 						$lastInsertM[] = (int) $db->lastInsertId();
-
+						$meeting->setId("");
 
 						//-----set new StartDate------						 
 						$startDate = new DateTime($meeting->getStartDate());
@@ -201,7 +203,7 @@ $meetingId= $_SESSION['idEditedMeeting'];
 						//add meeting
 						$meetingManager->add($meeting);
 						$lastInsertM[] = (int) $db->lastInsertId();
-
+						$meeting->setId("");
 
 						//-----set new StartDate------						 
 						$startDate = new DateTime($meeting->getStartDate());
@@ -237,8 +239,7 @@ $meetingId= $_SESSION['idEditedMeeting'];
 					$meetingManager->edit($meeting);
 					$lastInsertM[] = $meetingId;
 			}
-
-
+ 
 			$_SESSION['lastInsertM'] = $lastInsertM;
 			$repeatIdList = $lastInsertM; 
 			foreach($lastInsertM as $value) {	 	
