@@ -24,12 +24,6 @@ $message = Swift_Message::newInstance('Invitation to a university event.')
 $result = $mailer->send($message);
 
 
-
-
-if($result) {
-echo "Message Sent";
-}
-
 }
 ?>
 

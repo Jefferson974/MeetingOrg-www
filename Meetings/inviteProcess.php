@@ -43,13 +43,10 @@ if(isset($_SESSION['user_credential']) && !empty($_POST['invite_submit']) && $_S
 			// redirect to index
 			$newURL="../index.php"; 
 			header('Location: '.$newURL);
-		}else{
-			echo "il y a des errurs";
-		//include("invit.php"); // display invit.php and error messages.
-		}
+		} 
 	}else echo "The format of the input is not valid."; //	include("invit.php");
 
-}elseif($_SESSION['user_credential']==1 && isset($_GET['answer']) && !empty($_GET['id'])){
+}elseif(isset($_SESSION['user_name']) && isset($_GET['answer']) && !empty($_GET['id'])){
 	$attendeeManager = new AttendeeManager($db);
 	$answer = filter_input(INPUT_GET, 'answer' , FILTER_SANITIZE_NUMBER_INT);
 	$id =  filter_input(INPUT_GET, 'id' , FILTER_SANITIZE_NUMBER_INT);

@@ -76,13 +76,17 @@ if (isset($_SESSION['user_name'])) {
                 <label for="times"> times :</label><input type="number" name="repeatMTimes" value=<?php echo $meeting->getTitle(); ?> id="times" min="0">
           </div>       
           <div>
-                Event Color: <input type="radio" name="colorM" <?php if ($meeting->getColorM()=="None")echo "checked=\"checked\"";?> value="None">
-                             <input type="radio" name="colorM" <?php if ($meeting->getColorM()=="00FF13")echo "checked=\"checked\"";?> value="00FF13">
-                             <input type="radio" name="colorM" <?php if ($meeting->getColorM()=="CE7EED")echo "checked=\"checked\"";?> value="CE7EED">
-                             <input type="radio" name="colorM" <?php if ($meeting->getColorM()=="F73B7A")echo "checked=\"checked\"";?> value="F73B7A">
-                             <input type="radio" name="colorM" <?php if ($meeting->getColorM()=="FFA700")echo "checked=\"checked\"";?> value="FFA700">
-                             <input type="radio" name="colorM" <?php if ($meeting->getColorM()=="FF00FF")echo "checked=\"checked\"";?> value="FF00FF">
-                             <input type="radio" name="colorM" <?php if ($meeting->getColorM()=="FFFF8A")echo "checked=\"checked\"";?> value="FFFF8A">
+                Event Color:
+                <select name="colorM">
+
+                            <option name="colorM"   style="background:white" <?php if ($meeting->getColorM()=="None")echo "selected=\"selected\"";?> value="None">None</option>
+                            <option name="colorM"   style="background:#00FF13" <?php if ($meeting->getColorM()=="00FF13")echo "selected=\"selected\"";?> value="00FF13">Green</option>
+                            <option name="colorM"   style="background:#CE7EED" <?php if ($meeting->getColorM()=="CE7EED")echo "selected=\"selected\"";?> value="CE7EED">Violet</option>
+                            <option name="colorM"   style="background:#F73B7A" <?php if ($meeting->getColorM()=="F73B7A")echo "selected=\"selected\"";?> value="F73B7A">Pink</option>
+                            <option name="colorM"   style="background:#FFA700" <?php if ($meeting->getColorM()=="FFA700")echo "selected=\"selected\"";?> value="FFA700">Orange</option>
+                            <option name="colorM"   style="background:#FFFF8A" <?php if ($meeting->getColorM()=="FFFF8A")echo "selected=\"selected\"";?> value="FFFF8A">Yellow</option>
+                            <option name="colorM"   style="background:#B5B5B5" <?php if ($meeting->getColorM()=="B5B5B5")echo "selected=\"selected\"";?> value="B5B5B5">Grey</option>
+                </select>
           </div>
         
           <label for="place">Location :</label> <input type="text" name="place" id="place" value="<?php echo $meeting->getPlace(); ?>"  required>
