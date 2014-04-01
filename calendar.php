@@ -111,8 +111,9 @@
 
             $startDate = new DateTime($value->getStartDate());    
             
+            if($time!=null){
             $startDate->setTime((int)$time[0], (int)$time[1]);             
-             
+             }
               if ($value->getAllDay()==0) { 
                 $allDay = "false";
               }elseif ($value->getAllDay()==1){
