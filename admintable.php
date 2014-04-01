@@ -39,9 +39,12 @@ echo "<tr><th width='25'>ID of Meeting</th> <th width='25'>Email</th><th>Answer<
         	echo '<td>'.$value.'</td>' ;
         	echo '<td>'.$answer.'</td>';
         }
+
+  
       
  } 
   ?>
 </table>
+<a href="javascript: history.go(-1)">Back</a>
 </body>
 </html>
