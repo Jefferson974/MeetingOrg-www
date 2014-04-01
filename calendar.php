@@ -167,11 +167,11 @@
         inText += "<div><a href=Meetings/delete.php?id="+calEvent.id+"> Delete meeting <a/></div>";
         }else if(calEvent.edit=='TRUE'){
             if(calEvent.answer=='FALSE'){ 
-            inText += "<div>Going ?<a href=\'Meetings/inviteProcess.php?answer=1&id="+calEvent.id+"\'>Yes &nbsp<a/>";
+            inText += "<div>Going ?<a href=\'Meetings/inviteProcess.php?answer=1&id="+calEvent.id+"\'>Yes &nbsp</a>";
             inText += "|&nbsp No</div>";
             }else if(calEvent.answer=='TRUE'){
              inText += "<div>Going ?Yes &nbsp" ;
-             inText += "|&nbsp<a href=\'Meetings/inviteProcess.php?answer=0&id="+calEvent.id+"\'>No<a/></div>";
+             inText += "|&nbsp<a href=\'Meetings/inviteProcess.php?answer=0&id="+calEvent.id+"\'>No</a></div>";
             }
 
          }
