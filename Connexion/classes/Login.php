@@ -1,5 +1,11 @@
 <?php
-
+/**     Group Project : Team 7, Meeting Organizer
+  *   Author : Jean-Francois Rococo  
+  *   Date : 31/04/2014
+  *   Adaptation of the login for Brookes person.
+  *  add of the user credential in loginWithCookieData and loginWithPostData functions
+  *
+ */
 /**
  * handles the user login/logout/session
  * @author Panique

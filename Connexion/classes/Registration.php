@@ -1,5 +1,12 @@
 <?php
-
+/**     Group Project : Team 7, Meeting Organizer
+  *   Author : Jean-Francois Rococo  
+  *   Date : 31/04/2014
+  *   Adaptation of the registration for Brookes person.
+  *  add filter for brookes email. Making distinction between a student and staff member
+  * of Brookes UNiversity via their email. (use of p at the beginning of a staff member email)
+  *
+ */
 /**
  * Handles the user registration
  * @author Panique
