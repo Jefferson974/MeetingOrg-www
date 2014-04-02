@@ -1,5 +1,6 @@
 <?php
 require_once(__DIR__.'/../config/required.php');
+//verify that the user is logged-in
 if(isset($_SESSION['user_name'])){
   if($_SESSION['user_credential'] != 1){
       $newURL="../index.php"; 
@@ -45,7 +46,7 @@ if(isset($_SESSION['user_name'])){
               <div><label for="duration">Duration of the meeting :</label> <input type="time" name="duration" id="duration"></div>
               <div><label for="allDay">All day:</label> <input  type="checkbox" name="allDay" id="allDay" value="1"></div>
               <script>
-             
+             //If the 'allday' button is clicked, the start time and duration are disabled.
                   document.getElementById("allDay").onclick = function() {                      
                     if(document.getElementById("allDay").checked ) {
                        document.getElementById("startTime").disabled = true;

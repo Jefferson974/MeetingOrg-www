@@ -2,6 +2,7 @@
 require_once(__DIR__.'/../config/required.php');
 require_once(__DIR__."/../Manager/MeetingManager.class.php"); 
 require_once(__DIR__."/../Manager/AttendeeManager.class.php");  
+//Verify that the user is logged on and has the right credentials
 if (isset($_SESSION['user_name'])) {
    if(isset($_GET['id']) && $_SESSION['user_credential']==1){
       $id =  $_GET[ 'id'];

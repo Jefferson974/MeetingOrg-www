@@ -100,7 +100,7 @@ if($_SESSION['user_credential']==1 && !empty($_POST["edit_submit"]) && !empty($_
 			$meetingManager->deleteByIdArrays($idList);
 			$meetingManager->delete($meetingId);
 
-
+            //Allow to edit a meeting depending on the frequency on the meeting
 			switch ($meeting->getRepeatM()) {
 				case 'None': 
 					if($result['allDay']!=1){

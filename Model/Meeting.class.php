@@ -67,47 +67,12 @@ public function hydrate(array $data)
   }
 }
 
-// FUNCTION TO TRANSFORM THE DATA INTO A JSON FORMAT
-/*public function toJson(array $data){
-
- foreach ($data as $key => $value)
-  { 
-
-  }
-
-}
-*/
 
 public function INFO(){
 	echo "<br>Title: ".$this->getTitle() ;
 }
 
-/*
-//function to display the DATA about the meeting
-public function displayMeetingInfo(){
-echo "<br><br>";
-echo "ID: ".$this->id() ;
-echo "<br>Title: ".$this->title() ;
-echo "<br>Start Date of Meeting: ".$this->getStartDate() ;
 
-echo "<br>Place: ".$this->place() ;
-echo "<br>Organizer: ".$this->organizer() ;
-echo "<br>Duration: ".$this->duration() ;
-echo "<br>Description: ".$this->description() ;
-echo " <br> NEED TO FIND A WAY TO PARSE THE EMAILS BACK TO A USABLE FORM..";
-$displayTable= unserialize($this->_attendees->listAttendees() );
-
-echo "<br>Attendees: ".$displayTable;
-}
-
-
-//function to send emails to atendees
-function sendEmail()
-{
-echo "mail envoyé!";
-}
-
-*/
 }
 
 ?>

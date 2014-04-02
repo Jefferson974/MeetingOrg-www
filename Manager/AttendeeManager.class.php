@@ -34,7 +34,7 @@ class AttendeeManager{
 		delete($meetingId);
 		add($meetingId, $attendees);	
 	}
-
+    //Set the attendee answer in the database
 	public function setAnswer($meetingId, $user_email, $answer){
 		$q = $this->_db->prepare('UPDATE jnct_users_meetings SET invitation_answer = :invitation_answer WHERE meeting_id = :meeting_id && user_email = :user_email');
   		$q->bindValue(':invitation_answer', $answer, PDO::PARAM_INT);
@@ -44,7 +44,7 @@ class AttendeeManager{
     	
 	    echo $q->errorInfo()[2];
 	}
-
+     //return the response of the attendee from the database
 	public function getAnswer($meetingId, $user_email){
 		$q = $this->getDb()->prepare("SELECT invitation_answer FROM jnct_users_meetings WHERE meeting_id=? && user_email=? ");
 		$q->execute(array($meetingId, $user_email));
@@ -60,14 +60,6 @@ class AttendeeManager{
 		$this->_db->exec('DELETE FROM jnct_users_meetings WHERE id = '.$meetingId);
 	}
 
-/*    *VERSION JF ROCOCO*
-	public function getMeetingsIdByEmailA($emailAttendee){
-		$meetingsId = array();
-		$q = $this->_db->prepare('SELECT meeting_id FROM jnct_users_meetings WHERE user_email ='.$emailAttendee);
-		$q->execute();
-		$result = $q->fetchAll();
-		return $result;
-	}*/
 
 //**VERSIONRAPHAEL**
 	public function getMeetingsIdByEmailA($emailAttendee){ 
@@ -78,12 +70,11 @@ class AttendeeManager{
 		return $result;
 		}else{
 		$result = "";
-		//return "You have no meeting scheduled!";
 		return $result;
 		}
 	}
 		
-
+//function to get an email list by meeting ID provided as parameter
 	public function getEmailsByMeetingId($meetingId){
 		$q = $this->_db->prepare("SELECT user_email FROM jnct_users_meetings WHERE meeting_id =?");
 		$q->execute(array($meetingId));
