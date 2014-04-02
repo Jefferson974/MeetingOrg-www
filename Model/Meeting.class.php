@@ -1,4 +1,10 @@
 <?php
+/**     Group Project : Team 7, Meeting Organizer
+  *		Author : Raphael Steinitz
+  *		Date : 31/04/2014
+  *		This class represents the data model of the meeting table.
+  *
+ */
 class Meeting{
 //Creation of the different variables
 private $_id;
