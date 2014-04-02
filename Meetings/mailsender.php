@@ -1,6 +1,10 @@
-
 <?php
-
+/**     Group Project : Team 7, Meeting Organizer
+  *   Author : Raphael Steinitz
+  *   Date : 31/04/2014
+  *   This module allows to send e-mail through SMTP.
+  *
+ */
 require_once (__DIR__.'/../swift/lib/swift_required.php');
 
 
@@ -13,7 +17,7 @@ $transport = Swift_SmtpTransport::newInstance('smtp.gmail.com', 465, "ssl")
   ->setPassword('ROCOCOSTEINITZ');
 
 $mailer = Swift_Mailer::newInstance($transport);
-//listedesinvite + objet meeting.
+
 $message = Swift_Message::newInstance('Invitation to a university event.')
   ->setFrom(array('meetingplannerseven@gmail.com' => 'INVITATION'))
   ->setTo($listmail)

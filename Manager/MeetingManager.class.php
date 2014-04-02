@@ -1,8 +1,10 @@
 <?php
- 
-/*function loadClass($classe){ require_once __DIR__.'/../Model/'.$classe . '.class.php'; }
-function loadClass2($classe){ require_once __DIR__.'/../Manager/'.$classe . '.class.php'; }
-spl_autoload_register('loadClass', 'loadClass2');*/
+ /**     Group Project : Team 7, Meeting Organizer
+  *   Author : Raphael Steinitz, Jean-Francois Rococo
+  *   Date : 31/04/2014
+  *   Manager for meetings
+  *
+ */
 require_once(__DIR__."/../Model/Meeting.class.php"); 
 
 class MeetingManager{
@@ -85,16 +87,7 @@ class MeetingManager{
 		return new Meeting($result);
 	}
 
-	/*public function getList(){
-		$list_meetings = array();
-	    $q = $this->_db->query('SELECT * FROM meetings ORDER BY id');
-	    while ($data = $q->fetch(PDO::FETCH_ASSOC))
-	    {
-	      $list_meetings[] = new Meeting($data);
-	    }
-	    return $list_meetings;
-	}
-	*/
+
 
 	// Get a list of meetings created by an organizer 
 	public function getListByOrg($organizerId){

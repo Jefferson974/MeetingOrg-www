@@ -1,12 +1,17 @@
 <?php
- 
+ /**     Group Project : Team 7, Meeting Organizer
+  *   Author : Jean-Francois Rococo
+  *   Date : 31/04/2014
+  *   Manager for attendees
+  *
+ */
 require_once(__DIR__."/../Model/Meeting.class.php");   
 
 class AttendeeManager{
 
 	private $_db;
     public function getDb() {return $this->_db;}
-
+   
 	public function __construct($db){
 		$this->_db=$db;
     }

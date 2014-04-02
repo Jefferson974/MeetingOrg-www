@@ -3,7 +3,14 @@
 <!--[if IE 7]> <html class="lt-ie9 lt-ie8" lang="en"> <![endif]-->
 <!--[if IE 8]> <html class="lt-ie9" lang="en"> <![endif]-->
 <!--[if gt IE 8]><!--> <html lang="en"> <!--<![endif]-->
- 
+ <?php
+/**     Group Project : Team 7, Meeting Organizer
+  *   Authors : Raphael Steinitz, Jean-Francois Rococo
+  *   Date : 31/04/2014
+  *   This Page displays the calendar with both PHP and JS.
+  *
+ */
+ ?>
 <head>
   <style>
       .black_overlay{
@@ -37,9 +44,7 @@
   </style>
 
   <?php 
-  // echo "----------user_name :". $_SESSION['user_name']."<br/>";
-  // echo "----------user_email :". $_SESSION['user_email']."<br/>" ;
-  // echo "----------user_credential:". $_SESSION['user_credential']."<br/>" ;  
+ 
   require_once('config/required.php');
   require_once('Manager/MeetingManager.class.php');
   require_once('Manager/AttendeeManager.class.php');

@@ -1,4 +1,10 @@
 <?php
+/**     Group Project : Team 7, Meeting Organizer
+  *   Author : Jean-Francois Rococo
+  *   Date : 31/04/2014
+  *   Form to create a meeting
+  *
+ */
 require_once(__DIR__.'/../config/required.php');
 //verify that the user is logged-in
 if(isset($_SESSION['user_name'])){

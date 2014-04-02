@@ -1,4 +1,10 @@
 <?php
+/**     Group Project : Team 7, Meeting Organizer
+  *   Author : Jean-Francois Rococo
+  *   Date : 31/04/2014
+  *   This page gathers the name of the invitees, verify that the form was previously well filled, and send the invitations
+  *
+ */
 require_once(__DIR__.'/../config/required.php');
 require_once(__DIR__."/../Manager/MeetingManager.class.php"); 
 require_once(__DIR__."/../Manager/AttendeeManager.class.php");   

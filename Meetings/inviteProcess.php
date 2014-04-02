@@ -1,5 +1,10 @@
 <?php
-
+/**     Group Project : Team 7, Meeting Organizer
+  *   Author : Jean-Francois Rococo
+  *   Date : 31/04/2014
+  *   This file processes the invitations submit and also processes the response from the invitee.
+  *
+ */
 require_once(__DIR__.'/../config/required.php');
 require_once(__DIR__."/../Manager/MeetingManager.class.php"); 
 require_once(__DIR__."/../Manager/AttendeeManager.class.php");  

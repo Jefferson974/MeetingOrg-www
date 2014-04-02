@@ -1,3 +1,11 @@
+<?php
+/**     Group Project : Team 7, Meeting Organizer
+  *   Author : Raphael Steinitz
+  *   Date : 31/04/2014
+  *   This page display a table with all the responses from the attendees.
+  *
+ */
+?>
 <html>
 <head>
 </head>
