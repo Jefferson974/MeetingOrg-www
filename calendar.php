@@ -163,7 +163,7 @@
         document.getElementById('light').style.borderColor="#"+calEvent.color;
         var inText= ""; 
         inText += "<div>Name of the event : "+calEvent.title+"</div>";
-        inText += "<div>Day of the event : "+calEvent.start.format('MMMM Do YYYY')+"</div>";
+        inText += "<div>Day of the event : "+calEvent.start.format('MMMM Do YYYY, h:mm:ss a')+"</div>";
         inText += "<div>Day when event ends : "+calEvent.end.format('MMMM Do YYYY, h:mm:ss a');+"</div>";
         inText += "<div>All day : "+calEvent.allDay+"</div>";
         inText += "<div>Description : "+calEvent.description+"</div>";
